@@ -205,6 +205,6 @@ public class Qiniu {
         String saveFilePath="D:\\Test\\merge";
         qiniu.downLoadPrivateFile(saveFilePath);
         String yunFileName ="README.txt";
-        qiniu.getYunFileInfomation(yunFileName);
+      //  qiniu.getYunFileInfomation(yunFileName);
     }
 }
