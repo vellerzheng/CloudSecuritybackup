@@ -167,6 +167,11 @@
           <artifactId>spring-test</artifactId>
           <version>4.1.7.RELEASE</version>
       </dependency>
+      <dependency>
+          <groupId>com.upyun</groupId>
+          <artifactId>java-sdk</artifactId>
+          <version>3.13</version>
+      </dependency>
 
 
 
