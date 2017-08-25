@@ -8,8 +8,6 @@ import org.junit.Test;
  * Created by vellerzheng on 2017/8/25.
  */
 public class QiniuTest extends TestCase {
-
-
     @After
     public void tearDown() throws Exception {
 
