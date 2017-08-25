@@ -27,7 +27,6 @@ public class QiniuTest extends TestCase {
         qiniu.randomAcessUpLoadFile(localFilePath);
     }
 
-
     @Test
     public void testdownLoadPublicFile() throws Exception {
         Qiniu qiniu = new Qiniu();
