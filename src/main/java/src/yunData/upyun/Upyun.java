@@ -31,10 +31,10 @@ public class Upyun {
         String fileName = localFilePath.substring((localFilePath.lastIndexOf("\\")));
         String yunfilePath = "/up/tt/"+ fileName.replace("\\","");  //key 为上传的文件名
         File file = new File(localFilePath);
-        upyun.setContentMD5(UpYun.md5(localFilePath));     // 计算文件 MD5，如果文件太大或计算不便，可以不计算
         boolean result4 = false;
         try {
-            result4 = upyun.writeFile(yunfilePath, file,true);
+            upyun.setContentMD5(UpYun.md5(file));     // 计算文件 MD5，如果文件太大或计算不便，可以不计算
+            result4 = upyun.writeFile(yunfilePath, file);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -50,8 +50,13 @@ public class Upyun {
         boolean result = upyun.rmDir("/up/tt/");
     }
 
-    public void downloadFile(String yunFileName){
-
+    public void downloadFile(String yunFileName,String saveFilePath){
+        File file= new File(saveFilePath);
+        boolean result=upyun.readFile(yunFileName,file);
+        if(result)
+            System.out.println("Download file succeed!");
+        else
+            System.out.println("Download file failed!");
     }
 
     public void getFileInformation(String yunFilePath){
@@ -71,12 +76,15 @@ public class Upyun {
         String localFilePath="D:\\Test\\split\\Hadoop，The Definitive Guide.pdf";
         Upyun upyun=new Upyun();
         upyun.initUpyun();
-    //    upyun.createYunFilePath();
+    //   upyun.createYunFilePath();
         upyun.uploadFile(localFilePath);
 
         String yunfile="/up/tt/Hadoop，The Definitive Guide.pdf";
         upyun.getFileInformation(yunfile);
         upyun.getSpaceCapacity();
+
+        String saveFilePath="D:\\Test\\merge\\Hadoop，The Definitive Guide.pdf";
+        upyun.downloadFile(yunfile,saveFilePath);
 
     }
 }
