@@ -3,6 +3,8 @@ package src.yunData.upyun;
 
 import main.java.com.UpYun;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -26,9 +28,20 @@ public class Upyun {
 
       // 文件上传
     public void uploadFile(String localFilePath){
+        String fileName = localFilePath.substring((localFilePath.lastIndexOf("\\")));
+        String yunfilePath = "/up/tt/"+ fileName.replace("\\","");  //key 为上传的文件名
+        File file = new File(localFilePath);
         upyun.setContentMD5(UpYun.md5(localFilePath));     // 计算文件 MD5，如果文件太大或计算不便，可以不计算
-        boolean result4 = upyun.writeFile("/up/tt/README.txt", localFilePath);
-        System.out.println("upload file successed!");
+        boolean result4 = false;
+        try {
+            result4 = upyun.writeFile(yunfilePath, file,true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(result4)
+            System.out.println("upload file successed!");
+        else
+            System.out.println("upload file failed!");
     }
 
     public void deleteYunFile(){
@@ -41,8 +54,8 @@ public class Upyun {
 
     }
 
-    public void getFileInformation(){
-        Map<String,String> result = upyun.getFileInfo("/up/tt/README.txt");
+    public void getFileInformation(String yunFilePath){
+        Map<String,String> result = upyun.getFileInfo(yunFilePath);
         for (Map.Entry<String, String> entry : result.entrySet()) {
             System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
         }
@@ -55,12 +68,14 @@ public class Upyun {
 
 
     public static  void main(String[] args){
-        String localFilePath="D:\\Test\\split\\README.txt";
+        String localFilePath="D:\\Test\\split\\Hadoop，The Definitive Guide.pdf";
         Upyun upyun=new Upyun();
         upyun.initUpyun();
-        upyun.createYunFilePath();
+    //    upyun.createYunFilePath();
         upyun.uploadFile(localFilePath);
-        upyun.getFileInformation();
+
+        String yunfile="/up/tt/Hadoop，The Definitive Guide.pdf";
+        upyun.getFileInformation(yunfile);
         upyun.getSpaceCapacity();
 
     }
