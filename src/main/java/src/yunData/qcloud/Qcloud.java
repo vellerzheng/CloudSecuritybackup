@@ -126,8 +126,8 @@ public class Qcloud {
          String cosFilePath = "/backupFile/README.txt";
          String dstCosFilePath = "/README.txt";
       //   qcloud.moveFile(cosFilePath,dstCosFilePath);
-      //  System.out.println(qcloud.getFileProp(yunFileName));
-       System.out.println(qcloud.deleteFile(dstCosFilePath));
+        System.out.println(qcloud.getFileProp(yunFileName));
+     //  System.out.println(qcloud.deleteFile(dstCosFilePath));
 
 
     }
