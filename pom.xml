@@ -177,6 +177,11 @@
           <artifactId>cos_api</artifactId>
           <version>4.4</version>
       </dependency>
+      <dependency>
+          <groupId>com.xiaoleilu</groupId>
+          <artifactId>ucloud-java-sdk</artifactId>
+          <version>1.0.3</version>
+      </dependency>
 
 
 
