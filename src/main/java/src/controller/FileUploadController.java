@@ -45,7 +45,6 @@ public class FileUploadController {
             file.transferTo(new File(path + File.separator + filename));
             model.addAttribute("fileUrl", request.getContextPath()+"/upload/"+filename);
             System.out.println("upload file finished!");
-
             //重定向地址
             return "clouds/uploadResult";
         } else {
