@@ -13,16 +13,14 @@
           <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.0.4" />
           <element id="library" level="project" name="Maven: com.google.code.gson:gson:1.7.1" />
           <element id="library" level="project" name="Maven: org.springframework:spring-core:${spring.version}" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-web:4.1.7.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.1.7.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-context:4.1.7.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.1.7.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:${spring.version}" />
           <element id="library" level="project" name="Maven: org.springframework:spring-oxm:${spring.version}" />
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:${spring.version}" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:${spring.version}" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:${spring.version}" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.2.6.RELEASE" />
           <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.2.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context-support:${spring.version}" />
           <element id="library" level="project" name="Maven: org.springframework:spring-test:${spring.version}" />
           <element id="library" level="project" name="Maven: com.github.pagehelper:pagehelper:4.0.1" />

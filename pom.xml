@@ -73,7 +73,6 @@
           <artifactId>spring-context-support</artifactId>
           <version>${spring.version}</version>
       </dependency>
-
       <dependency>
           <groupId>org.springframework</groupId>
           <artifactId>spring-test</artifactId>
@@ -193,11 +192,7 @@
           <artifactId>commons-fileupload</artifactId>
           <version>1.3.1</version>
       </dependency>
-      <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-web</artifactId>
-          <version>4.1.7.RELEASE</version>
-      </dependency>
+
 
 
   </dependencies>
