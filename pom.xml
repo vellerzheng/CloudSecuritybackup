@@ -7,6 +7,11 @@
   <version>1.0-SNAPSHOT</version>
   <name>lab420-YunSafe Maven Webapp</name>
   <url>http://maven.apache.org</url>
+
+  <properties>
+    <spring.version>4.2.6.RELEASE</spring.version>
+  </properties>
+
   <dependencies>
 
     <dependency>
@@ -55,7 +60,6 @@
           <artifactId>spring-jdbc</artifactId>
           <version>${spring.version}</version>
       </dependency>
-
       <dependency>
           <groupId>org.springframework</groupId>
           <artifactId>spring-webmvc</artifactId>
@@ -65,7 +69,7 @@
       <dependency>
           <groupId>org.springframework</groupId>
           <artifactId>spring-aop</artifactId>
-          <version>4.2.6.RELEASE</version>
+          <version>${spring.version}</version>
       </dependency>
 
       <dependency>
@@ -139,6 +143,12 @@
           <version>1.2.3</version>
       </dependency>
       <!--Servlet web相关依赖-->
+      <dependency>
+          <groupId>javax.servlet.jsp</groupId>
+          <artifactId>jsp-api</artifactId>
+          <version>2.2</version>
+      </dependency>
+
       <!--jsp相关依赖 -->
       <dependency>
           <groupId>taglibs</groupId>
@@ -160,6 +170,11 @@
           <groupId>javax.servlet</groupId>
           <artifactId>javax.servlet-api</artifactId>
           <version>3.1.0</version>
+      </dependency>
+      <dependency>
+          <groupId>javax.servlet</groupId>
+          <artifactId>servlet-api</artifactId>
+          <version>2.5</version>
       </dependency>
       <dependency>
           <groupId>commons-codec</groupId>

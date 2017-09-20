@@ -1,7 +1,6 @@
 package src.deliverFile;
 
 import java.io.*;
-import java.lang.reflect.ParameterizedType;
 
 /**
  * Created by vellerzheng on 2017/8/14.

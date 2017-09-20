@@ -1,25 +1,20 @@
 package src.yunData.Baidu;
 
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Map;
-
+import com.google.gson.Gson;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
-
+import src.yunData.Baidu.entity.CloudInfo;
 import src.yunData.Baidu.entity.FileBase;
 import src.yunData.Baidu.entity.ListDir;
-import src.yunData.Baidu.entity.CloudInfo;
-import com.google.gson.Gson;
+
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Map;
 
 /**
  * @author vellerzheng 获取百度开发所需的accesToken
