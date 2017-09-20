@@ -3,9 +3,7 @@ package src.yunData.aliyun;
 /**
  * Created by vellerzheng on 2017/9/19.
  */
-import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.GetObjectRequest;
 import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.ObjectMetadata;
@@ -28,14 +26,36 @@ import java.util.Date;
  *
  */
 public class AliyunOSS {
+
     /**
-     * 上传OSS服务器文件 @Title: uploadFile
+     * 上传本地文件      @Title: uploadFile
+     */
+    public boolean uploadFile(String localFilePath)  {
+        OSSConfigure ossConfigure = null;
+        try {
+            ossConfigure = new OSSConfigure("conf/accessCloud.properties");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        OSSClient ossClient = new OSSClient(ossConfigure.getEndpoint(), ossConfigure.getAccessKeyId(),
+                ossConfigure.getAccessKeySecret());
+        String fileName = localFilePath.substring((localFilePath.lastIndexOf("\\")));
+        String yunfileName ="backupFile/"+ fileName.replace("\\","");  //key 为上传的文件名
+        ossClient.putObject(ossConfigure.getBucketName(),yunfileName,new File(localFilePath));
+        ossClient.shutdown();
+        return true;
+    }
+
+
+
+    /**
+     * 上传OSS服务器文件 @Title: uploadMultipartFile
      *  @param multipartFile spring 上传的文件
      * remotePath @param oss服务器二级目录
      *  @throws Exception 设定文件 @return String
      * 返回类型 返回oss存放路径 @throws
      */
-    public static String uploadFile(MultipartFile multipartFile, String remotePath) throws Exception {
+    public  String uploadMultipartFile(MultipartFile multipartFile, String remotePath) throws Exception {
         // 流转换 将MultipartFile转换为oss所需的InputStream
         CommonsMultipartFile cf = (CommonsMultipartFile) multipartFile;
         DiskFileItem fi = (DiskFileItem) cf.getFileItem();
@@ -44,7 +64,7 @@ public class AliyunOSS {
         String fileName = fi.getName();
         fileName = "lxkc_" + new Date().getTime() + fileName.substring(fileName.lastIndexOf("."));
         // 加载配置文件，初始化OSSClient
-        OSSConfigure ossConfigure = new OSSConfigure("/conf/accessCloud.properties");
+        OSSConfigure ossConfigure = new OSSConfigure("conf/accessCloud.properties");
         OSSClient ossClient = new OSSClient(ossConfigure.getEndpoint(), ossConfigure.getAccessKeyId(),
                 ossConfigure.getAccessKeySecret());
         // 定义二级目录
@@ -68,34 +88,46 @@ public class AliyunOSS {
 
     // 下载文件
     @SuppressWarnings("unused")
-    public static void downloadFile(OSSConfigure ossConfigure, String key, String filename)
-            throws OSSException, ClientException, IOException {
-        // 初始化OSSClient
-        OSSClient ossClient = new OSSClient(ossConfigure.getEndpoint(), ossConfigure.getAccessKeyId(),
-                ossConfigure.getAccessKeySecret());
-        OSSObject object = ossClient.getObject(ossConfigure.getBucketName(), key);
-        // 获取ObjectMeta
-        ObjectMetadata meta = object.getObjectMetadata();
+    public  void downloadFile(String yunFilePath, String saveLocalFilePath)
+            {
+                OSSConfigure ossConfigure = null;
+                try {
+                    ossConfigure = new OSSConfigure("conf/accessCloud.properties");
+                    // 初始化OSSClient
+                    OSSClient ossClient = new OSSClient(ossConfigure.getEndpoint(), ossConfigure.getAccessKeyId(),
+                            ossConfigure.getAccessKeySecret());
+                    OSSObject object = ossClient.getObject(ossConfigure.getBucketName(), yunFilePath);
+                    // 获取ObjectMeta
+                    ObjectMetadata meta = object.getObjectMetadata();
 
-        // 获取Object的输入流
-        InputStream objectContent = object.getObjectContent();
+                    // 获取Object的输入流
+                    InputStream objectContent = object.getObjectContent();
+                    String fileName =yunFilePath.substring((yunFilePath.lastIndexOf("/")));
+                    String localFilePath = saveLocalFilePath+"\\"+ fileName.replace("/","");  //key 为上传的文件名
+                    ObjectMetadata objectData = ossClient.getObject(new GetObjectRequest(ossConfigure.getBucketName(), yunFilePath),
+                            new File(localFilePath));
+                    // 关闭数据流
+                    objectContent.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-        ObjectMetadata objectData = ossClient.getObject(new GetObjectRequest(ossConfigure.getBucketName(), key),
-                new File(filename));
-        // 关闭数据流
-        objectContent.close();
-
-    }
+            }
 
     /**
      * 根据key删除OSS服务器上的文件 @Title: deleteFile @Description: @param @param
      * ossConfigure @param 配置文件实体 @param filePath 设定文件 @return void 返回类型 @throws
      */
-    public static void deleteFile(OSSConfigure ossConfigure, String filePath) {
-        OSSClient ossClient = new OSSClient(ossConfigure.getEndpoint(), ossConfigure.getAccessKeyId(),
-                ossConfigure.getAccessKeySecret());
-        ossClient.deleteObject(ossConfigure.getBucketName(), filePath);
-
+    public  void deleteFile( String yunfilePath) {
+        OSSConfigure ossConfigure = null;
+        try {
+            ossConfigure = new OSSConfigure("conf/accessCloud.properties");
+            OSSClient ossClient = new OSSClient(ossConfigure.getEndpoint(), ossConfigure.getAccessKeyId(),
+                    ossConfigure.getAccessKeySecret());
+            ossClient.deleteObject(ossConfigure.getBucketName(), yunfilePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -144,6 +176,14 @@ public class AliyunOSS {
     }
 
     public static void main(String[] args) {
+
         AliyunOSS aliyun= new AliyunOSS();
+        String locaFilePath="D:\\Test\\split\\README.txt";
+      //  aliyun.uploadFile(locaFilePath);
+
+        String yunFilePath="backupFile/README.txt";
+        String saveLocalFilePath="D:\\Test\\merge";
+    //    aliyun.downloadFile(yunFilePath,saveLocalFilePath);
+        aliyun.deleteFile(yunFilePath);
     }
 }
