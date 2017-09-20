@@ -1,5 +1,6 @@
 package src.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,9 +12,10 @@ import java.io.File;
 /**
  * Created by vellerzheng on 2017/9/20.
  */
+@Controller
 public class FileUploadController {
     //上传文件会自动绑定到MultipartFile中
-    @RequestMapping(value="/upload",method= RequestMethod.POST)
+    @RequestMapping(value="/uploadForm",method= RequestMethod.POST)
     public String upload(HttpServletRequest request,
                          @RequestParam("description") String description,
                          @RequestParam("file") MultipartFile file) throws Exception {
