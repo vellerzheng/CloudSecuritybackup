@@ -1,15 +1,19 @@
 package src.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import src.repository.UserRepository;
 
 /**
  * Created by vellerzheng on 2017/9/20.
  */
 @Controller
 public class mainController {
+    @Autowired
+    UserRepository userRepository;
 
     @RequestMapping(value = "/",method = RequestMethod.GET)
     public  String index() {return "index";}
@@ -23,4 +27,15 @@ public class mainController {
     public String getError(){
         return "clouds/error";
     }
+
+    @RequestMapping(value ="/clouds/home", method = RequestMethod.GET)
+    public String getHome(){
+        return "clouds/home";
+    }
+
+    @RequestMapping(value = "/clouds/register", method = RequestMethod.GET)
+    public String getRegister() {
+        return "clouds/register";
+    }
+
 }

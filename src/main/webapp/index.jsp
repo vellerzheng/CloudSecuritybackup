@@ -14,12 +14,28 @@
     <!-- [endif] -->
 </head>
 <body>
-<h2>这里是 Cloud safe Storage 首页</h2>
+<div class="container">
+    <h1 style="text-align: center"> Cloud safe Storage 首页</h1>
+    <hr/>
+    <table align="center">
 
+    <tr>
+
+        <td><a href="/clouds/login">Login</a>
+
+        </td>
+
+        <td><a href="/clouds/register">Register</a>
+
+        </td>
+
+    </tr>
+
+    </table>
 <!--JQuerry 文件。 务必在bootstrap.min.js 之前引入-->
 <script src="//cdn.boot.css.com/jquery/1.11.3/jquery.min.js"></script>
 <!-- 最新的Bootstrap 核心JavaScript 文件-->
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
+</div>
 </body>
 </html>

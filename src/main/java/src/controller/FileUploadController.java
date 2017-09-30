@@ -1,6 +1,7 @@
 package src.controller;
 
 import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import src.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -17,6 +19,10 @@ import java.io.File;
  */
 @Controller
 public class FileUploadController {
+
+    @Autowired
+    UserRepository userRepository;
+
     //上传文件会自动绑定到MultipartFile中
     @RequestMapping(value="/clouds/upload",method= RequestMethod.POST)
     public String upload(HttpServletRequest request,
