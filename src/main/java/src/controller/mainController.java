@@ -38,4 +38,14 @@ public class mainController {
         return "clouds/register";
     }
 
+    @RequestMapping(value = "/clouds/login", method = RequestMethod.GET)
+    public String getLogin() {
+        return "clouds/login";
+    }
+
+    @RequestMapping(value = "/clouds/welcome", method = RequestMethod.GET)
+    public String getwelcome() {
+        return "clouds/welcome";
+    }
+
 }

@@ -14,7 +14,10 @@
     <title>文件上传</title>
 </head>
 <body>
+
+<table align="center">
     <h2>文件上传</h2>
+    <hr/>
     <form action="/clouds/upload" enctype="multipart/form-data" method="post">
         <table>
             <tr>
@@ -30,6 +33,7 @@
             </tr>
         </table>
     </form>
+</table>
     <!--JQuerry 文件。 务必在bootstrap.min.js 之前引入-->
     <script src="//cdn.boot.css.com/jquery/1.11.3/jquery.min.js"></script>
     <!-- 最新的Bootstrap 核心JavaScript 文件-->

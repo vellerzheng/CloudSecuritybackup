@@ -14,7 +14,7 @@
 
 <body>
 
-<table>
+<table align="center">
 
     <tr>
 
@@ -32,7 +32,7 @@
 
     <tr>
 
-        <td><a href="home.jsp">Home</a>
+        <td><a href="/clouds/home">Home</a>
 
         </td>
 

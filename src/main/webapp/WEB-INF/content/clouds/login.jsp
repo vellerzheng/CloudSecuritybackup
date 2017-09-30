@@ -70,7 +70,7 @@
 
             <td></td>
 
-            <td><a href="home.jsp">Home</a>
+            <td><a href="/clouds/home">Home</a>
 
             </td>
 

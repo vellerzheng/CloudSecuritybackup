@@ -22,26 +22,27 @@
 <body>
 
 <div class="container">
+    <table align="center">
     <h1>Cloud secure storage 注册用户</h1>
     <hr/>
     <form:form action="/clouds/register/add"  method="post" commandName="userRegister" role="form">
 
-    <table align="center">
+
         <div class="form-group">
             <label for="username">user name:</label>
             <input type="text" class="from-control" id ="username" name="username" placeholder="Enter UserName:"/>
         </div>
         <div class="form-group">
-            <label for="pwd">PassWord:</label>
-            <input type="text" class="from-control" id ="pwd" name="pwd" placeholder="Enter PassWord:"/>
+            <label for="password">PassWord:</label>
+            <input type="text" class="from-control" id ="password" name="password" placeholder="Enter PassWord:"/>
         </div>
         <div class="form-group">
-            <label for="registration">Registration:</label>
-            <input type="text" class="from-control" id ="registration" name="registration" placeholder="Enter Email or phone:"/>
+            <label for="Email">Email:</label>
+            <input type="text" class="from-control" id ="Email" name="Email" placeholder="Enter Email:"/>
         </div>
         <div class="form-group">
-            <label for="registrationType">RegistrationType: </label>
-            <input type="text" class="from-control" id ="registrationType" name="registrationType" placeholder="Enter email or phone:"/>
+            <label for="Phone">Phone: </label>
+            <input type="text" class="from-control" id ="Phone" name="Phone" placeholder="Enter phone:"/>
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-sm btn-success">提交</button>
@@ -59,9 +60,9 @@
 
         </tr>
 
-    </table>
+    </form:form>
 
-</form:form>
+    </table>
 </div>
 
 <!--JQuerry 文件。 务必在bootstrap.min.js 之前引入-->

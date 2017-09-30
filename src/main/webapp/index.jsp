@@ -25,6 +25,8 @@
 
         </td>
 
+        <td>    </td>
+
         <td><a href="/clouds/register">Register</a>
 
         </td>

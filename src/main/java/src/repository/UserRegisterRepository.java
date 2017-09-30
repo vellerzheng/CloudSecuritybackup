@@ -6,16 +6,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import src.model.UserRegistrationEntity;
+import src.model.UserAuthsEntity;
 
 /**
  * Created by vellerzheng on 2017/9/29.
  */
 @Repository
-public interface UserRegisterRepository extends JpaRepository<UserRegistrationEntity,Integer> {
+public interface UserRegisterRepository extends JpaRepository<UserAuthsEntity,Integer> {
     @Modifying
     @Transactional
-    @Query("update UserRegistrationEntity us set us.registration=:qRegistration,us.registrationType=:qRegistrationType where us.userByUserId=:qId")
-    public void updateUser(@Param("qRegistration") String registration, @Param("qRegistrationType") String RegistrationType,
-                           @Param("qId") Integer userId);
+    @Query("update UserAuthsEntity auth set auth.userId=:qUserId,auth.authsByUserId.id=:qAuthId," +
+            "auth.identifier =:qIdentifier,auth.identityType=:qIdentityType,auth.credential=:qCredential where auth.id=:qId")
+    public void updateUser(@Param("qUserId") String UserId, @Param("qAuthId") String AuthID,
+                           @Param("qIdentifier")String Identifier,@Param("qIdentityType")String IdentityType,
+                           @Param("qCredential")String Credential, @Param("qId") Integer Id);
 }

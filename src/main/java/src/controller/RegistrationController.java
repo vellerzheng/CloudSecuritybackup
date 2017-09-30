@@ -9,10 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import src.model.UserEntity;
-import src.model.UserRegistrationEntity;
+import src.model.UsersEntity;
 import src.repository.UserRegisterRepository;
 import src.repository.UserRepository;
+
+import java.util.List;
+
 
 @Controller
 
@@ -24,11 +26,19 @@ public class RegistrationController {
     UserRegisterRepository userRegisterRepository;
 
     @RequestMapping(value = "/clouds/register/add", method = RequestMethod.POST)
-    public String addUserPost(@ModelAttribute("userRegister") UserEntity userEntity,@ModelAttribute("userRegister2") UserRegistrationEntity userRegistrationEntity){
-        System.out.println(userEntity.getUsername());
-        userRepository.saveAndFlush(userEntity);
-        userRegisterRepository.saveAndFlush(userRegistrationEntity);
-        return "redirect:clouds/welcome";
+    public String addUserPost(@ModelAttribute("userRegister") UsersEntity usersEntity){
+        List<UsersEntity> userList=userRepository.findAll();
+        for (UsersEntity uty: userList) {
+            if(!usersEntity.getEmail().isEmpty() &&!uty.getUsername().equals(usersEntity.getUsername())&&!uty.getEmail().equals(usersEntity.getEmail())
+                    &&!uty.getPhone().equals(usersEntity.getPhone())){
+
+            }else{
+                return "redirect:/clouds/register";
+            }
+        }
+            System.out.println(usersEntity.getUsername());
+            userRepository.saveAndFlush(usersEntity);
+            return "clouds/welcome";
     }
 
 }
