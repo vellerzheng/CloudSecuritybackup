@@ -1,4 +1,4 @@
-package src.yunData.Baidu.entity;
+package src.yunData.baidu.entity;
 
 /**
  * Created by vellerzheng on 2017/8/18.

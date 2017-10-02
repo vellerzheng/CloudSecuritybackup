@@ -179,11 +179,11 @@ public class AliyunOSS {
 
         AliyunOSS aliyun= new AliyunOSS();
         String locaFilePath="D:\\Test\\split\\README.txt";
-      //  aliyun.uploadFile(locaFilePath);
+        aliyun.uploadFile(locaFilePath);
 
         String yunFilePath="backupFile/README.txt";
         String saveLocalFilePath="D:\\Test\\merge";
     //    aliyun.downloadFile(yunFilePath,saveLocalFilePath);
-        aliyun.deleteFile(yunFilePath);
+      //  aliyun.deleteFile(yunFilePath);
     }
 }

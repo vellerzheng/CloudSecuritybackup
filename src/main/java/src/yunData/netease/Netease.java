@@ -63,7 +63,7 @@ public class Netease {
      * @Title: uploadFile
      * @Description:上传文件
      */
-    public  boolean uploadFile(String localFilePath) {
+    public  boolean uploadMultiPartFile(String localFilePath) {
         String fileName = localFilePath.substring((localFilePath.lastIndexOf("\\")));
         String yunfileName = fileName.replace("\\","");  //key 为上传的文件名
 
@@ -139,7 +139,7 @@ public class Netease {
      * @Description: 简单不分片上传文件
      * @return
      */
-    public  boolean uploadLocalFile(String localFilePath) {
+    public  boolean uploadFile(String localFilePath) {
 
         String fileName = localFilePath.substring((localFilePath.lastIndexOf("\\")));
         String yunfileName = fileName.replace("\\","");  //key 为上传的文件名
@@ -186,8 +186,9 @@ public class Netease {
 
     public static void main(String[] args){
         Netease netease = new Netease();
-        String localFilePath="D:\\Test\\split\\Hadoop，The Definitive Guide.pdf";
-      //  netease.uploadLocalFile(localFilePath);
+        String localFilePath="D:\\Test\\split\\README.txt";
+        netease.uploadFile(localFilePath);
+        System.out.println("Upload file successful!");
 
         String yunFileName = "README.txt";
         String saveLocalFilePath ="D:\\Test\\merge";

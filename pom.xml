@@ -275,6 +275,11 @@
           <artifactId>nos-sdk-java-publiccloud</artifactId>
           <version>0.0.2</version>
       </dependency>
+      <dependency>
+          <groupId>com.qiniu</groupId>
+          <artifactId>qiniu-java-sdk</artifactId>
+          <version>7.2.7</version>
+      </dependency>
 
 
 

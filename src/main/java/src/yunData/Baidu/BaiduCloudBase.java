@@ -1,4 +1,4 @@
-package src.yunData.Baidu;
+package src.yunData.baidu;
 
 
 import com.google.gson.Gson;
@@ -7,9 +7,9 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
-import src.yunData.Baidu.entity.CloudInfo;
-import src.yunData.Baidu.entity.FileBase;
-import src.yunData.Baidu.entity.ListDir;
+import src.yunData.baidu.entity.CloudInfo;
+import src.yunData.baidu.entity.FileBase;
+import src.yunData.baidu.entity.ListDir;
 
 import java.io.*;
 import java.net.URL;

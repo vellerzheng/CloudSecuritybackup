@@ -12,7 +12,7 @@ public class PartitionFile {
      * @param fileSize  the size after devision , MB
      * @param dest patch of target file
      */
-    public  void split(String src,int fileSize,String dest){
+    public  boolean split(String src,int fileSize,String dest){
         if("".equals(src)|| src==null ||fileSize==0 || "".equals(dest)||dest==null){
             System.out.println("分割失败！");
         }
@@ -60,6 +60,7 @@ public class PartitionFile {
                 e.printStackTrace();
             }
         }
+        return true;
     }
 
     /**

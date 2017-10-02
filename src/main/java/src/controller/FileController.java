@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import src.service.upload.deliverFile.PartitionFile;
 import src.repository.UserRepository;
+import src.service.upload.fileToMulClouds.MulCloudsDispose;
+import src.service.upload.deliverFile.PartitionFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -65,8 +66,15 @@ public class FileController {
             int fileSize = (int)file.getSize()/1024/1024/4;     //  unit  MB  , each file after splited
             String srcPath =path+"\\"+filename;
             PartitionFile partitionFile= new PartitionFile();
-            partitionFile.split(srcPath,fileSize,pathPart);
-            //重定向地址
+            boolean spt = partitionFile.split(srcPath,fileSize,pathPart);
+
+            /*多云上传*/
+            if(spt) {
+                MulCloudsDispose mulCloudsDispose = new MulCloudsDispose();
+                mulCloudsDispose.getPartFilePath(pathPart);
+                mulCloudsDispose.uploadPartFileToClouds();
+            }
+
             return "clouds/uploadResult";
         } else {
             return "clouds/error";
