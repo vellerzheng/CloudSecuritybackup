@@ -35,7 +35,7 @@ public class FileController {
         /*还需要判断文件是否大于4M */
         //如果文件不为空，写入上传路径
         if(!file.isEmpty()) {
-            /* MultipartFile 转 file*/
+            /* MultipartFile 转 file */
        //     CommonsMultipartFile cf =(CommonsMultipartFile)file;
         //    DiskFileItem fi=(DiskFileItem)cf.getFileItem();
       //      File f=fi.getStoreLocation();   /*会在项目的临时文件夹下生成一个文件*/
