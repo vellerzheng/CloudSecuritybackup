@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import src.repository.UserRepository;
+import src.service.supportToolClass.FileManage;
 import src.service.upload.fileToMulClouds.MulCloudsDispose;
 import src.service.upload.deliverFile.PartitionFile;
 
@@ -31,6 +32,7 @@ public class FileController {
                          @RequestParam("file") MultipartFile file,ModelMap model) throws Exception {
         System.out.println("start!");
         System.out.println(description);
+        /*还需要判断文件是否大于4M */
         //如果文件不为空，写入上传路径
         if(!file.isEmpty()) {
             /* MultipartFile 转 file*/
@@ -73,6 +75,10 @@ public class FileController {
                 MulCloudsDispose mulCloudsDispose = new MulCloudsDispose();
                 mulCloudsDispose.getPartFilePath(pathPart);
                 mulCloudsDispose.uploadPartFileToClouds();
+            }
+            //判断路径是否存在，如果不存在就创建一个
+            if (filepathPart.exists()) {
+                FileManage.deleteDirectory(pathPart);
             }
 
             return "clouds/uploadResult";
