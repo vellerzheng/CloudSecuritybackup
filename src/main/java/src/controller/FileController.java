@@ -80,6 +80,9 @@ public class FileController {
             if (filepathPart.exists()) {
                 FileManage.deleteDirectory(pathPart);
             }
+            if (filepath.getParentFile().exists()) {
+                FileManage.deleteDirectory(path);
+            }
 
             return "clouds/uploadResult";
         } else {
