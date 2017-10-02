@@ -37,8 +37,8 @@ public class FileController {
         if(!file.isEmpty()) {
             /* MultipartFile 转 file */
        //     CommonsMultipartFile cf =(CommonsMultipartFile)file;
-        //    DiskFileItem fi=(DiskFileItem)cf.getFileItem();
-      //      File f=fi.getStoreLocation();   /*会在项目的临时文件夹下生成一个文件*/
+            //    DiskFileItem fi=(DiskFileItem)cf.getFileItem();
+       //     File f=fi.getStoreLocation();   /*会在项目的临时文件夹下生成一个文件*/
 
             //上传文件路径
             String path = request.getServletContext().getRealPath("upload");
