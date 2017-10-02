@@ -1,9 +1,5 @@
 package src.controller;
 
-/**
- * Created by vellerzheng on 2017/9/29.
- */
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,18 +10,23 @@ import src.repository.UserRegisterRepository;
 import src.repository.UserRepository;
 
 import java.util.List;
-
-
+/**
+ * Created by vellerzheng on 2017/10/2.
+ */
 @Controller
-
-public class RegistrationController {
+public class UsersController {
 
     @Autowired
     UserRepository userRepository;
     @Autowired
     UserRegisterRepository userRegisterRepository;
 
-    @RequestMapping(value = "/clouds/register/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/clouds/register", method = RequestMethod.GET)
+    public String getRegister() {
+        return "clouds/register";
+    }
+
+    @RequestMapping(value = "/clouds/register/addP", method = RequestMethod.POST)
     public String addUserPost(@ModelAttribute("userRegister") UsersEntity usersEntity){
         List<UsersEntity> userList=userRepository.findAll();
         for (UsersEntity uty: userList) {
@@ -36,9 +37,8 @@ public class RegistrationController {
                 return "redirect:/clouds/register";
             }
         }
-            System.out.println(usersEntity.getUsername());
-            userRepository.saveAndFlush(usersEntity);
-            return "clouds/welcome";
+        System.out.println(usersEntity.getUsername());
+        userRepository.saveAndFlush(usersEntity);
+        return "clouds/welcome";
     }
-
 }

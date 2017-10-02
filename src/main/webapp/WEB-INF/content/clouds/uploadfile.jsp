@@ -18,26 +18,26 @@
 <table align="center">
     <h2>文件上传</h2>
     <hr/>
-    <form action="/clouds/upload" enctype="multipart/form-data" method="post">
+    <form action="/clouds/uploadfile/add" enctype="multipart/form-data" method="post">
         <table>
             <tr>
                 <td>文件描述:</td>
                 <td><input type="text" name="description"></td>
             </tr>
             <tr>
-                 <td>请选择文件:</td>
-                 <td><input type="file" name="file"></td>
+                <td>请选择文件:</td>
+                <td><input type="file" name="file"></td>
             </tr>
             <tr>
-                 <td><input type="submit" value="上传"></td>
+                <td><input type="submit" value="上传"></td>
             </tr>
         </table>
     </form>
 </table>
-    <!--JQuerry 文件。 务必在bootstrap.min.js 之前引入-->
-    <script src="//cdn.boot.css.com/jquery/1.11.3/jquery.min.js"></script>
-    <!-- 最新的Bootstrap 核心JavaScript 文件-->
-    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!--JQuerry 文件。 务必在bootstrap.min.js 之前引入-->
+<script src="//cdn.boot.css.com/jquery/1.11.3/jquery.min.js"></script>
+<!-- 最新的Bootstrap 核心JavaScript 文件-->
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 </body>
 </html>

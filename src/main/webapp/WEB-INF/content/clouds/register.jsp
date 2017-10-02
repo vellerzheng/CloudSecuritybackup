@@ -25,7 +25,7 @@
     <table align="center">
     <h1>Cloud secure storage 注册用户</h1>
     <hr/>
-    <form:form action="/clouds/register/add"  method="post" commandName="userRegister" role="form">
+    <form:form action="/clouds/register/addP"  method="post" commandName="userRegister" role="form">
 
 
         <div class="form-group">

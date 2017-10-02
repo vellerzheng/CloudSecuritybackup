@@ -32,7 +32,7 @@
 
     <tr>
 
-        <td><a href="/clouds/home">Home</a>
+        <td><a href="/clouds/uploadfile">Upload File</a>
 
         </td>
 
