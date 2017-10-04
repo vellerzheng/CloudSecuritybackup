@@ -22,7 +22,7 @@
     <table class="table table-bordered table-striped">
     <h2>文件上传</h2>
     <hr/>
-    <form action="/clouds/uploadfile/add" enctype="multipart/form-data" method="post">
+    <form action="/clouds/filemanager/uploadfile/add" enctype="multipart/form-data" method="post">
         <table>
             <tr>
                 <td>文件描述:</td>

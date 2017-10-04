@@ -21,13 +21,13 @@
 
     <tr>
 
-        <td><a href="/clouds/login">Login</a>
+        <td><a href="/clouds/users/login">Login</a>
 
         </td>
 
         <td>    </td>
 
-        <td><a href="/clouds/register">Register</a>
+        <td><a href="/clouds/users/register">Register</a>
 
         </td>
 

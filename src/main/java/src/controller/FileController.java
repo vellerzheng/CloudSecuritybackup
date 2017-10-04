@@ -7,13 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import src.model.FilesEntity;
+import src.repository.FileRepository;
 import src.repository.UserRepository;
 import src.service.supportToolClass.FileManage;
-import src.service.upload.fileToMulClouds.MulCloudsDispose;
 import src.service.upload.deliverFile.PartitionFile;
+import src.service.upload.fileToMulClouds.MulCloudsDispose;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.util.List;
 
 /**
  * Created by vellerzheng on 2017/9/20.
@@ -23,14 +26,16 @@ public class FileController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    FileRepository fileRepository;
 
-    @RequestMapping(value ="/clouds/uploadfile", method = RequestMethod.GET)
+    @RequestMapping(value ="/clouds/filemanager/uploadfile", method = RequestMethod.GET)
     public String getUploadForm(ModelMap modelMap){
-        return "clouds/uploadfile";
+        return "clouds/filemanager/uploadfile";
     }
 
     //上传文件会自动绑定到MultipartFile中
-    @RequestMapping(value="/clouds/uploadfile/add",method = RequestMethod.POST)
+    @RequestMapping(value="/clouds/filemanager/uploadfile/add",method = RequestMethod.POST)
     public String upload(HttpServletRequest request,
                          @RequestParam("description") String description,
                          @RequestParam("file") MultipartFile file,ModelMap modelMap) throws Exception {
@@ -62,7 +67,6 @@ public class FileController {
                 filepathPart.mkdirs();
             }
 
-
             //将上传文件保存到一个目标文件当中
             file.transferTo(new File(path + File.separator + filename));
             modelMap.addAttribute("fileUrl", request.getContextPath()+"/upload/"+filename);
@@ -88,10 +92,17 @@ public class FileController {
                 FileManage.deleteDirectory(path);
             }
 
-            return "clouds/uploadResult";
+            return "clouds/filemanager/uploadResult";
         } else {
             return "clouds/error";
         }
 
+    }
+
+    @RequestMapping(value ="/clouds/filemanager/files", method = RequestMethod.GET)
+    public String getFiles(ModelMap modelMap){
+        List<FilesEntity> fileList = fileRepository.findAll();
+        modelMap.addAttribute("fileList",fileList);
+        return "clouds/filemanager/files";
     }
 }

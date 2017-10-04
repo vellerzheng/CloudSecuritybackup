@@ -24,7 +24,7 @@
     <h1>Cloud secure storage 注册用户</h1>
     <hr/>
         <tr>
-        <form:form action="/clouds/register/addP"  method="post" commandName="userRegister" role="form">
+        <form:form action="/clouds/users/register/addP"  method="post" commandName="userRegister" role="form">
 
 
         <div class="form-group">
@@ -57,7 +57,7 @@
 
             <td></td>
 
-            <td><a href="home.jsp">Home</a>
+            <td><a href="../home.jsp">Home</a>
 
             </td>
 

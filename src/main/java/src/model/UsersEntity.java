@@ -1,6 +1,7 @@
 package src.model;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 /**
  * Created by vellerzheng on 2017/9/30.
@@ -14,6 +15,7 @@ public class UsersEntity {
     private String email;
     private String phone;
     private UserAuthsEntity userById;
+    private Collection<FilesEntity> filesById;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -99,5 +101,14 @@ public class UsersEntity {
 
     public void setUserById(UserAuthsEntity userById) {
         this.userById = userById;
+    }
+
+    @OneToMany(mappedBy = "usersByUserId")
+    public Collection<FilesEntity> getFilesById() {
+        return filesById;
+    }
+
+    public void setFilesById(Collection<FilesEntity> filesById) {
+        this.filesById = filesById;
     }
 }

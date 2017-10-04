@@ -39,8 +39,16 @@
 
     <tr>
 
-        <td><a href="/clouds/uploadfile">Upload File</a>
+        <td><a href="/clouds/filemanager/uploadfile">Upload File</a>
 
+        </td>
+
+        <br/>
+        <br/>
+
+        <td>
+        </td>
+        <td><a href="/clouds/filemanager/files">Files Management</a>
         </td>
 
     </tr>

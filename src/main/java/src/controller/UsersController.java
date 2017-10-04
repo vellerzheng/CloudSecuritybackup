@@ -24,12 +24,12 @@ public class UsersController {
     @Autowired
     UserRegisterRepository userRegisterRepository;
 
-    @RequestMapping(value = "/clouds/register", method = RequestMethod.GET)
+    @RequestMapping(value = "/clouds/users/register", method = RequestMethod.GET)
     public String getRegister() {
-        return "clouds/register";
+        return "clouds/users/register";
     }
 
-    @RequestMapping(value = "/clouds/register/addP", method = RequestMethod.POST)
+    @RequestMapping(value = "/clouds/users/register/addP", method = RequestMethod.POST)
     public String addUserPost(@ModelAttribute("userRegister") UsersEntity usersEntity){
         List<UsersEntity> userList=userRepository.findAll();
         for (UsersEntity uty: userList) {
@@ -37,7 +37,7 @@ public class UsersController {
                     &&!uty.getPhone().equals(usersEntity.getPhone())){
 
             }else{
-                return "redirect:/clouds/register";
+                return "redirect:/clouds/users/register";
             }
         }
         System.out.println(usersEntity.getUsername());
@@ -45,10 +45,10 @@ public class UsersController {
         return "clouds/welcome";
     }
 
-    @RequestMapping(value ="/clouds/login",method = RequestMethod.GET)
-    public String getLogin(){ return "clouds/login"; }
+    @RequestMapping(value ="/clouds/users/login",method = RequestMethod.GET)
+    public String getLogin(){ return "clouds/users/login"; }
 
-    @RequestMapping(value = "/clouds/login/auth", method = RequestMethod.POST)
+    @RequestMapping(value = "/clouds/users/login/auth", method = RequestMethod.POST)
     public String  authLoagin(HttpServletRequest request, ModelMap modelMap, @ModelAttribute("login") Login login){
         List<UsersEntity> userList=userRepository.findAll();
         for (UsersEntity uty: userList) {
@@ -57,6 +57,6 @@ public class UsersController {
             }
         }
         modelMap.addAttribute("message","Username or Password is wrong!!!");
-        return "redirect:/clouds/login";
+        return "redirect:/clouds/users/login";
     }
 }

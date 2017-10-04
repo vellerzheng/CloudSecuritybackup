@@ -23,7 +23,7 @@
 <div class="container col-md-8 col-sm-offset-2 text-center">
     <table class="table table-bordered table-striped">
         <tr>
-            <form:form id="loginForm" action="/clouds/login/auth" modelAttribute="login"  method="post">
+            <form:form id="loginForm" action="/clouds/users/login/auth" modelAttribute="login"  method="post">
                 <h2 class="form-signin-heading">请登录</h2>
                 <hr/>
                 <div class="form-group">
