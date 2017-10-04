@@ -24,6 +24,10 @@ public class FileController {
     @Autowired
     UserRepository userRepository;
 
+    @RequestMapping(value ="/clouds/uploadfile", method = RequestMethod.GET)
+    public String getUploadForm(ModelMap modelMap){
+        return "clouds/uploadfile";
+    }
 
     //上传文件会自动绑定到MultipartFile中
     @RequestMapping(value="/clouds/uploadfile/add",method = RequestMethod.POST)

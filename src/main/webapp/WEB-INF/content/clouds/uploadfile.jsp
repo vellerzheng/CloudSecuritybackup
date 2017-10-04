@@ -19,7 +19,7 @@
 </head>
 <body>
 <div class="container">
-    <table align="center">
+    <table class="table table-bordered table-striped">
     <h2>文件上传</h2>
     <hr/>
     <form action="/clouds/uploadfile/add" enctype="multipart/form-data" method="post">
@@ -34,6 +34,9 @@
             </tr>
             <tr>
                 <td><input type="submit" value="上传"></td>
+            </tr>
+            <tr>
+                <td>${fireUrl}</td>
             </tr>
         </table>
     </form>

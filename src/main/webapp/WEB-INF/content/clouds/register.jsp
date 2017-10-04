@@ -8,7 +8,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -22,12 +22,12 @@
 <body>
 
 <div class="container">
-    <table align="center">
+    <table class="table table-bordered table-striped">
     <h1>Cloud secure storage 注册用户</h1>
     <hr/>
     <form:form action="/clouds/register/addP"  method="post" commandName="userRegister" role="form">
 
-
+        <tr>
         <div class="form-group">
             <label for="username">user name:</label>
             <input type="text" class="from-control" id ="username" name="username" placeholder="Enter UserName:"/>
@@ -48,6 +48,7 @@
             <button type="submit" class="btn btn-sm btn-success">提交</button>
         </div>
 
+        </tr>
         <tr></tr>
 
         <tr>

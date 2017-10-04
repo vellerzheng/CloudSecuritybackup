@@ -1,69 +1,41 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 
 <head>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
 
     <title>Login</title>
 
 </head>
 
 <body>
-
-<form:form id="loginForm" modelAttribute="login" action="loginProcess" method="post">
-
-    <table align="center">
-
+<div class="container">
+    <table class="table table-bordered table-striped">
         <tr>
-
-            <td>
-
-                <form:label path="username">Username: </form:label>
-
-            </td>
-
-            <td>
-
-                <form:input path="username" name="username" id="username" />
-
-            </td>
-
+            <form:form id="loginForm" action="/clouds/login/auth" modelAttribute="login"  method="post">
+            <div class="form-group">
+                <label for="username">user name:</label>
+                <input type="text" class="from-control" id ="username" name="username" placeholder="Enter UserName:"/>
+            </div>
+            <div class="form-group">
+                <label for="password">PassWord:</label>
+                <input type="text" class="from-control" id ="password" name="password" placeholder="Enter PassWord:"/>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-sm btn-success">登录</button>
+            </div>
         </tr>
-
-        <tr>
-
-            <td>
-
-                <form:label path="password">Password:</form:label>
-
-            </td>
-
-            <td>
-
-                <form:password path="password" name="password" id="password" />
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td></td>
-
-            <td align="left">
-
-                <form:button id="login" name="login">Login</form:button>
-
-            </td>
-
-        </tr>
-
         <tr></tr>
 
         <tr>
@@ -90,6 +62,11 @@
 
 </table>
 
+</div>
+<!--JQuerry 文件。 务必在bootstrap.min.js 之前引入-->
+<script src="//cdn.boot.css.com/jquery/1.11.3/jquery.min.js"></script>
+<!-- 最新的Bootstrap 核心JavaScript 文件-->
+<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </body>
 
 </html>
