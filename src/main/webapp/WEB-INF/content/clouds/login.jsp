@@ -20,11 +20,13 @@
 </head>
 
 <body>
-<div class="container">
+<div class="container col-md-8 col-sm-offset-2 text-center">
     <table class="table table-bordered table-striped">
         <tr>
             <form:form id="loginForm" action="/clouds/login/auth" modelAttribute="login"  method="post">
-            <div class="form-group">
+                <h2 class="form-signin-heading">请登录</h2>
+                <hr/>
+                <div class="form-group">
                 <label for="username">user name:</label>
                 <input type="text" class="from-control" id ="username" name="username" placeholder="Enter UserName:"/>
             </div>
@@ -35,7 +37,12 @@
             <div class="form-group">
                 <button type="submit" class="btn btn-sm btn-success">登录</button>
             </div>
+            </form:form>
         </tr>
+
+    </table>
+
+    <table align="center">
         <tr></tr>
 
         <tr>
@@ -48,11 +55,7 @@
 
         </tr>
 
-    </table>
 
-</form:form>
-
-<table align="center">
 
     <tr>
 
@@ -60,13 +63,14 @@
 
     </tr>
 
-</table>
+   </table>
 
 </div>
 <!--JQuerry 文件。 务必在bootstrap.min.js 之前引入-->
 <script src="//cdn.boot.css.com/jquery/1.11.3/jquery.min.js"></script>
 <!-- 最新的Bootstrap 核心JavaScript 文件-->
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

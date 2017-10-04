@@ -2,8 +2,6 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-
-
 <html>
 
 <head>
@@ -21,13 +19,14 @@
 
 <body>
 
-<div class="container">
+<div class="container col-md-8 col-sm-offset-2 text-center">
     <table class="table table-bordered table-striped">
     <h1>Cloud secure storage 注册用户</h1>
     <hr/>
-    <form:form action="/clouds/register/addP"  method="post" commandName="userRegister" role="form">
-
         <tr>
+        <form:form action="/clouds/register/addP"  method="post" commandName="userRegister" role="form">
+
+
         <div class="form-group">
             <label for="username">user name:</label>
             <input type="text" class="from-control" id ="username" name="username" placeholder="Enter UserName:"/>
@@ -48,7 +47,10 @@
             <button type="submit" class="btn btn-sm btn-success">提交</button>
         </div>
 
+        </form:form>
         </tr>
+    </table>
+    <table align="center">
         <tr></tr>
 
         <tr>
@@ -61,14 +63,12 @@
 
         </tr>
 
-    </form:form>
-
     </table>
 </div>
-
 <!--JQuerry 文件。 务必在bootstrap.min.js 之前引入-->
 <script src="//cdn.boot.css.com/jquery/1.11.3/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
 </body>
 
 </html>
