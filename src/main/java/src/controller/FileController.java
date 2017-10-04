@@ -29,7 +29,7 @@ public class FileController {
     @RequestMapping(value="/clouds/uploadfile/add",method = RequestMethod.POST)
     public String upload(HttpServletRequest request,
                          @RequestParam("description") String description,
-                         @RequestParam("file") MultipartFile file,ModelMap model) throws Exception {
+                         @RequestParam("file") MultipartFile file,ModelMap modelMap) throws Exception {
         System.out.println("start!");
         System.out.println(description);
         /*还需要判断文件是否大于4M */
@@ -61,7 +61,7 @@ public class FileController {
 
             //将上传文件保存到一个目标文件当中
             file.transferTo(new File(path + File.separator + filename));
-            model.addAttribute("fileUrl", request.getContextPath()+"/upload/"+filename);
+            modelMap.addAttribute("fileUrl", request.getContextPath()+"/upload/"+filename);
             System.out.println("upload file finished!");
 
             /* 文件分片*/

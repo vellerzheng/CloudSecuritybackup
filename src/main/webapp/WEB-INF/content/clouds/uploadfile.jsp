@@ -1,21 +1,25 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<title>Cloud Storage </title>
-<!--新 Bootstrap 核心 CSS 文件-->
-<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-<script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
+
+<title>Cloud Storage </title>
 <!-- [endif] -->
 <html lang="zh-CN">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
 
 
     <title>文件上传</title>
 </head>
 <body>
-
-<table align="center">
+<div class="container">
+    <table align="center">
     <h2>文件上传</h2>
     <hr/>
     <form action="/clouds/uploadfile/add" enctype="multipart/form-data" method="post">
@@ -33,7 +37,8 @@
             </tr>
         </table>
     </form>
-</table>
+    </table>
+</div>
 <!--JQuerry 文件。 务必在bootstrap.min.js 之前引入-->
 <script src="//cdn.boot.css.com/jquery/1.11.3/jquery.min.js"></script>
 <!-- 最新的Bootstrap 核心JavaScript 文件-->
