@@ -37,9 +37,8 @@ public class FileController {
 
     //上传文件会自动绑定到MultipartFile中
     @RequestMapping(value="/clouds/filemanager/uploadfile/add",method = RequestMethod.POST)
-    public String upload(HttpServletRequest request,
-                         @RequestParam("description") String description,
-                         @RequestParam("file") MultipartFile file,ModelMap modelMap) throws Exception {
+    public String upload(HttpServletRequest request,@RequestParam("file") MultipartFile file,
+                         @RequestParam("description") String description, ModelMap modelMap) throws Exception {
         System.out.println("start!");
         System.out.println(description);
         /*还需要判断文件是否大于4M */
@@ -85,7 +84,7 @@ public class FileController {
                 mulCloudsDispose.getPartFilePath(pathPart);
                 mulCloudsDispose.uploadPartFileToClouds();
             }
-            //判断路径是否存在，如果不存在就创建一个
+            /*判断路径是否存在，如果存在就删除*/
             if (filepathPart.exists()) {
                 FileManage.deleteDirectory(pathPart);
             }

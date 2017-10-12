@@ -1,5 +1,5 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <title>Cloud Storage </title>
 <!-- [endif] -->
@@ -17,28 +17,36 @@
     <title>文件上传</title>
 </head>
 <body>
-<div class="container">
+<div class="container col-md-8 col-sm-offset-2 text-center">
+
     <table class="table table-bordered table-striped">
-    <h2>文件上传</h2>
-    <hr/>
-    <form action="/clouds/filemanager/uploadfile/add" enctype="multipart/form-data" method="post">
-        <table>
-            <tr>
-                <td>文件描述:</td>
-                <td><input type="text" name="description"></td>
-            </tr>
-            <tr>
-                <td>请选择文件:</td>
-                <td><input type="file" name="file"></td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="上传"></td>
-            </tr>
-            <tr>
-                <td>${fireUrl}</td>
-            </tr>
-        </table>
-    </form>
+        <div id="tf-contact">
+            <div class="container">
+
+                <h2>文件上传</h2>
+                <hr/>
+
+                <div class="space"></div>
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <form id="contact" action="/clouds/filemanager/uploadfile/add" enctype="multipart/form-data" method="post">
+                                <div class="form-group">
+                                    <label for="exampleInputName">选择文件:</label>
+                                    <input type="file" class="form-control" id="exampleInputName" name="file" placeholder="select local file">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">描述信息:</label>
+                                    <input type="text" class="form-control" rows="4" id="exampleInputFile" name="description" placeholder="Detials & Information"></input>
+                                </div>
+                                <div class="form-group">
+                                <button type="submit" class="btn btn-primary my-btn dark">上传</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
     </table>
 </div>
 <!--JQuerry 文件。 务必在bootstrap.min.js 之前引入-->
