@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Created by vellerzheng on 2017/10/2.
  */
@@ -34,22 +35,19 @@ public class MulCloudsDispose {
             AliyunOSS aliyunOSS = new AliyunOSS();
             aliyunOSS.uploadFile(subdirtylist.get(0));
 
-
             Netease netease =new Netease();
             netease.uploadFile(subdirtylist.get(1));
-
 
             Qcloud qcloud = new Qcloud();
             qcloud.uploadFile(subdirtylist.get(2));
 
-
             Qiniu qiniu = new Qiniu();
             qiniu.randomAcessUpLoadFile(subdirtylist.get(3));
 
-
             Upyun upyun =new Upyun();
             upyun.uploadFile(subdirtylist.get(4));
-        }else{
+
+            }else{
             System.out.println("file number not matched.");
             return false;
         }

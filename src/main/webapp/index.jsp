@@ -21,13 +21,13 @@
 
     <tr>
 
-        <td><a href="/clouds/users/login">Login</a>
+        <td><a href="/clouds/users/login"  type="button" class="btn btn-sm btn-success">Login</a>
 
         </td>
 
         <td>    </td>
 
-        <td><a href="/clouds/users/register">Register</a>
+        <td><a href="/clouds/users/register" type="button" class="btn btn-sm btn-info">Register</a>
 
         </td>
 

@@ -281,6 +281,18 @@
           <version>7.2.7</version>
       </dependency>
 
+      <!-- shiro -->
+      <dependency>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+          <version>1.2</version>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.shiro</groupId>
+          <artifactId>shiro-core</artifactId>
+          <version>1.2.1</version>
+      </dependency>
+
 
 
   </dependencies>

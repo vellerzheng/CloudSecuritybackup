@@ -51,12 +51,14 @@ public class UsersController {
     @RequestMapping(value = "/clouds/users/login/auth", method = RequestMethod.POST)
     public String  authLoagin(HttpServletRequest request, ModelMap modelMap, @ModelAttribute("login") Login login){
         List<UsersEntity> userList=userRepository.findAll();
+
         for (UsersEntity uty: userList) {
             if(uty.getUsername().equals(login.getUsername()) && uty.getPassword().equals(login.getPassword())){
-                return "redirect:/clouds/welcome";
+                modelMap.addAttribute("loginUser",uty);
+                return "clouds/welcome";
             }
         }
-        modelMap.addAttribute("message","Username or Password is wrong!!!");
+
         return "redirect:/clouds/users/login";
     }
 }

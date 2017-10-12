@@ -103,7 +103,7 @@ public class UsersEntity {
         this.userById = userById;
     }
 
-    @OneToMany(mappedBy = "usersByUserId")
+    @OneToMany(mappedBy = "userByUserId")
     public Collection<FilesEntity> getFilesById() {
         return filesById;
     }

@@ -22,43 +22,46 @@
 </head>
 <body>
 <div class="container">
-    <h1> 文件系统-文件管理</h1>
+    <h1> 个人文件库</h1>
     <hr/>
 
-    <h3>所有文件 <a href="/clouds/filemanager/files/add" type="button" class="btn btn-primary btn-sm">添加</a></h3>
+    <h3>文件详情 </h3>
 
     <!-- 如果用户列表为空 -->
-    <c:if test="${empty fileList}">
+    <c:if test="${empty filesDetial}">
         <div class="alert alert-warning" role="alert">
             <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>files表为空，请<a href="/clouds/filemanager/files/add" type="button" class="btn btn-primary btn-sm">添加</a>
         </div>
     </c:if>
 
     <!-- 如果用户列表非空 -->
-    <c:if test="${!empty fileList}">
+    <c:if test="${!empty filesDetial}">
         <table class="table table-bordered table-striped">
-            <tr>
-                <th>ID</th>
-                <th>描述</th>
-                <th>文件名</th>
-                <th>发布日期</th>
-                <th>操作</th>
-            </tr>
 
-            <c:forEach items="${fileList}" var="file">
-                <tr>
-                    <td>${file.id}</td>
-                    <td>${file.description}</td>
-                    <td>${file.userByUserId.username}, ${file.fileName} </td>
-                    <td><fmt:formatDate value="${file.pubDate }" pattern="yyyy-MM-dd"/></td>
-                    <td>
-                        <a href="/clouds/filemanager/files/show/${file.id}" type="button" class="btn btn-sm btn-success">详情</a>
-                        <a href="/clouds/filemanager/files/update/${file.id}" type="button" class="btn btn-sm btn-warning">修改</a>
-                        <a href="/clouds/filemanager/files/delete/${file.id}" type="button" class="btn btn-sm btn-danger">删除</a>
-                        <a href="/clouds/filemanager/files/download/${file.id}" type="button" class="btn btns-sm btn-info">下载</a>
-                    </td>
-                </tr>
-            </c:forEach>
+
+
+                    <tr>
+                        <th>ID</th>
+                        <td>${filesDetial.id}</td>
+                    </tr>
+
+                    <tr>
+                        <th>User and File Name </th>
+                        <td>${filesDetial.userByUserId.username},  ${filesDetial.fileName} </td>
+                    </tr>
+
+                    <tr>
+                        <th>Description</th>
+                        <td>${filesDetial.description}</td>
+                    </tr>
+
+
+                    <tr>
+                        <th>Publish Date</th>
+                        <td><fmt:formatDate value="${filesDetial.pubDate }" pattern="yyyy-MM-dd"/></td>
+                    </tr>
+
+
         </table>
     </c:if>
 </div>
