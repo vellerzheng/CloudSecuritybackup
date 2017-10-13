@@ -49,7 +49,7 @@
                 <tr>
                     <td>${file.id}</td>
                     <td>${file.description}</td>
-                    <td>${file.userByUserId.username}, ${file.fileName} </td>
+                    <td>${file.fileName}</td>
                     <td><fmt:formatDate value="${file.pubDate }" pattern="yyyy-MM-dd"/></td>
                     <td>
                         <a href="/clouds/filemanager/files/show/${file.id}" type="button" class="btn btn-sm btn-success">详情</a>

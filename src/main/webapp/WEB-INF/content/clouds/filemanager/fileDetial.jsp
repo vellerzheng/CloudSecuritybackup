@@ -46,15 +46,19 @@
                     </tr>
 
                     <tr>
-                        <th>User and File Name </th>
-                        <td>${filesDetial.userByUserId.username},  ${filesDetial.fileName} </td>
+                        <th>User</th>
+                        <td>${filesDetial.userByUserId.username}</td>
+                    </tr>
+
+                    <tr>
+                        <th>File Name </th>
+                        <td>${filesDetial.fileName}</td>
                     </tr>
 
                     <tr>
                         <th>Description</th>
                         <td>${filesDetial.description}</td>
                     </tr>
-
 
                     <tr>
                         <th>Publish Date</th>
