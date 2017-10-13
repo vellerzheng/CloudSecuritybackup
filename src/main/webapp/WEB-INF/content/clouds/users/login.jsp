@@ -49,8 +49,8 @@
 
             <td></td>
 
-            <td><a href="/clouds/home">Home</a>
-
+            <td>
+                <a href="/clouds/home" type="button" class="btn btn-sm btn-info">Home</a>
             </td>
 
         </tr>
