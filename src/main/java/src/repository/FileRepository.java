@@ -19,9 +19,9 @@ public interface FileRepository extends JpaRepository<FilesEntity,Integer> {
     @Modifying
     @Transactional
     @Query("update FilesEntity files set files.description=:qDescription,files.userByUserId.id=:qUsersId," +
-            "files.fileName=:qFileName,files.pubDate=:qPubDate where files.id=:qId")
+            "files.fileName=:qFileName,files.size=:qSize,files.pubDate=:qPubDate where files.id=:qId")
     void updateFiles(@Param("qDescription")String description,@Param("qUsersId") int usersId,@Param("qFileName")String fileName,
-                     @Param("qPubDate")Date pubDate,@Param("qId") int id);
+                     @Param("qSize")String size, @Param("qPubDate")Date pubDate,@Param("qId") int id);
 
     @Query(value = "select  fs from FilesEntity fs where fs.userByUserId.id =:uid")
     List<FilesEntity> findByFilesEntityEEndsWith(@Param("uid") int userId);

@@ -6,10 +6,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import src.service.users.Login;
 import src.model.UsersEntity;
 import src.repository.UserRegisterRepository;
 import src.repository.UserRepository;
+import src.service.users.Login;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

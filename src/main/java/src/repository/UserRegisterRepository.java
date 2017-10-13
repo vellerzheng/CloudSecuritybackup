@@ -15,9 +15,9 @@ import src.model.UserAuthsEntity;
 public interface UserRegisterRepository extends JpaRepository<UserAuthsEntity,Integer> {
     @Modifying
     @Transactional
-    @Query("update UserAuthsEntity auth set auth.userId=:qUserId,auth.authsByUserId.id=:qAuthId," +
+    @Query("update UserAuthsEntity auth set auth.usersByUserId.id=:qAuthId," +
             "auth.identifier =:qIdentifier,auth.identityType=:qIdentityType,auth.credential=:qCredential where auth.id=:qId")
-    public void updateUser(@Param("qUserId") String UserId, @Param("qAuthId") String AuthID,
-                           @Param("qIdentifier")String Identifier,@Param("qIdentityType")String IdentityType,
+    public void updateUser(@Param("qAuthId") String AuthID, @Param("qIdentifier")String Identifier,
+                           @Param("qIdentityType")String IdentityType,
                            @Param("qCredential")String Credential, @Param("qId") Integer Id);
 }

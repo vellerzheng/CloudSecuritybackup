@@ -41,7 +41,8 @@
                 <th>ID</th>
                 <th>描述</th>
                 <th>文件名</th>
-                <th>发布日期</th>
+                <th>文件大小</th>
+                <th>上传日期</th>
                 <th>操作</th>
             </tr>
 
@@ -50,6 +51,7 @@
                     <td>${file.id}</td>
                     <td>${file.description}</td>
                     <td>${file.fileName}</td>
+                    <td>${file.size}</td>
                     <td><fmt:formatDate value="${file.pubDate }" pattern="yyyy-MM-dd"/></td>
                     <td>
                         <a href="/clouds/filemanager/files/show/${file.id}" type="button" class="btn btn-sm btn-success">详情</a>

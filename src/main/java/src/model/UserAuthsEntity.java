@@ -3,17 +3,16 @@ package src.model;
 import javax.persistence.*;
 
 /**
- * Created by vellerzheng on 2017/9/30.
+ * Created by vellerzheng on 2017/10/13.
  */
 @Entity
 @Table(name = "user_auths", schema = "cloud_secureStorage", catalog = "")
 public class UserAuthsEntity {
     private int id;
-    private Integer userId;
     private String identifier;
     private String identityType;
     private String credential;
-    private UsersEntity AuthsByUserId;
+    private UsersEntity usersByUserId;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -23,16 +22,6 @@ public class UserAuthsEntity {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "user_id", nullable = true)
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 
     @Basic
@@ -73,7 +62,6 @@ public class UserAuthsEntity {
         UserAuthsEntity that = (UserAuthsEntity) o;
 
         if (id != that.id) return false;
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
         if (identifier != null ? !identifier.equals(that.identifier) : that.identifier != null) return false;
         if (identityType != null ? !identityType.equals(that.identityType) : that.identityType != null) return false;
         if (credential != null ? !credential.equals(that.credential) : that.credential != null) return false;
@@ -84,19 +72,19 @@ public class UserAuthsEntity {
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
         result = 31 * result + (identifier != null ? identifier.hashCode() : 0);
         result = 31 * result + (identityType != null ? identityType.hashCode() : 0);
         result = 31 * result + (credential != null ? credential.hashCode() : 0);
         return result;
     }
 
-    @OneToOne(mappedBy = "userById")
-    public UsersEntity getAuthsByUserId() {
-        return AuthsByUserId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    public UsersEntity getUsersByUserId() {
+        return usersByUserId;
     }
 
-    public void setAuthsByUserId(UsersEntity authsByUserId) {
-        AuthsByUserId = authsByUserId;
+    public void setUsersByUserId(UsersEntity usersByUserId) {
+        this.usersByUserId = usersByUserId;
     }
 }

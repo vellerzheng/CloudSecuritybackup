@@ -1,10 +1,10 @@
 package src.model;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 /**
- * Created by vellerzheng on 2017/10/12.
+ * Created by vellerzheng on 2017/10/13.
  */
 @Entity
 @Table(name = "files", schema = "cloud_secureStorage", catalog = "")
@@ -13,6 +13,7 @@ public class FilesEntity {
     private String description;
     private String fileName;
     private Date pubDate;
+    private String size;
     private UsersEntity userByUserId;
 
     @Id
@@ -55,6 +56,16 @@ public class FilesEntity {
         this.pubDate = pubDate;
     }
 
+    @Basic
+    @Column(name = "size", nullable = true, length = 30)
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,6 +77,7 @@ public class FilesEntity {
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (fileName != null ? !fileName.equals(that.fileName) : that.fileName != null) return false;
         if (pubDate != null ? !pubDate.equals(that.pubDate) : that.pubDate != null) return false;
+        if (size != null ? !size.equals(that.size) : that.size != null) return false;
 
         return true;
     }
@@ -76,11 +88,12 @@ public class FilesEntity {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (fileName != null ? fileName.hashCode() : 0);
         result = 31 * result + (pubDate != null ? pubDate.hashCode() : 0);
+        result = 31 * result + (size != null ? size.hashCode() : 0);
         return result;
     }
 
-    @ManyToOne()
-    @JoinColumn(name = "user_id", referencedColumnName = "id",nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     public UsersEntity getUserByUserId() {
         return userByUserId;
     }

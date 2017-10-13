@@ -56,6 +56,11 @@
                     </tr>
 
                     <tr>
+                        <th>File Size</th>
+                        <td>${filesDetial.size}</td>
+                    </tr>
+
+                    <tr>
                         <th>Description</th>
                         <td>${filesDetial.description}</td>
                     </tr>

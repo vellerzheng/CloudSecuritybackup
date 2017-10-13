@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 /**
- * Created by vellerzheng on 2017/9/30.
+ * Created by vellerzheng on 2017/10/13.
  */
 @Entity
 @Table(name = "users", schema = "cloud_secureStorage", catalog = "")
@@ -14,8 +14,8 @@ public class UsersEntity {
     private String password;
     private String email;
     private String phone;
-    private UserAuthsEntity userById;
     private Collection<FilesEntity> filesById;
+    private Collection<UserAuthsEntity> authsById;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -93,16 +93,6 @@ public class UsersEntity {
         return result;
     }
 
-    @OneToOne
-    @JoinColumn(name = "id", referencedColumnName = "user_id", nullable = false)
-    public UserAuthsEntity getUserById() {
-        return userById;
-    }
-
-    public void setUserById(UserAuthsEntity userById) {
-        this.userById = userById;
-    }
-
     @OneToMany(mappedBy = "userByUserId")
     public Collection<FilesEntity> getFilesById() {
         return filesById;
@@ -110,5 +100,14 @@ public class UsersEntity {
 
     public void setFilesById(Collection<FilesEntity> filesById) {
         this.filesById = filesById;
+    }
+
+    @OneToMany(mappedBy = "usersByUserId")
+    public Collection<UserAuthsEntity> getAuthsById() {
+        return authsById;
+    }
+
+    public void setAuthsById(Collection<UserAuthsEntity> authsById) {
+        this.authsById = authsById;
     }
 }
