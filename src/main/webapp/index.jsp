@@ -19,25 +19,25 @@
     <hr/>
     <table align="center">
 
-    <tr>
+        <tr>
 
-        <td><a href="/clouds/users/login"  type="button" class="btn btn-sm btn-success">Login</a>
+            <td><a href="/clouds/users/login"  type="button" class="btn btn-sm btn-success">Login</a>
 
-        </td>
+            </td>
 
-        <td>    </td>
+            <td>    </td>
 
-        <td><a href="/clouds/users/register" type="button" class="btn btn-sm btn-info">Register</a>
+            <td><a href="/clouds/users/register" type="button" class="btn btn-sm btn-info">Register</a>
 
-        </td>
+            </td>
 
-    </tr>
+        </tr>
 
     </table>
-<!--JQuerry 文件。 务必在bootstrap.min.js 之前引入-->
-<script src="//cdn.boot.css.com/jquery/1.11.3/jquery.min.js"></script>
-<!-- 最新的Bootstrap 核心JavaScript 文件-->
-<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <!--JQuerry 文件。 务必在bootstrap.min.js 之前引入-->
+    <script src="//cdn.boot.css.com/jquery/1.11.3/jquery.min.js"></script>
+    <!-- 最新的Bootstrap 核心JavaScript 文件-->
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </div>
 </body>
 </html>

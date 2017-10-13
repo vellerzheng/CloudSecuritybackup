@@ -21,7 +21,7 @@
 
     <!-- spring可以自动去扫描base-pack下面的包或者子包下面的java文件，
             如果扫描到有Spring的相关注解的类，则把这些类注册为Spring的bean -->
-    <context:component-scan base-package="src.controller"/>
+    <context:component-scan base-package="com.mcloud.controller"/>
 
     <!-- 静态资源（js,image等）的访问-->
     <mvc:default-servlet-handler/>
@@ -41,11 +41,11 @@
 
     <!-- 表示JPA Repository所在的包-->
 
-    <jpa:repositories base-package="src.repository"/>
+    <jpa:repositories base-package="com.mcloud.repository"/>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="persistenceUnitName" value="defaultPersistenceUnit"/>
-        <property name="packagesToScan" value="src.model"/>
+        <property name="packagesToScan" value="com.mcloud.model"/>
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
         </property>

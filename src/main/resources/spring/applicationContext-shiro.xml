@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd"
+    default-autowire="byName">
+
+    <!--组件扫描器-->
+    <context:component-scan base-package="com.mcloud.realm" />
+
+    <!-- shiro过滤器bean，id要和web.xml中filter-name一致 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager" />
+        <!-- 要求登录时的链接(登录页面地址)，非必须的属性，默认会自动寻找Web工程根目录下的"/login.jsp"页面 -->
+        <property name="loginUrl" value="/clouds/home"/>
+        <property name="successUrl" value="/clouds/welcome"/>
+        <property name="unauthorizedUrl" value="/clouds/home"/>   <!-- 没有授权跳转页面-->
+        <property name="filterChainDefinitions">
+            <value>
+
+                <!-- 当访问login时，不用进行认证(anon表示匿名) -->
+                /index=anon
+                /clouds/home=anon
+                /clouds/users/login = anon
+                /clouds/users/register= anon
+                /clouds/users/logout = logout
+                /clouds/welcome/** = authc,roles[usr]
+                /clouds/filemanager/**=authc,roles[usr]
+                <!-- 配置静态资源可以匿名访问 -->
+                /css/** = anon
+                /js/** = anon
+                /images/** = anon
+                /fonts/** = anon
+
+
+                /** = authc
+            </value>
+        </property>
+    </bean>
+
+
+    <!-- 配置securityManager -->
+
+    <bean id="myRealm" class="com.mcloud.realm.LoginRealm"/>
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!--配置自定义Realm-->
+        <!--loginRealm 使用扫描器扫描注册成功了-->
+       <property name="realm" ref="myRealm" />
+
+        <!-- 缓存配置-->
+        <!--<property name="cacheManager" ref="shiroEhcacheManager"/> -->
+    </bean>
+    <!-- 生命周期 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+
+    <!-- 启用shiro注解 -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+
+</beans>
