@@ -95,6 +95,5 @@ public class UploadFileServiceImpl implements UploadFileService{
         fsty.setUserByUserId(usEnty);
         fileRepository.saveAndFlush(fsty);
     }
-
-
+    
 }
