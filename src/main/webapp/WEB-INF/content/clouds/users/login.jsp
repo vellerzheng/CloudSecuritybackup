@@ -27,16 +27,16 @@
                 <h2 class="form-signin-heading">请登录</h2>
                 <hr/>
                 <div class="form-group">
-                <label for="username">user name:</label>
-                <input type="text" class="from-control" id ="username" name="username" placeholder="Enter UserName:"/>
-            </div>
-            <div class="form-group">
-                <label for="password">PassWord:</label>
-                <input type="text" class="from-control" id ="password" name="password" placeholder="Enter PassWord:"/>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-sm btn-success">登录</button>
-            </div>
+                    <label for="username">user name:</label>
+                    <input type="text" class="from-control" id ="username" name="username" placeholder="Enter UserName:"/>
+                </div>
+                <div class="form-group">
+                    <label for="password">PassWord:</label>
+                    <input type="text" class="from-control" id ="password" name="password" placeholder="Enter PassWord:"/>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-sm btn-success">登录</button>
+                </div>
             </form:form>
         </tr>
 
@@ -57,13 +57,13 @@
 
 
 
-    <tr>
+        <tr>
 
-        <td style="font-style: italic; color: red;">${message}</td>
+            <td style="font-style: italic; color: red;">${message}</td>
 
-    </tr>
+        </tr>
 
-   </table>
+    </table>
 
 </div>
 <!--JQuerry 文件。 务必在bootstrap.min.js 之前引入-->
