@@ -56,7 +56,7 @@
 
                 <tr>
                     <th>Upload File </th>
-                    <td><a href="/clouds/filemanager/uploadfile" type="button" class="btn btn-sm btn-success">Upload File</a></td>
+                    <td><a href="/clouds/filemanager/uploadfile/${loginUser.id}" type="button" class="btn btn-sm btn-success">Upload File</a></td>
                 </tr>
 
 

@@ -2,7 +2,7 @@ package com.mcloud.controller;
 
 import com.mcloud.model.FilesEntity;
 import com.mcloud.repository.FileRepository;
-import com.mcloud.repository.UserRepository;
+import com.mcloud.service.UploadFileService;
 import com.mcloud.service.supportToolClass.FileManage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import com.mcloud.service.UploadFileService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -26,24 +25,25 @@ import java.util.List;
 public class FileController {
 
     @Autowired
-    UserRepository userRepository;
-    @Autowired
     FileRepository fileRepository;
 
     @Resource(name="uploadFileServiceImpl")
     private UploadFileService uploadFileService;
 
-    @RequestMapping(value ="/clouds/filemanager/uploadfile", method = RequestMethod.GET)
-    public String getUploadForm(ModelMap modelMap){
+    @RequestMapping(value ="/clouds/filemanager/uploadfile/{id}", method = RequestMethod.GET)
+    public String getUploadForm(@PathVariable("id") int uid, ModelMap modelMap){
+        // UsersEntity usersEntity= userRepository.findUsersEntityById(uid);
+        modelMap.addAttribute("authUsersEntity",uid);
         return "clouds/filemanager/uploadfile";
     }
 
     //上传文件会自动绑定到MultipartFile中
     @RequestMapping(value="/clouds/filemanager/uploadfile/add",method = RequestMethod.POST)
     public String upload(HttpServletRequest request,@RequestParam("file") MultipartFile file,
-                         @RequestParam("description") String description, ModelMap modelMap) throws Exception {
+                         @RequestParam("description") String description,@RequestParam("curAuthUserEntity") int usrEty, ModelMap modelMap) throws Exception {
         System.out.println("start!");
         System.out.println(description);
+        System.out.println(usrEty);
         /*还需要判断文件是否大于4M */
         //如果文件不为空，写入上传路径
         if(!file.isEmpty()) {
@@ -72,8 +72,9 @@ public class FileController {
             System.out.println("upload file finished!");
 
             int fileSize = (int)file.getSize();
-            uploadFileService.initUploadFile(path,pathPart,fileSize,description,filename);
+            uploadFileService.initUploadFile(path,pathPart,fileSize,description,filename,usrEty);
             uploadFileService.dealFileUpload();
+            uploadFileService.saveFileInfoToDateBase();
 
             /*判断路径是否存在，如果存在就删除*/
             if (filepathPart.exists()) {
@@ -93,6 +94,7 @@ public class FileController {
     @RequestMapping(value ="/clouds/filemanager/files/{id}", method = RequestMethod.GET)
     public String getFiles(@PathVariable("id") int id, ModelMap modelMap){
         List<FilesEntity> fileList = fileRepository.findByFilesEntityEEndsWith(id);
+        modelMap.addAttribute("loginId",id);
         modelMap.addAttribute("fileList",fileList);
         return "clouds/filemanager/files";
     }

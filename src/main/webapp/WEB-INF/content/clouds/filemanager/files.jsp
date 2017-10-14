@@ -25,7 +25,7 @@
     <h1> 文件系统-文件管理</h1>
     <hr/>
 
-    <h3>所有文件 <a href="/clouds/filemanager/files/add" type="button" class="btn btn-primary btn-sm">添加</a></h3>
+    <h3>所有文件 <a href="/clouds/filemanager/uploadfile/${loginId}" type="button" class="btn btn-primary btn-sm">添加文件</a></h3>
 
     <!-- 如果用户列表为空 -->
     <c:if test="${empty fileList}">

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <title>Cloud Storage </title>
 <!-- [endif] -->
@@ -38,6 +39,14 @@
                                     <label for="exampleInputFile">描述信息:</label>
                                     <input type="text" class="form-control" rows="4" id="exampleInputFile" name="description" placeholder="Detials & Information"></input>
                                 </div>
+
+                                <div>
+                                    <!-- 如果用户列表非空 -->
+                                    <c:if test="${!empty authUsersEntity}">
+                                        <input type ="hidden"  class="form-control"  id="curAuthUserEntity" name="curAuthUserEntity" value="${authUsersEntity}"></input>
+                                    </c:if>
+                                </div>
+
                                 <div class="form-group">
                                 <button type="submit" class="btn btn-primary my-btn dark">上传</button>
                                 </div>

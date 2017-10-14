@@ -17,8 +17,7 @@
                         http://www.springframework.org/schema/mvc
                         http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
                         http://www.springframework.org/schema/data/jpa
-                        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd"
-                        default-autowire="byName">
+                        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
 
     <!--组件扫描，如果想要类被组件扫描，扫描到，并在Spring容器中注册的话
@@ -27,11 +26,8 @@
     -->
 
 
-    <context:component-scan base-package="com.mcloud.service.impl"/>
-    <bean id="UploadFileServiceImpl" class="com.mcloud.service.impl.UploadFileServiceImpl"></bean>
-    <bean id="UserLoginServiceImpl" class="com.mcloud.service.impl.UserLoginServiceImpl"></bean>
-    <!--<bean id="teacherServiceImpl" class="com.system.service.impl.TeacherServiceImpl"></bean>-->
-    <!--<bean id="courseServiceImpl" class="com.system.service.impl.CourseServiceImpl"></bean>-->
-    <!--<bean id="SelectedCourseServiceImpl" class="com.system.service.impl.SelectedCourseServiceImpl"></bean>-->
+    <context:component-scan base-package="com.mcloud.service.impl, com.mcloud.repository"/>
+   <!-- <bean id="UploadFileServiceImpl" class="com.mcloud.service.impl.UploadFileServiceImpl"></bean>
+    <bean id="UserLoginServiceImpl" class="com.mcloud.service.impl.UserLoginServiceImpl"></bean>         -->
 
 </beans>
