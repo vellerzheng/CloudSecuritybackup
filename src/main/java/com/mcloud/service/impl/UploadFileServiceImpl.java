@@ -10,6 +10,7 @@ import com.mcloud.service.upload.fileToMulClouds.MulCloudsDispose;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -71,16 +72,16 @@ public class UploadFileServiceImpl implements UploadFileService{
         FilesEntity fsty=new FilesEntity();
         fsty.setFileName(filename);
         fsty.setDescription(description);
-        int nSize=fileSize/1024/1034;                /*单位M*/
+        DecimalFormat decimalFormat = new DecimalFormat("##0.00");
         String strSize=null;
         if(fileSize<1024)
             strSize = fileSize+"B";
             else if(fileSize<1024*1024)
-                strSize = fileSize/1024+"Kb";
+                strSize = decimalFormat.format((float)fileSize/1024)+"Kb";
             else if(fileSize<1024*1024*1024)
-                strSize = fileSize/1024/1024+"M";
+                strSize = decimalFormat.format((float)fileSize/1024/1024)+"M";
             else
-                strSize = fileSize/1024/1024/1024 +"G";
+                strSize = decimalFormat.format((float)fileSize/1024/1024/1024) +"G";
         fsty.setSize(strSize);
         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
         Date time=null;
