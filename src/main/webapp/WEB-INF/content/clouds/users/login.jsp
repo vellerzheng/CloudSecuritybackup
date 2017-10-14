@@ -59,7 +59,7 @@
 
         <tr>
 
-            <td style="font-style: italic; color: red;">${message}</td>
+          <!--  <td style="font-style: italic; color: red;">${message}</td> -->
 
         </tr>
 
