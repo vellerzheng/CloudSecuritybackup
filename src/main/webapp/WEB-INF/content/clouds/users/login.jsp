@@ -16,7 +16,11 @@
     <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
 
     <title>Login</title>
-
+    <style>
+    body {
+        background: url("/images/ava/loginBg.jpg");
+    }
+    </style>
 </head>
 
 <body>
