@@ -47,7 +47,6 @@ public class UploadFileServiceImpl implements UploadFileService{
     @Override
     public void dealFileUpload() {
 
-
             /* 文件分片*/
         int fs = fileSize/1024/1024/4;     //  unit  MB  , each file after splited
          String srcPath =path+"\\"+filename;
@@ -60,8 +59,6 @@ public class UploadFileServiceImpl implements UploadFileService{
             mulCloudsDispose.getPartFilePath(pathPart);
             mulCloudsDispose.uploadPartFileToClouds();
         }
-
-
     }
 
     @Override
