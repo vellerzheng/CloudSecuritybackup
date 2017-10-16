@@ -26,7 +26,7 @@
     <hr/>
 
     <h3>所有文件 <a href="/clouds/filemanager/uploadfile/${loginId}" type="button" class="btn btn-primary btn-sm">添加文件</a></h3>
-
+    <h4>                                                ${upfileResult}</h4>
     <!-- 如果用户列表为空 -->
     <c:if test="${empty fileList}">
         <div class="alert alert-warning" role="alert">
@@ -39,8 +39,8 @@
         <table class="table table-bordered table-striped">
             <tr>
                 <th>ID</th>
-                <th>描述</th>
                 <th>文件名</th>
+                <th>描述</th>
                 <th>文件大小</th>
                 <th>上传日期</th>
                 <th>操作</th>
@@ -49,8 +49,8 @@
             <c:forEach items="${fileList}" var="file">
                 <tr>
                     <td>${file.id}</td>
-                    <td>${file.description}</td>
                     <td>${file.fileName}</td>
+                    <td>${file.description}</td>
                     <td>${file.size}</td>
                     <td><fmt:formatDate value="${file.pubDate }" pattern="yyyy-MM-dd"/></td>
                     <td>

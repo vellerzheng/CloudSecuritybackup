@@ -44,10 +44,10 @@ public class FileController {
     /*上传文件会自动绑定到MultipartFile中*/
     @RequestMapping(value="/clouds/filemanager/uploadfile/add",method = RequestMethod.POST)
     public String upload(HttpServletRequest request,@RequestParam("file") MultipartFile file,
-                         @RequestParam("description") String description,@RequestParam("curAuthUserEntity") int usrEty, ModelMap modelMap) throws Exception {
+                         @RequestParam("description") String description,@RequestParam("curAuthUserEntity") int usrloginId, ModelMap modelMap) throws Exception {
         System.out.println("start!");
         System.out.println(description);
-        System.out.println(usrEty);
+        System.out.println(usrloginId);
         /*还需要判断文件是否大于4M */
         //如果文件不为空，写入上传路径
         if(!file.isEmpty()) {
@@ -76,7 +76,7 @@ public class FileController {
             System.out.println("upload file finished!");
 
             int fileSize = (int)file.getSize();
-            uploadFileService.initUploadFile(path,pathPart,fileSize,description,filename,usrEty);
+            uploadFileService.initUploadFile(path,pathPart,fileSize,description,filename,usrloginId);
             uploadFileService.dealFileUpload();
             uploadFileService.saveFileInfoToDateBase();
 
@@ -87,8 +87,8 @@ public class FileController {
             if (filepath.getParentFile().exists()) {
                 FileManage.deleteDirectory(path);
             }
-
-            return "clouds/filemanager/uploadResult";
+            modelMap.addAttribute("upFileResult","文件上传成功");
+            return "redirect:/clouds/filemanager/files/"+usrloginId;
         } else {
             return "clouds/error";
         }
