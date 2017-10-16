@@ -14,7 +14,7 @@ public class Upyun {
        private UpYun upyun = new UpYun("youpaiyunfile", "guyun", "qwe123456");
 
 
-    public void initUpyun(){
+    public  Upyun(){
         // 可选属性1，是否开启 debug 模式，默认不开启
           upyun.setDebug(false);
         // 可选属性2，超时时间，默认 30s
@@ -74,20 +74,20 @@ public class Upyun {
 
 
     public static  void main(String[] args){
-        String localFilePath="D:\\Test\\split\\Hadoop，The Definitive Guide.pdf";
+        String localFilePath="D:\\Test\\split\\Hadoop，The Definitive Guide.pdf-4.dat";
         Upyun upyun=new Upyun();
-        upyun.initUpyun();
+      //  upyun.Upyun();
     //   upyun.createYunFilePath();
-    //    upyun.uploadFile(localFilePath);
+      //   upyun.uploadFile(localFilePath);
 
-        String yunfile="/up/tt/Deskbookpicture2.jpg";
-        //   upyun.getFileInformation(yunfile);
+        String yunfile="/up/tt/Hadoop，The Definitive Guide.pdf-4.dat";
+     //   upyun.getFileInformation(yunfile);
         upyun.getSpaceCapacity();
 
-        String saveFilePath="D:\\Test\\merge\\Hadoop，The Definitive Guide.pdf";
-      //  upyun.downloadFile(yunfile,saveFilePath);
-        String fileName="Deskbookpicture2.jpg";
-        upyun.deleteYunFile(fileName);
+        String saveFilePath="D:\\Test\\merge\\Hadoop，The Definitive Guide.pdf-4.dat";
+     //   upyun.downloadFile(yunfile,saveFilePath);
+        String fileName="Hadoop，The Definitive Guide.pdf-4.dat";
+     //   upyun.deleteYunFile(fileName);
 
     }
 }
