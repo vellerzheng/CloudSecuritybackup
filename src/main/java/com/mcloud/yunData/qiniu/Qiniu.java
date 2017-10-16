@@ -159,8 +159,7 @@ public class Qiniu {
 
         System.out.println("info:"+url+" download success");
     }
-    public void downLoadPublicFile(String saveFilePath) throws IOException {
-        String fileName = "README.txt";
+    public void downLoadPublicFile(String fileName,String saveFilePath) throws IOException {
         String domainOfBucket = "http://ov6imccl2.bkt.clouddn.com";
         String encodedFileName = URLEncoder.encode(fileName, "utf-8");
         String finalUrl = String.format("%s/%s", domainOfBucket, encodedFileName);
@@ -168,8 +167,7 @@ public class Qiniu {
         urlDownLoadSource(finalUrl,fileName,saveFilePath);
 
     }
-    public void downLoadPrivateFile(String saveFilePath) throws IOException {
-        String fileName = "README.txt";
+    public void downLoadPrivateFile(String fileName, String saveFilePath) throws IOException {
         String domainOfBucket = "http://ov6imccl2.bkt.clouddn.com";
         String encodedFileName = URLEncoder.encode(fileName, "utf-8");
         String privateUrl = String.format("%s/%s", domainOfBucket, encodedFileName);
@@ -196,14 +194,33 @@ public class Qiniu {
         }
     }
 
+    public void deleteCloudFile(String fileName){
+
+        String yunfilePath=fileName;
+        Configuration cfg = new Configuration(Zone.zone2());
+        Auth auth = Auth.create(accessKey, secretKey);
+        BucketManager bucketManager = new BucketManager(auth, cfg);
+        try {
+            bucketManager.delete(bucket, yunfilePath);
+        } catch (QiniuException ex) {
+            //如果遇到异常，说明删除失败
+            System.err.println(ex.code());
+            System.err.println(ex.response.toString());
+        }
+
+
+    }
+
 
     public static void main(String [] args) throws IOException {
         String localFilePath="D:\\Test\\split\\Hadoop，The Definitive Guide.pdf-2.dat";
         Qiniu qiniu = new Qiniu();
-        qiniu.randomAcessUpLoadFile(localFilePath);
+      //  qiniu.randomAcessUpLoadFile(localFilePath);
       //  qiniu.uploadFile(localFilePath);
         String saveFilePath="D:\\Test\\merge";
-        qiniu.downLoadPrivateFile(saveFilePath);
+        String fileName = "README.txt";
+        qiniu.downLoadPrivateFile(fileName,saveFilePath);
+        qiniu.deleteCloudFile(fileName);
         String yunFileName ="README.txt";
       //  qiniu.getYunFileInfomation(yunFileName);
     }

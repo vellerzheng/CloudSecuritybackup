@@ -31,14 +31,16 @@ public class QiniuTest extends TestCase {
     public void testdownLoadPublicFile() throws Exception {
         Qiniu qiniu = new Qiniu();
         String saveFilePath="D:\\Test\\merge";
-        qiniu.downLoadPublicFile(saveFilePath);
+        String fileName = "README.txt";
+        qiniu.downLoadPublicFile(fileName,saveFilePath);
     }
 
     @Test
     public void testdownLoadPrivateFile() throws Exception {
         Qiniu qiniu = new Qiniu();
         String saveFilePath="D:\\Test\\merge";
-        qiniu.downLoadPrivateFile(saveFilePath);
+        String fileName = "README.txt";
+        qiniu.downLoadPrivateFile(fileName,saveFilePath);
     }
 
     @Test

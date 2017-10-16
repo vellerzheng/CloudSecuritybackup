@@ -44,10 +44,11 @@ public class Upyun {
             System.out.println("upload file failed!");
     }
 
-    public void deleteYunFile(){
+    public void deleteYunFile(String fileName){
 
+        String yunFileName = "/up/tt/"+fileName;
         // 删除目录
-        boolean result = upyun.rmDir("/up/tt/");
+        boolean result = upyun.rmDir(yunFileName);
     }
 
     public void downloadFile(String yunFileName,String saveFilePath){

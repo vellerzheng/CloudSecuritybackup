@@ -2,6 +2,7 @@ package com.mcloud.controller;
 
 import com.mcloud.model.FilesEntity;
 import com.mcloud.repository.FileRepository;
+import com.mcloud.service.ManagementFileService;
 import com.mcloud.service.UploadFileService;
 import com.mcloud.service.supportToolClass.FileManage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,13 @@ public class FileController {
 
     @Autowired
     FileRepository fileRepository;
+    @Autowired
+    ManagementFileService manageFileService;
 
     @Resource(name="uploadFileServiceImpl")
     private UploadFileService uploadFileService;
 
+    /*用户上传文件*/
     @RequestMapping(value ="/clouds/filemanager/uploadfile/{id}", method = RequestMethod.GET)
     public String getUploadForm(@PathVariable("id") int uid, ModelMap modelMap){
         // UsersEntity usersEntity= userRepository.findUsersEntityById(uid);
@@ -37,7 +41,7 @@ public class FileController {
         return "clouds/filemanager/uploadfile";
     }
 
-    //上传文件会自动绑定到MultipartFile中
+    /*上传文件会自动绑定到MultipartFile中*/
     @RequestMapping(value="/clouds/filemanager/uploadfile/add",method = RequestMethod.POST)
     public String upload(HttpServletRequest request,@RequestParam("file") MultipartFile file,
                          @RequestParam("description") String description,@RequestParam("curAuthUserEntity") int usrEty, ModelMap modelMap) throws Exception {
@@ -91,6 +95,7 @@ public class FileController {
 
     }
 
+    /* 查看所有文件*/
     @RequestMapping(value ="/clouds/filemanager/files/{id}", method = RequestMethod.GET)
     public String getFiles(@PathVariable("id") int id, ModelMap modelMap){
         List<FilesEntity> fileList = fileRepository.findByFilesEntityEEndsWith(id);
@@ -99,12 +104,24 @@ public class FileController {
         return "clouds/filemanager/files";
     }
 
+    /*查看单个文件详情*/
     @RequestMapping(value ="/clouds/filemanager/files/show/{id}",method = RequestMethod.GET)
     public String showFiles(@PathVariable("id") int id ,ModelMap modelMap){
         FilesEntity filesDetial = fileRepository.findOne(id);
 
         modelMap.addAttribute("filesDetial",filesDetial);
         return "clouds/filemanager/fileDetial";
+    }
+
+    /*删除云文件及记录*/
+    @RequestMapping(value = "/clouds/filemanager/files/delete/{file.id}",method = RequestMethod.GET)
+    public String deleteFile(@PathVariable("file.id") int id){
+        manageFileService.initManagementFileService(id);
+        manageFileService.deleteCloudFile();
+        int usrId=fileRepository.findOne(id).getUserByUserId().getId();
+        fileRepository.delete(id);
+        fileRepository.flush();
+        return "redirect:/clouds/filemanager/files/"+usrId;
     }
 
 

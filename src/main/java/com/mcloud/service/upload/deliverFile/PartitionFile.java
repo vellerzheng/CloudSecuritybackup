@@ -122,7 +122,7 @@ public class PartitionFile {
          */
 
         long startTime1=System.currentTimeMillis();   //获取开始时间
-        String src = "D:\\Test\\split\\Hadoop，The Definitive Guide.pdf";
+        String src = "D:\\Test\\split\\cloudStorageService.pdf";
         File file= new File(src);
         int fileSize = (int)file.length()/1024/1024/4;     //  unit  MB  , each file after splited
         String dest = "D:\\Test\\split";

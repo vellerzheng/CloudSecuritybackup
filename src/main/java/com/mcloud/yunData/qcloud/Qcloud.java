@@ -103,10 +103,10 @@ public class Qcloud {
      * @Description: 删除文件
      * @return
      */
-    public String deleteFile(String yunFilePath) {
+    public String deleteFile(String fileName) {
 
-
-        DelFileRequest delFileRequest = new DelFileRequest(bucketName, yunFilePath);
+        String yunFilePath="/backupFile/"+fileName;
+        DelFileRequest delFileRequest = new DelFileRequest(bucketName,yunFilePath);
         String delFileRet = getCOSClient().delFile(delFileRequest);
 
         return delFileRet;
@@ -118,16 +118,16 @@ public class Qcloud {
         String localFilePath ="D:\\Test\\split\\Hadoop，The Definitive Guide.pdf";
         String saveFilepath = "D:\\Test\\merge";
 
-        String yunFileName="/backupFile/Hadoop，The Definitive Guide.pdf";
+        String yunFileName="/backupFile/366228.pdf-2.dat";
         Qcloud qcloud = new Qcloud();
       // qcloud.uploadFile(localFilePath);
-      // qcloud.downFile(yunFileName,saveFilepath);
+       //  qcloud.downFile(yunFileName,saveFilepath);
 
          String cosFilePath = "/backupFile/README.txt";
-         String dstCosFilePath = "/README.txt";
+         String dstCosFilePath = "3662285.pdf-2.dat";
       //   qcloud.moveFile(cosFilePath,dstCosFilePath);
         System.out.println(qcloud.getFileProp(yunFileName));
-     //  System.out.println(qcloud.deleteFile(dstCosFilePath));
+        System.out.println(qcloud.deleteFile(dstCosFilePath));
 
 
     }

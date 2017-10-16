@@ -88,8 +88,9 @@ public class AliyunOSS {
 
     // 下载文件
     @SuppressWarnings("unused")
-    public  void downloadFile(String yunFilePath, String saveLocalFilePath)
+    public  void downloadFile(String yunfileName, String saveLocalFilePath)
             {
+                String yunFilePath="backupFile/"+yunfileName;
                 OSSConfigure ossConfigure = null;
                 try {
                     ossConfigure = new OSSConfigure("conf/accessCloud.properties");
@@ -118,7 +119,8 @@ public class AliyunOSS {
      * 根据key删除OSS服务器上的文件 @Title: deleteFile @Description: @param @param
      * ossConfigure @param 配置文件实体 @param filePath 设定文件 @return void 返回类型 @throws
      */
-    public  void deleteFile( String yunfilePath) {
+    public  void deleteFile( String fileName) {
+        String yunfilePath="backupFile/"+fileName;
         OSSConfigure ossConfigure = null;
         try {
             ossConfigure = new OSSConfigure("conf/accessCloud.properties");
@@ -181,9 +183,9 @@ public class AliyunOSS {
         String locaFilePath="D:\\Test\\split\\README.txt";
         aliyun.uploadFile(locaFilePath);
 
-        String yunFilePath="backupFile/README.txt";
+        String yunFileName="README.txt";
         String saveLocalFilePath="D:\\Test\\merge";
-    //    aliyun.downloadFile(yunFilePath,saveLocalFilePath);
-      //  aliyun.deleteFile(yunFilePath);
+        aliyun.downloadFile(yunFileName,saveLocalFilePath);
+        aliyun.deleteFile(yunFileName);
     }
 }
