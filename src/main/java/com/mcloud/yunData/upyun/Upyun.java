@@ -78,14 +78,16 @@ public class Upyun {
         Upyun upyun=new Upyun();
         upyun.initUpyun();
     //   upyun.createYunFilePath();
-        upyun.uploadFile(localFilePath);
+    //    upyun.uploadFile(localFilePath);
 
-        String yunfile="/up/tt/Hadoop，The Definitive Guide.pdf";
-        upyun.getFileInformation(yunfile);
+        String yunfile="/up/tt/Deskbookpicture2.jpg";
+        //   upyun.getFileInformation(yunfile);
         upyun.getSpaceCapacity();
 
         String saveFilePath="D:\\Test\\merge\\Hadoop，The Definitive Guide.pdf";
-        upyun.downloadFile(yunfile,saveFilePath);
+      //  upyun.downloadFile(yunfile,saveFilePath);
+        String fileName="Deskbookpicture2.jpg";
+        upyun.deleteYunFile(fileName);
 
     }
 }
