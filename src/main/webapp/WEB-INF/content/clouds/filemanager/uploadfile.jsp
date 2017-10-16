@@ -16,6 +16,39 @@
 
 
     <title>文件上传</title>
+    <script type="text/javascript">
+
+        function $(str){
+            return (document.getElementById(str));
+        }
+
+        function check_submit(){
+            if($("exampleInputFile").value =="" || $("exampleInputFile").value=="请选择文件"){
+                alert("文件不能为空!");
+                return false;
+            }
+            if($("exampleInputInfo").value ==""){
+                alert("描述信息不能为空！");
+                return false;
+            }
+        }
+
+        function mover(){
+            event.srcElement.focus();
+            event.srcElement.select();
+        }
+
+        function mclick(){
+            if(event.srcElement.value=="请选择文件")
+                event.srcElement.value="";
+        }
+
+        function mblur(){
+            if(event.srcElement.value=="")
+                event.srcElement.value="请输入提示信息";
+        }
+    </script>
+
 </head>
 <body>
 <div class="container col-md-8 col-sm-offset-2 text-center">
@@ -30,14 +63,14 @@
                 <div class="space"></div>
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3">
-                            <form id="contact" action="/clouds/filemanager/uploadfile/add" enctype="multipart/form-data" method="post">
+                            <form id="contact" action="/clouds/filemanager/uploadfile/add" onsubmit="return check_submit();" enctype="multipart/form-data" method="post" >
                                 <div class="form-group">
-                                    <label for="exampleInputName">选择文件:</label>
-                                    <input type="file" class="form-control" id="exampleInputName" name="file" placeholder="select local file">
+                                    <label for="exampleInputFile">选择文件:</label>
+                                    <input type="file" class="form-control" id="exampleInputFile" name="file" placeholder="select local file" onmouseover="mover();" onclick="mclick();">
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputFile">描述信息:</label>
-                                    <input type="text" class="form-control" rows="4" id="exampleInputFile" name="description" placeholder="Detials & Information"></input>
+                                    <label for="exampleInputInfo">描述信息:</label>
+                                    <input type="text" class="form-control" rows="4" id="exampleInputInfo" name="description" placeholder="Detials & Information" onmouseover="mover();"></input>
                                 </div>
 
                                 <div>
