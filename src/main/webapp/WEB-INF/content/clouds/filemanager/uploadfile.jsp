@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputInfo">描述信息:</label>
-                                    <input type="text" class="form-control" rows="4" id="exampleInputInfo" name="description" placeholder="Detials & Information" onmouseover="mover();"></input>
+                                    <input type="text" class="form-control" rows="4" id="exampleInputInfo" name="description" placeholder="Detials & Information" onmouseover="mover();" onblur="mblur();"></input>
                                 </div>
 
                                 <div>

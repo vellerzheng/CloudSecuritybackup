@@ -106,4 +106,6 @@ public class FileController {
         modelMap.addAttribute("filesDetial",filesDetial);
         return "clouds/filemanager/fileDetial";
     }
+
+
 }
