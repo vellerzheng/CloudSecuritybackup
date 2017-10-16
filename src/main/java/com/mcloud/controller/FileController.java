@@ -8,10 +8,7 @@ import com.mcloud.service.supportToolClass.FileManage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -124,5 +121,19 @@ public class FileController {
         return "redirect:/clouds/filemanager/files/"+usrId;
     }
 
+    /* 修改文件信息，页面*/
+    @RequestMapping("/clouds/filemanager/files/update/{id}")
+    public String updateFile(@PathVariable("id")int id, ModelMap modelMap){
+        FilesEntity filesEntity = fileRepository.findOne(id);
+        modelMap.addAttribute("fileEty",filesEntity);
+        return "/clouds/filemanager/updatefile";
+    }
 
+    /* 修改文件信息，post请求 */
+    @RequestMapping(value = "/clouds/filemanager/files/updateP", method = RequestMethod.POST)
+    public String updateFilePt(@ModelAttribute("filePt") FilesEntity filesEntity){
+        fileRepository.updateFiles(filesEntity.getDescription(), filesEntity.getPubDate(), filesEntity.getUserByUserId().getId(), filesEntity.getId());
+        fileRepository.flush();
+        return "redirect:/clouds/filemanager/files/" + filesEntity.getUserByUserId().getId();
+    }
 }

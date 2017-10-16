@@ -1,5 +1,7 @@
 package com.mcloud.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -12,6 +14,7 @@ public class FilesEntity {
     private int id;
     private String description;
     private String fileName;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date pubDate;
     private String size;
     private UsersEntity userByUserId;
