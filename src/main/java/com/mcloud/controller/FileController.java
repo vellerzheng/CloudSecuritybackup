@@ -5,7 +5,12 @@ import com.mcloud.repository.FileRepository;
 import com.mcloud.service.ManagementFileService;
 import com.mcloud.service.UploadFileService;
 import com.mcloud.service.supportToolClass.FileManage;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -84,7 +89,7 @@ public class FileController {
             if (filepath.getParentFile().exists()) {
                 FileManage.deleteDirectory(path);
             }
-            modelMap.addAttribute("upFileResult","文件上传成功");
+            modelMap.addAttribute("message","文件上传成功");
             return "redirect:/clouds/filemanager/files/"+usrloginId;
         } else {
             return "clouds/error";
@@ -135,5 +140,45 @@ public class FileController {
         fileRepository.updateFiles(filesEntity.getDescription(), filesEntity.getPubDate(), filesEntity.getUserByUserId().getId(), filesEntity.getId());
         fileRepository.flush();
         return "redirect:/clouds/filemanager/files/" + filesEntity.getUserByUserId().getId();
+    }
+
+    /* 下载文件 */
+    @ResponseBody
+    @RequestMapping(value="/clouds/filemanager/files/download/{file.id}/{file.fileName}")
+    public   ResponseEntity<byte[]>  download(HttpServletRequest request, @PathVariable("file.id")int fid,
+                                           @PathVariable("file.fileName") String filename,
+                                           ModelMap modelMap)throws Exception {
+        String trueFileName = filename;
+        int fileId = fid;
+        //上传文件路径
+        String path = request.getServletContext().getRealPath("download");
+        //上传文件分块路径
+        String pathPart =request.getServletContext().getRealPath("download")+"\\filepart";
+     //   File filepath = new File(path,filename);
+        //下载文件路径
+        File file = new File(path + File.separator + filename);
+        //判断路径是否存在，如果不存在就创建一个
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+
+        File filepathPart = new File(pathPart);
+        //判断路径是否存在，如果不存在就创建一个
+        if (!filepathPart.exists()) {
+            filepathPart.mkdirs();
+        }
+
+
+         /* 将文件下载下来*/
+        HttpHeaders headers = new HttpHeaders();
+        //下载显示的文件名，解决中文名称乱码问题
+        String downloadFielName = new String(filename.getBytes("UTF-8"),"iso-8859-1");
+        //通知浏览器以attachment（下载方式）打开文件
+        headers.setContentDispositionFormData("attachment", downloadFielName);
+        /*application/octet-stream ： 二进制流数据（最常见的文件下载）*/
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+         return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),
+                headers, HttpStatus.OK);
+
     }
 }
