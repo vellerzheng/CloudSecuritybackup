@@ -62,8 +62,8 @@ public class Qcloud {
      * @Description: 下载文件
      * @return
      */
-    public  String downFile(String cosFilePath,String localPathDown) {
-
+    public  String downFile(String yunfileName,String localPathDown) {
+        String cosFilePath="/backupFile/"+yunfileName;
         String fileName =cosFilePath.substring((cosFilePath.lastIndexOf("/")));
         String localFilePath = localPathDown+"\\"+ fileName.replace("/","");  //key 为上传的文件名
         GetFileLocalRequest getFileLocalRequest = new GetFileLocalRequest(bucketName, cosFilePath, localFilePath);
@@ -118,10 +118,10 @@ public class Qcloud {
         String localFilePath ="D:\\Test\\split\\Hadoop，The Definitive Guide.pdf";
         String saveFilepath = "D:\\Test\\merge";
 
-        String yunFileName="/backupFile/366228.pdf-2.dat";
+        String yunFileName="cloudStorageService.pdf-2.dat";
         Qcloud qcloud = new Qcloud();
       // qcloud.uploadFile(localFilePath);
-       //  qcloud.downFile(yunFileName,saveFilepath);
+         qcloud.downFile(yunFileName,saveFilepath);
 
          String cosFilePath = "/backupFile/README.txt";
          String dstCosFilePath = "3662285.pdf-2.dat";

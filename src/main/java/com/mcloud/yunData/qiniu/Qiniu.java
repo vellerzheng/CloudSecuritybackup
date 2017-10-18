@@ -218,9 +218,9 @@ public class Qiniu {
       //  qiniu.randomAcessUpLoadFile(localFilePath);
       //  qiniu.uploadFile(localFilePath);
         String saveFilePath="D:\\Test\\merge";
-        String fileName = "README.txt";
+        String fileName = "cloudStorageService.pdf-3.dat";
         qiniu.downLoadPrivateFile(fileName,saveFilePath);
-        qiniu.deleteCloudFile(fileName);
+  //      qiniu.deleteCloudFile(fileName);
         String yunFileName ="README.txt";
       //  qiniu.getYunFileInfomation(yunFileName);
     }

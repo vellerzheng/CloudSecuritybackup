@@ -2,6 +2,7 @@ package com.mcloud.controller;
 
 import com.mcloud.model.FilesEntity;
 import com.mcloud.repository.FileRepository;
+import com.mcloud.service.DownloadFileService;
 import com.mcloud.service.ManagementFileService;
 import com.mcloud.service.UploadFileService;
 import com.mcloud.service.supportToolClass.FileManage;
@@ -31,7 +32,8 @@ public class FileController {
     FileRepository fileRepository;
     @Autowired
     ManagementFileService manageFileService;
-
+    @Autowired
+    DownloadFileService downloadFileService;
     @Resource(name="uploadFileServiceImpl")
     private UploadFileService uploadFileService;
 
@@ -148,8 +150,6 @@ public class FileController {
     public   ResponseEntity<byte[]>  download(HttpServletRequest request, @PathVariable("file.id")int fid,
                                            @PathVariable("file.fileName") String filename,
                                            ModelMap modelMap)throws Exception {
-        String trueFileName = filename;
-        int fileId = fid;
         //上传文件路径
         String path = request.getServletContext().getRealPath("download");
         //上传文件分块路径
@@ -168,6 +168,11 @@ public class FileController {
             filepathPart.mkdirs();
         }
 
+        //处理云文件下载与合并
+        downloadFileService.initDownloadFileServiceImpl(fid,pathPart,path);
+        downloadFileService.downloadCloudFilePart();
+        downloadFileService.getRealFile();
+
 
          /* 将文件下载下来*/
         HttpHeaders headers = new HttpHeaders();
@@ -177,8 +182,16 @@ public class FileController {
         headers.setContentDispositionFormData("attachment", downloadFielName);
         /*application/octet-stream ： 二进制流数据（最常见的文件下载）*/
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-         return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),
+        ResponseEntity<byte[]>  resEty = new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),
                 headers, HttpStatus.OK);
 
+        /*判断路径是否存在，如果存在就删除*/
+        if (filepathPart.exists()) {
+            FileManage.deleteDirectory(pathPart);
+        }
+        if (file.getParentFile().exists()) {
+            FileManage.deleteDirectory(path);
+        }
+        return resEty;
     }
 }
