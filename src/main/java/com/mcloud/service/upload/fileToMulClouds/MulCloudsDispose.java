@@ -55,19 +55,4 @@ public class MulCloudsDispose {
 
     }
 
-    /**
-     * 普通单线程测试耗时：  79575 ms
-     *
-     * @param args
-     */
-    public static void main(String[] args){
-        long startTime=System.currentTimeMillis();
-        String directory="D:\\Test\\split";
-        MulCloudsDispose mulCloudsDispose = new MulCloudsDispose();
-        mulCloudsDispose.getPartFilePath(directory);
-        mulCloudsDispose.uploadPartFileToClouds();
-        long endTime=System.currentTimeMillis(); //获取结束时间
-        System.out.println("程序运行时间： "+(endTime-startTime)+"ms");
-
-    }
 }

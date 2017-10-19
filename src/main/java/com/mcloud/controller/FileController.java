@@ -81,8 +81,9 @@ public class FileController {
 
             int fileSize = (int)file.getSize();
             uploadFileService.initUploadFile(path,pathPart,fileSize,description,filename,usrloginId);
-            uploadFileService.dealFileUpload();
             uploadFileService.saveFileInfoToDateBase();
+            uploadFileService.dealFileUpload();
+
 
             /*判断路径是否存在，如果存在就删除*/
             if (filepathPart.exists()) {

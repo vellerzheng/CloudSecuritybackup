@@ -1,11 +1,62 @@
 package com.mcloud.service.supportToolClass;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.IOUtils;
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 /**
  * Created by vellerzheng on 2017/10/2.
  */
 public class FileManage {
+    /**
+     * 获得文件的MD5
+     * @param filePath 文件路径
+     */
+    public static String getMD5ByFile(String filePath){
+        String md5=null;
+        try {
+            FileInputStream fis = new FileInputStream(filePath);
+            md5 = DigestUtils.md5Hex(IOUtils.toByteArray(fis));
+            IOUtils.closeQuietly(fis);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return md5;
+    }
+
+
+    /**
+     *  重命名文件
+     *  @param filePath 源文件路径
+     *  @param newFileName 新文件名(不包含后缀)
+     */
+    public static void renameFile(String filePath, String newFileName) {
+
+        File toBeRenamed = new File(filePath);
+        String suffix = toBeRenamed.getName().substring(toBeRenamed.getName().lastIndexOf(".") + 1);
+        String toFile =toBeRenamed.getParent()+File.separator+newFileName+"."+suffix;
+        //检查要重命名的文件是否存在，是否是文件
+        if (!toBeRenamed.exists() || toBeRenamed.isDirectory()) {
+
+            System.out.println("File does not exist: " + filePath);
+            return;
+        }
+
+        File newFile = new File(toFile);
+
+        //修改文件名
+        if (toBeRenamed.renameTo(newFile)) {
+            System.out.println("File has been renamed.");
+        } else {
+            System.out.println("Error renmaing file");
+        }
+
+    }
+
+
     /**
      * 删除文件，可以是文件或文件夹
      *
@@ -99,19 +150,6 @@ public class FileManage {
         }
     }
 
-    public static void main(String[] args) {
-//  // 删除单个文件
-//  String file = "c:/test/test.txt";
-//  DeleteFileUtil.deleteFile(file);
-//  System.out.println();
-        // 删除一个目录
-        String dir = "D:/home/web/upload/upload/files";
-//        FileManage.deleteDirectory(dir);
-//  System.out.println();
-//  // 删除文件
-//  dir = "c:/test/test0";
-//  DeleteFileUtil.delete(dir);
-    }
 
 
 }
