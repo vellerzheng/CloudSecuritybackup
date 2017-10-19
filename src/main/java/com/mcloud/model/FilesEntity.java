@@ -3,6 +3,7 @@ package com.mcloud.model;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -18,6 +19,7 @@ public class FilesEntity {
     private Date pubDate;
     private String size;
     private UsersEntity userByUserId;
+    private Collection<FilesHashEntity> HashFileIdById;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -103,5 +105,14 @@ public class FilesEntity {
 
     public void setUserByUserId(UsersEntity userByUserId) {
         this.userByUserId = userByUserId;
+    }
+
+    @OneToMany(mappedBy = "filesIdByFileId")
+    public Collection<FilesHashEntity> getHashFileIdById() {
+        return HashFileIdById;
+    }
+
+    public void setHashFileIdById(Collection<FilesHashEntity> hashFileIdById) {
+        HashFileIdById = hashFileIdById;
     }
 }
