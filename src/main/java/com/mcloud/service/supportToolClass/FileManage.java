@@ -64,7 +64,7 @@ public class FileManage {
      * 重命名文件，适用于md5文件名转换为真正的文件名。
      *
      */
-    public  static  String  md5FileNameToRealFilename(String filePath,String newFileName){
+    public  static  File  md5FileNameToRealFilename(String filePath,String newFileName){
 
         String suffix = newFileName.substring(newFileName.lastIndexOf(".") + 1);
         String sourceFilePath = filePath+"."+suffix;
@@ -74,7 +74,7 @@ public class FileManage {
         if (!toBeRenamed.exists() || toBeRenamed.isDirectory()) {
 
             System.out.println("File does not exist: " + filePath);
-            return filePath;
+            return toBeRenamed;
         }
 
         File newFile = new File(newFileNamePath);
@@ -82,10 +82,10 @@ public class FileManage {
         //修改文件名
         if (toBeRenamed.renameTo(newFile)) {
             System.out.println("File has been renamed.");
-            return newFileNamePath;
+            return newFile;
         } else {
             System.out.println("Error renmaing file");
-            return filePath;
+            return toBeRenamed;
         }
 
     }

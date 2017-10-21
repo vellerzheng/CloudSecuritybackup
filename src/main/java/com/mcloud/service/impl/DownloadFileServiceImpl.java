@@ -75,13 +75,13 @@ public class DownloadFileServiceImpl implements DownloadFileService{
     }
 
     @Override
-    public void getRealFile(){
+    public File getRealFile(){
         TransformDownloadFile transformFile =new TransformDownloadFile();
         transformFile.getPartFilePath(partFilePath);
         transformFile.mergeDownloadFile(realFilePath);
         /*需要修改上传文件命名*/
         String filePath = realFilePath +File.separator+filesHashEntity.getFileHash();
-        FileManage.md5FileNameToRealFilename(filePath,filesEntity.getFileName());
+        return FileManage.md5FileNameToRealFilename(filePath,filesEntity.getFileName());
     }
 
 

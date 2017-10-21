@@ -178,7 +178,7 @@ public class FileController {
         //处理云文件下载与合并
         downloadFileService.initDownloadFileServiceImpl(fid,pathPart,path);
         downloadFileService.downloadCloudFilePart();
-        downloadFileService.getRealFile();
+        File downLoadNewFile = downloadFileService.getRealFile();
 
 
          /* 将文件下载下来*/
@@ -189,7 +189,7 @@ public class FileController {
         headers.setContentDispositionFormData("attachment", downloadFielName);
         /*application/octet-stream ： 二进制流数据（最常见的文件下载）*/
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        ResponseEntity<byte[]>  resEty = new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),
+        ResponseEntity<byte[]>  resEty = new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(downLoadNewFile),
                 headers, HttpStatus.OK);
 
         /*判断路径是否存在，如果存在就删除*/
