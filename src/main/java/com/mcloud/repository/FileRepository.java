@@ -23,9 +23,15 @@ public interface FileRepository extends JpaRepository<FilesEntity,Integer> {
 
 
     @Query(value = "select  fs from FilesEntity fs where fs.userByUserId.id =:uid")
-    List<FilesEntity> findByFilesEntityEEndsWith(@Param("uid") int userId);
+    List<FilesEntity> findFilesEntityByUserIdEndsWith(@Param("uid") int userId);
 
     @Query("select fl from FilesEntity fl where fl.fileName =:qFileName")
     List<FilesEntity> findByFileNameEndsWith(@Param("qFileName") String fileName);
+
+    @Query("select fid from FilesEntity fid where  fid.id =:qId")
+    FilesEntity findByFilesEntityId(@Param("qId")int id);
+
+    @Query("select max(id) from FilesEntity")
+    int findLastIdFormFilesEntity();
 
 }

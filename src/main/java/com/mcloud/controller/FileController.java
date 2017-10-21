@@ -2,6 +2,7 @@ package com.mcloud.controller;
 
 import com.mcloud.model.FilesEntity;
 import com.mcloud.repository.FileRepository;
+import com.mcloud.repository.HashFileRepository;
 import com.mcloud.service.DownloadFileService;
 import com.mcloud.service.ManagementFileService;
 import com.mcloud.service.UploadFileService;
@@ -32,6 +33,8 @@ public class FileController {
     FileRepository fileRepository;
     @Autowired
     ManagementFileService manageFileService;
+    @Autowired
+    HashFileRepository hashFileRepository;
     @Autowired
     DownloadFileService downloadFileService;
     @Resource(name="uploadFileServiceImpl")
@@ -81,8 +84,8 @@ public class FileController {
 
             int fileSize = (int)file.getSize();
             uploadFileService.initUploadFile(path,pathPart,fileSize,description,filename,usrloginId);
-            uploadFileService.saveFileInfoToDateBase();
             uploadFileService.dealFileUpload();
+            uploadFileService.saveFileInfoToDateBase();
 
 
             /*判断路径是否存在，如果存在就删除*/
@@ -103,7 +106,7 @@ public class FileController {
     /* 查看所有文件*/
     @RequestMapping(value ="/clouds/filemanager/files/{id}", method = RequestMethod.GET)
     public String getFiles(@PathVariable("id") int id, ModelMap modelMap){
-        List<FilesEntity> fileList = fileRepository.findByFilesEntityEEndsWith(id);
+        List<FilesEntity> fileList = fileRepository.findFilesEntityByUserIdEndsWith(id);
         modelMap.addAttribute("loginId",id);
         modelMap.addAttribute("fileList",fileList);
         return "clouds/filemanager/files";
@@ -121,9 +124,12 @@ public class FileController {
     /*删除云文件及记录*/
     @RequestMapping(value = "/clouds/filemanager/files/delete/{file.id}",method = RequestMethod.GET)
     public String deleteFile(@PathVariable("file.id") int id){
-        manageFileService.initManagementFileService(id);
+        int hashFileId = hashFileRepository.findEntityByFileId(id).getId();
+        manageFileService.initManagementFileService(id, hashFileId);
         manageFileService.deleteCloudFile();
         int usrId=fileRepository.findOne(id).getUserByUserId().getId();
+        hashFileRepository.delete(hashFileId);
+        hashFileRepository.flush();
         fileRepository.delete(id);
         fileRepository.flush();
         return "redirect:/clouds/filemanager/files/"+usrId;

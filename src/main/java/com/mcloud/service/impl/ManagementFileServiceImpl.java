@@ -1,6 +1,8 @@
 package com.mcloud.service.impl;
 
+import com.mcloud.model.FilesHashEntity;
 import com.mcloud.repository.FileRepository;
+import com.mcloud.repository.HashFileRepository;
 import com.mcloud.service.ManagementFileService;
 import com.mcloud.yunData.aliyun.AliyunOSS;
 import com.mcloud.yunData.netease.Netease;
@@ -16,37 +18,46 @@ import org.springframework.stereotype.Service;
 @Service
 public class ManagementFileServiceImpl implements ManagementFileService {
 
-    private String fileName;
+  //  private String fileName;
     private int fileId;
     @Autowired
     private FileRepository fileRepository;
+    @Autowired
+    private HashFileRepository hashFileRepository;
+    private FilesHashEntity filesHashEntity;
 
+    /**
+     *  初始化
+     * @param fileId  为原文件的file_id
+     * @param hashFileId 为file_hash 表中的id;
+     */
     @Override
-    public void initManagementFileService(int fileId){
+    public void initManagementFileService(int fileId,int hashFileId){
         this.fileId = fileId;
-        this.fileName = fileRepository.findOne(fileId).getFileName();
+      //  this.fileName = fileRepository.findOne(fileId).getFileName();
+        this.filesHashEntity = hashFileRepository.findOne(hashFileId);
     }
 
     @Override
     public boolean deleteCloudFile() {
         AliyunOSS aliyun= new AliyunOSS();
-        String yunFilePath=fileName+"-0.dat";
+        String yunFilePath=filesHashEntity.getAliyunHash();
         aliyun.deleteFile(yunFilePath);
 
         Netease netease =new Netease();
-        String netsFilePath=fileName+"-1.dat";
+        String netsFilePath=filesHashEntity.getNeteaseHash();
         netease.deleteFile(netsFilePath);
 
         Qcloud qcloud = new Qcloud();
-        String dstCosFilePath = fileName+"-2.dat";
+        String dstCosFilePath =filesHashEntity.getQcloudHash();
         qcloud.deleteFile(dstCosFilePath);
 
         Qiniu qiniu = new Qiniu();
-        String qiniuYunFilePath=fileName+"-3.dat";
+        String qiniuYunFilePath=filesHashEntity.getQiniuHash();
         qiniu.deleteCloudFile(qiniuYunFilePath);
 
         Upyun upyun =new Upyun();
-        String upyunFilePath=fileName+"-4.dat";
+        String upyunFilePath=filesHashEntity.getUpyunHash();
         upyun.deleteYunFile(upyunFilePath);
 
         return true;

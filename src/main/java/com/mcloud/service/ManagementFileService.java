@@ -5,5 +5,5 @@ package com.mcloud.service;
  */
 public interface ManagementFileService {
     boolean deleteCloudFile();
-    void initManagementFileService(int fileId);
+    void initManagementFileService(int fileId,int hashFileId);
 }

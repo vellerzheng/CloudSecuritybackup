@@ -18,7 +18,7 @@ public class MulCloudsDispose {
 
     private List<String> subdirtylist;
 
-    public void getPartFilePath(String partFileDirectory){
+    public List<String> getPartFilePath(String partFileDirectory){
         File file =new File(partFileDirectory);
         File[] fileList=file.listFiles();
         subdirtylist = new ArrayList<String>();
@@ -28,6 +28,7 @@ public class MulCloudsDispose {
                 subdirtylist.add(fileList[i].getPath());
             }
         }
+        return subdirtylist;
     }
 
     public boolean uploadPartFileToClouds(){

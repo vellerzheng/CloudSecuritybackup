@@ -6,6 +6,8 @@ import org.apache.commons.io.IOUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by vellerzheng on 2017/10/2.
@@ -29,31 +31,81 @@ public class FileManage {
 
 
     /**
-     *  重命名文件
+     *  重命名文件,适用于上传文件名的修改为md5
      *  @param filePath 源文件路径
      *  @param newFileName 新文件名(不包含后缀)
      */
-    public static void renameFile(String filePath, String newFileName) {
+    public static String renameFile(String filePath, String newFileName) {
 
         File toBeRenamed = new File(filePath);
         String suffix = toBeRenamed.getName().substring(toBeRenamed.getName().lastIndexOf(".") + 1);
-        String toFile =toBeRenamed.getParent()+File.separator+newFileName+"."+suffix;
+        String newFileNamePath =toBeRenamed.getParent()+File.separator+newFileName+"."+suffix;
         //检查要重命名的文件是否存在，是否是文件
         if (!toBeRenamed.exists() || toBeRenamed.isDirectory()) {
 
             System.out.println("File does not exist: " + filePath);
-            return;
+            return filePath;
         }
 
-        File newFile = new File(toFile);
+        File newFile = new File(newFileNamePath);
 
         //修改文件名
         if (toBeRenamed.renameTo(newFile)) {
             System.out.println("File has been renamed.");
+            return newFileNamePath;
         } else {
             System.out.println("Error renmaing file");
+            return filePath;
         }
 
+    }
+
+    /**
+     * 重命名文件，适用于md5文件名转换为真正的文件名。
+     *
+     */
+    public  static  String  md5FileNameToRealFilename(String filePath,String newFileName){
+
+        String suffix = newFileName.substring(newFileName.lastIndexOf(".") + 1);
+        String sourceFilePath = filePath+"."+suffix;
+        File toBeRenamed = new File(sourceFilePath);
+        String newFileNamePath =toBeRenamed.getParent()+File.separator+newFileName;
+        //检查要重命名的文件是否存在，是否是文件
+        if (!toBeRenamed.exists() || toBeRenamed.isDirectory()) {
+
+            System.out.println("File does not exist: " + filePath);
+            return filePath;
+        }
+
+        File newFile = new File(newFileNamePath);
+
+        //修改文件名
+        if (toBeRenamed.renameTo(newFile)) {
+            System.out.println("File has been renamed.");
+            return newFileNamePath;
+        } else {
+            System.out.println("Error renmaing file");
+            return filePath;
+        }
+
+    }
+
+    /**
+     * 获取文件目录下所有的文件路径
+     * @param partFileDirectory 文件夹路径
+     * @return
+     */
+    public static List<String> getPartFileName(String partFileDirectory){
+        File file =new File(partFileDirectory);
+        File[] fileList=file.listFiles();
+        List<String>  subdirtylist = new ArrayList<String>();
+
+        for(int i = 0; fileList.length > i; i++){
+            if(fileList[i].isFile()){
+                subdirtylist.add(fileList[i].getName());
+            }
+        }
+        return subdirtylist;
     }
 
 

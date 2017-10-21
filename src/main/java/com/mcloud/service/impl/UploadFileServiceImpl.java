@@ -1,10 +1,13 @@
 package com.mcloud.service.impl;
 
 import com.mcloud.model.FilesEntity;
+import com.mcloud.model.FilesHashEntity;
 import com.mcloud.model.UsersEntity;
 import com.mcloud.repository.FileRepository;
+import com.mcloud.repository.HashFileRepository;
 import com.mcloud.repository.UserRepository;
 import com.mcloud.service.UploadFileService;
+import com.mcloud.service.supportToolClass.FileManage;
 import com.mcloud.service.upload.deliverFile.PartitionFile;
 import com.mcloud.service.upload.fileToMulClouds.MulCloudsDispose;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,7 @@ public class UploadFileServiceImpl implements UploadFileService{
     private String path;
     private String pathPart;
     private String filename;
+    private String hashFileName;
     private String description;
     private int usrId;
     private int fileSize;
@@ -33,6 +37,8 @@ public class UploadFileServiceImpl implements UploadFileService{
     private FileRepository fileRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private HashFileRepository hashFileRepository;
 
     @Override
     public void initUploadFile(String path,String pathPart,int fileSize,String description,String filename,int usrEty){
@@ -48,14 +54,17 @@ public class UploadFileServiceImpl implements UploadFileService{
     @Override
     public void dealFileUpload() {
 
-        /* 修改文件名为hash值*/
 
 
-            /* 文件分片*/
         int fs = fileSize/1024/1024/4;     //  unit  MB  , each file after splited
-         String srcPath =path+"\\"+filename;
+        String srcPath =path+"\\"+filename;
+                /* 修改文件名为文件的hash值*/
+        String newFileName =userRepository.findUsersEntityById(usrId).getUsername()+FileManage.getMD5ByFile(srcPath);
+        String newFileNamePath = FileManage.renameFile(srcPath,newFileName);
+        this.hashFileName = newFileName;
+                /* 文件分片*/
         PartitionFile partitionFile= new PartitionFile();
-        boolean spt = partitionFile.split(srcPath,fs,pathPart);
+        boolean spt = partitionFile.split(newFileNamePath,fs,pathPart);
 
            // 多云上传
         if(spt) {
@@ -67,7 +76,7 @@ public class UploadFileServiceImpl implements UploadFileService{
 
     @Override
     public void saveFileInfoToDateBase() {
-          List<FilesEntity> allUserFileEty= fileRepository.findByFilesEntityEEndsWith(usrId);
+          List<FilesEntity> allUserFileEty= fileRepository.findFilesEntityByUserIdEndsWith(usrId);
           for(FilesEntity uty:allUserFileEty){
               if(uty.getFileName().equals(filename))
             return;
@@ -97,6 +106,43 @@ public class UploadFileServiceImpl implements UploadFileService{
         UsersEntity usEnty= userRepository.findUsersEntityById(usrId);
         fsty.setUserByUserId(usEnty);
         fileRepository.saveAndFlush(fsty);
+        int lastId = fileRepository.findLastIdFormFilesEntity();
+        FileHashInteractionSql fHashInter = new FileHashInteractionSql(fileRepository.findOne(lastId),pathPart,hashFileName);
+        fHashInter.saveHashFileNameToHashSql();
+    }
+
+    public class FileHashInteractionSql {
+        private  int fileId;
+        private FilesEntity filesEntity;
+        private  String pathPart;
+        private  String fileHashName;
+
+
+
+        public FileHashInteractionSql(FilesEntity filesEntity,String pathPart,String fileHashName){
+            this.filesEntity =filesEntity;
+            this.pathPart =pathPart;
+            this.fileHashName =fileHashName;
+        }
+
+        public  void saveHashFileNameToHashSql(){
+            List<String> partFileNamePath = FileManage.getPartFileName(pathPart);
+            FilesHashEntity filesHashEntity = new FilesHashEntity();
+            filesHashEntity.setFileHash(fileHashName);
+            if(partFileNamePath.size()==5) {
+                filesHashEntity.setAliyunHash(partFileNamePath.get(0));
+                filesHashEntity.setNeteaseHash(partFileNamePath.get(1));
+                filesHashEntity.setQcloudHash(partFileNamePath.get(2));
+                filesHashEntity.setQiniuHash(partFileNamePath.get(3));
+                filesHashEntity.setUpyunHash(partFileNamePath.get(4));
+            }
+      //      FilesEntity fty =fileRepository.findOne(fileId);
+            filesHashEntity.setFilesIdByFileId(filesEntity);
+            hashFileRepository.saveAndFlush(filesHashEntity);
+        }
+
     }
 
 }
+
+

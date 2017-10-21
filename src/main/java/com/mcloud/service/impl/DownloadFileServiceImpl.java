@@ -1,8 +1,12 @@
 package com.mcloud.service.impl;
 
+import com.mcloud.model.FilesEntity;
+import com.mcloud.model.FilesHashEntity;
 import com.mcloud.repository.FileRepository;
+import com.mcloud.repository.HashFileRepository;
 import com.mcloud.service.DownloadFileService;
 import com.mcloud.service.download.TransformDownloadFile;
+import com.mcloud.service.supportToolClass.FileManage;
 import com.mcloud.yunData.aliyun.AliyunOSS;
 import com.mcloud.yunData.netease.Netease;
 import com.mcloud.yunData.qcloud.Qcloud;
@@ -25,11 +29,17 @@ public class DownloadFileServiceImpl implements DownloadFileService{
     private int fileId;
     @Autowired
     private FileRepository fileRepository;
+    private FilesEntity filesEntity;
+    @Autowired
+    private HashFileRepository hashFileRepository;
+    private FilesHashEntity filesHashEntity;
+
 
 
     public void initDownloadFileServiceImpl(int fileId,String partFilePath,String realFilePath){
         this.fileId = fileId;
-        this.fileName = fileRepository.findOne(fileId).getFileName();
+        this.filesHashEntity= hashFileRepository.findEntityByFileId(fileId);
+        this.filesEntity = fileRepository.findOne(fileId);
         this.partFilePath = partFilePath;
         this.realFilePath = realFilePath;
     }
@@ -38,19 +48,19 @@ public class DownloadFileServiceImpl implements DownloadFileService{
     @Override
     public boolean downloadCloudFilePart() {
         AliyunOSS aliyun= new AliyunOSS();
-        String yunFilePath=fileName+"-0.dat";
+        String yunFilePath=filesHashEntity.getAliyunHash();
         aliyun.downloadFile(yunFilePath, partFilePath);
 
         Netease netease =new Netease();
-        String netsFilePath=fileName+"-1.dat";
+        String netsFilePath=filesHashEntity.getNeteaseHash();
         netease.downFile(netsFilePath,partFilePath);
 
         Qcloud qcloud = new Qcloud();
-        String dstCosFilePath = fileName+"-2.dat";
+        String dstCosFilePath = filesHashEntity.getQcloudHash();
         qcloud.downFile(dstCosFilePath,partFilePath);
 
         Qiniu qiniu = new Qiniu();
-        String yunFileName=fileName+"-3.dat";
+        String yunFileName=filesHashEntity.getQiniuHash();
         try {
             qiniu.downLoadPrivateFile(yunFileName,partFilePath);
         } catch (IOException e) {
@@ -58,7 +68,7 @@ public class DownloadFileServiceImpl implements DownloadFileService{
         }
 
         Upyun upyun =new Upyun();
-        String upyunFilePath=fileName+"-4.dat";
+        String upyunFilePath=filesHashEntity.getUpyunHash();
         String upyunPartFilePath = partFilePath+ File.separator+upyunFilePath;
         upyun.downloadFile(upyunFilePath,upyunPartFilePath);
         return true;
@@ -69,6 +79,9 @@ public class DownloadFileServiceImpl implements DownloadFileService{
         TransformDownloadFile transformFile =new TransformDownloadFile();
         transformFile.getPartFilePath(partFilePath);
         transformFile.mergeDownloadFile(realFilePath);
+        /*需要修改上传文件命名*/
+        String filePath = realFilePath +File.separator+filesHashEntity.getFileHash();
+        FileManage.md5FileNameToRealFilename(filePath,filesEntity.getFileName());
     }
 
 
