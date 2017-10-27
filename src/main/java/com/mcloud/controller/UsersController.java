@@ -7,6 +7,7 @@ import com.mcloud.repository.UserRepository;
 import com.mcloud.service.users.UserLogin;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 /**
  * Created by vellerzheng on 2017/10/2.
@@ -46,6 +48,8 @@ public class UsersController {
                 return "redirect:/clouds/users/register";
             }
         }
+        String pwd = new SimpleHash("MD5",usersEntity.getPassword(),usersEntity.getUsername(),2).toHex();
+        usersEntity.setPassword(pwd);
         System.out.println(usersEntity.getUsername());
         usersEntity.setUserRoleIdByRoleId(roleRepository.findOne(3));
         userRepository.saveAndFlush(usersEntity);
@@ -56,19 +60,12 @@ public class UsersController {
     public String getLogin(){ return "clouds/users/login"; }
 
     @RequestMapping(value = "/clouds/users/login", method = RequestMethod.POST)
-    public String  authLoagin(HttpServletRequest request, ModelMap modelMap, @ModelAttribute("login") UserLogin userLogin){
-/*        List<UsersEntity> userList=userRepository.findAll();
+    public String  authLoagin(HttpServletRequest request, HttpSession session, ModelMap modelMap, @ModelAttribute("login") UserLogin userLogin){
 
-        for (UsersEntity uty: userList) {
-            if(uty.getUsername().equals(userLogin.getUsername()) && uty.getPassword().equals(userLogin.getPassword())){
-                modelMap.addAttribute("loginUser",uty);
-                return "clouds/welcome";
-            }
-        }*/
-
-                  /*         shiro 实现登陆 */
-        UsernamePasswordToken token = new UsernamePasswordToken(userLogin.getUsername(),userLogin.getPassword());
         Subject subject = SecurityUtils.getSubject();
+        String checkpwd = new SimpleHash("MD5",userLogin.getPassword(),userLogin.getUsername(),2).toHex();
+        UsernamePasswordToken token = new UsernamePasswordToken(userLogin.getUsername(),checkpwd);
+        token.setRememberMe(true);
 
         //如果获取不到用户名就是登录失败，但登录失败的话，会直接抛出异常
         subject.login(token);
@@ -95,10 +92,12 @@ public class UsersController {
 
         UsersEntity userlogin = userRepository.findByUsernameEndsWith(username);
 
-        if (!oldPassword.equals(userlogin.getPassword())) {
+        String oldPwdMd5= new SimpleHash("MD5",oldPassword,userlogin.getUsername(),2).toHex();
+        String newpwd = new SimpleHash("MD5",password1,userlogin.getUsername(),2).toHex();
+        if (!oldPwdMd5.equals(userlogin.getPassword())) {
             throw new Exception("旧密码不正确");
         } else {
-            userlogin.setPassword(password1);
+            userlogin.setPassword(newpwd);
             userRepository.updateByName(username, userlogin.getPassword(),userlogin.getId());
         }
 

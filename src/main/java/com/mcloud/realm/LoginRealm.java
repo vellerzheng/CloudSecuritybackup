@@ -9,6 +9,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -61,11 +62,12 @@ public class LoginRealm extends AuthorizingRealm{
      * 在这个方法中，进行身份验证
      *         login时调用
      */
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authctoken) throws AuthenticationException {
+        UsernamePasswordToken token =(UsernamePasswordToken) authctoken;
         //用户名
-        String username = (String) token.getPrincipal();
+        String username = token.getUsername();
         //密码
-        String password = new String((char[])token.getCredentials());
+        String password = new String((char[])authctoken.getCredentials());
 
         UsersEntity userLogin = null;
         try {
@@ -81,9 +83,11 @@ public class LoginRealm extends AuthorizingRealm{
             //密码错误
             throw new IncorrectCredentialsException();
         }
-
+        Object principal=token.getUsername();
+        String credentials =userLogin.getPassword();
+        ByteSource credentialsSalt=ByteSource.Util.bytes(userLogin.getUsername());
         //身份验证通过,返回一个身份信息
-        AuthenticationInfo aInfo = new SimpleAuthenticationInfo(username,password,getName());
+        AuthenticationInfo aInfo = new SimpleAuthenticationInfo(principal,credentials,credentialsSalt,getName());
 
         return aInfo;
     }

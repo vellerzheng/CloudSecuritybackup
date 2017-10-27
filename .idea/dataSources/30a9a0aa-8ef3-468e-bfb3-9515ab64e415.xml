@@ -6,167 +6,193 @@
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
-    <schema id="3" parent="1" name="clean_blog"/>
-    <schema id="4" parent="1" name="information_schema"/>
-    <schema id="5" parent="1" name="javaStu"/>
-    <schema id="6" parent="1" name="mysql"/>
-    <schema id="7" parent="1" name="oilCheck"/>
-    <schema id="8" parent="1" name="performance_schema"/>
-    <schema id="9" parent="1" name="springdemo"/>
-    <schema id="10" parent="1" name="sys"/>
-    <schema id="11" parent="1" name="Web_vellerzheng"/>
-    <schema id="12" parent="1" name="examination_system"/>
-    <table id="13" parent="2" name="files"/>
-    <table id="14" parent="2" name="files_hash"/>
-    <table id="15" parent="2" name="user_auths"/>
-    <table id="16" parent="2" name="users"/>
-    <column id="17" parent="13" name="id">
+    <schema id="3" parent="1" name="information_schema"/>
+    <schema id="4" parent="1" name="mysql"/>
+    <schema id="5" parent="1" name="oilCheck"/>
+    <schema id="6" parent="1" name="performance_schema"/>
+    <schema id="7" parent="1" name="springdemo"/>
+    <schema id="8" parent="1" name="sys"/>
+    <schema id="9" parent="1" name="Web_vellerzheng"/>
+    <schema id="10" parent="1" name="examination_system"/>
+    <table id="11" parent="2" name="files"/>
+    <table id="12" parent="2" name="files_hash"/>
+    <table id="13" parent="2" name="role"/>
+    <table id="14" parent="2" name="user_auths"/>
+    <table id="15" parent="2" name="users"/>
+    <column id="16" parent="11" name="id">
       <Position>1</Position>
       <DataType>int(16)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="18" parent="13" name="description">
+    <column id="17" parent="11" name="description">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="19" parent="13" name="file_name">
+    <column id="18" parent="11" name="file_name">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="20" parent="13" name="user_id">
+    <column id="19" parent="11" name="user_id">
       <Position>5</Position>
       <DataType>int(16) unsigned|0</DataType>
     </column>
-    <column id="21" parent="13" name="pub_date">
+    <column id="20" parent="11" name="pub_date">
       <Position>6</Position>
       <DataType>date|0</DataType>
     </column>
-    <column id="22" parent="13" name="size">
+    <column id="21" parent="11" name="size">
       <Position>4</Position>
       <DataType>varchar(30)|0</DataType>
     </column>
-    <index id="23" parent="13" name="user_id">
+    <index id="22" parent="11" name="user_id">
       <ColNames>user_id</ColNames>
     </index>
-    <key id="24" parent="13" name="PRIMARY">
+    <key id="23" parent="11" name="PRIMARY">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="25" parent="13" name="FKdgr5hx49828s5vhjo1s8q3wdp">
+    <foreign-key id="24" parent="11" name="FKdgr5hx49828s5vhjo1s8q3wdp">
       <ColNames>user_id</ColNames>
       <RefSchemaName>cloud_secureStorage</RefSchemaName>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="26" parent="14" name="id">
+    <column id="25" parent="12" name="id">
       <Position>1</Position>
       <DataType>int(16)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="27" parent="14" name="file_id">
+    <column id="26" parent="12" name="file_id">
       <Position>2</Position>
       <DataType>int(16)|0</DataType>
     </column>
-    <column id="28" parent="14" name="file_hash">
+    <column id="27" parent="12" name="file_hash">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="29" parent="14" name="aliyun_hash">
+    <column id="28" parent="12" name="aliyun_hash">
       <Position>4</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="30" parent="14" name="netease_hash">
+    <column id="29" parent="12" name="netease_hash">
       <Position>5</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="31" parent="14" name="qcloud_hash">
+    <column id="30" parent="12" name="qcloud_hash">
       <Position>6</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="32" parent="14" name="qiniu_hash">
+    <column id="31" parent="12" name="qiniu_hash">
       <Position>7</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="33" parent="14" name="upyun_hash">
+    <column id="32" parent="12" name="upyun_hash">
       <Position>8</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <index id="34" parent="14" name="file_id">
+    <index id="33" parent="12" name="file_id">
       <ColNames>file_id</ColNames>
     </index>
-    <key id="35" parent="14" name="PRIMARY">
+    <key id="34" parent="12" name="PRIMARY">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="36" parent="15" name="id">
+    <foreign-key id="35" parent="12" name="FK8qo69ay8hhnw08aiwp8y6tbif">
+      <ColNames>file_id</ColNames>
+      <RefSchemaName>cloud_secureStorage</RefSchemaName>
+      <RefTableName>files</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="36" parent="13" name="roleId">
+      <Position>1</Position>
+      <DataType>int(16)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="37" parent="13" name="roleName">
+      <Position>2</Position>
+      <DataType>varchar(20)|0</DataType>
+    </column>
+    <column id="38" parent="13" name="permissions">
+      <Position>3</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <key id="39" parent="13" name="PRIMARY">
+      <ColNames>roleId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="40" parent="14" name="id">
       <Position>1</Position>
       <DataType>int(16) unsigned|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="37" parent="15" name="user_id">
+    <column id="41" parent="14" name="user_id">
       <Position>2</Position>
       <DataType>int(16) unsigned|0</DataType>
     </column>
-    <column id="38" parent="15" name="identifier">
+    <column id="42" parent="14" name="identifier">
       <Position>3</Position>
       <DataType>varchar(30)|0</DataType>
     </column>
-    <column id="39" parent="15" name="identity_type">
+    <column id="43" parent="14" name="identity_type">
       <Position>4</Position>
       <DataType>varchar(30)|0</DataType>
     </column>
-    <column id="40" parent="15" name="credential">
+    <column id="44" parent="14" name="credential">
       <Position>5</Position>
       <DataType>varchar(30)|0</DataType>
     </column>
-    <index id="41" parent="15" name="FKl35o65ovs04mariyxjj10ack1">
+    <index id="45" parent="14" name="FKl35o65ovs04mariyxjj10ack1">
       <ColNames>user_id</ColNames>
     </index>
-    <key id="42" parent="15" name="PRIMARY">
+    <key id="46" parent="14" name="PRIMARY">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="43" parent="15" name="FKl35o65ovs04mariyxjj10ack1">
+    <foreign-key id="47" parent="14" name="FKl35o65ovs04mariyxjj10ack1">
       <ColNames>user_id</ColNames>
       <RefSchemaName>cloud_secureStorage</RefSchemaName>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="44" parent="16" name="id">
+    <column id="48" parent="15" name="id">
       <Position>1</Position>
       <DataType>int(16) unsigned|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="45" parent="16" name="username">
+    <column id="49" parent="15" name="username">
       <Position>2</Position>
       <DataType>varchar(30)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="46" parent="16" name="password">
+    <column id="50" parent="15" name="password">
       <Position>3</Position>
       <DataType>varchar(30)|0</DataType>
     </column>
-    <column id="47" parent="16" name="email">
+    <column id="51" parent="15" name="email">
       <Position>4</Position>
       <DataType>varchar(30)|0</DataType>
     </column>
-    <column id="48" parent="16" name="phone">
+    <column id="52" parent="15" name="phone">
       <Position>5</Position>
       <DataType>varchar(30)|0</DataType>
     </column>
-    <index id="49" parent="16" name="username">
+    <column id="53" parent="15" name="roleId">
+      <Position>6</Position>
+      <DataType>int(16)|0</DataType>
+    </column>
+    <index id="54" parent="15" name="username">
       <ColNames>username</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="50" parent="16" name="PRIMARY">
+    <key id="55" parent="15" name="PRIMARY">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="51" parent="16" name="username">
+    <key id="56" parent="15" name="username">
       <ColNames>username</ColNames>
       <UnderlyingIndexName>username</UnderlyingIndexName>
     </key>
