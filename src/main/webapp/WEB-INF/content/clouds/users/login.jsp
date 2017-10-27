@@ -1,6 +1,12 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%--
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
+--%>
+
 
 <!DOCTYPE html>
 <html>
@@ -17,6 +23,12 @@
     <script src="/js/jquery-1.11.2.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <title>Login</title>
+
+    <script>
+    function reloadValidateCode(){
+    $("#validateCodeImg").attr("src","/validateCode?data=" + new Date() + Math.floor(Math.random()*24));
+    }
+    </script>
 
     <script type="text/javascript">
 
@@ -56,6 +68,7 @@
         background: url("/images/ava/loginBg.jpg");
     }
     </style>
+
 </head>
 
 <body>
@@ -73,6 +86,11 @@
                     <label for="password">PassWord:</label>
                     <input type="text" class="from-control" id ="password" name="password" placeholder="Enter PassWord:" onmouseover="mover();" />
                 </div>
+ <%--              <div >
+                    <li>验证码：<input type="text" name="validateCode" />
+                        <img id="validateCodeImg" src="/validateCode"/>
+                        <a href="#" onclick="javascript:reloadValidateCode();">看不清？</a></li>
+                </div>--%>
                 <div class="form-group">
                     <button type="submit" class="btn btn-sm btn-success">登录</button>
                 </div>

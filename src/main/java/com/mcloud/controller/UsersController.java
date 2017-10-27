@@ -4,6 +4,7 @@ import com.mcloud.model.UsersEntity;
 import com.mcloud.repository.RoleRepository;
 import com.mcloud.repository.UserRegisterRepository;
 import com.mcloud.repository.UserRepository;
+import com.mcloud.service.supportToolClass.shiro.verificationCode.ValidateCode;
 import com.mcloud.service.users.UserLogin;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -16,8 +17,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.List;
 /**
  * Created by vellerzheng on 2017/10/2.
@@ -61,6 +67,12 @@ public class UsersController {
 
     @RequestMapping(value = "/clouds/users/login", method = RequestMethod.POST)
     public String  authLoagin(HttpServletRequest request, HttpSession session, ModelMap modelMap, @ModelAttribute("login") UserLogin userLogin){
+        // 验证码处理
+/*        String code = (String) session.getAttribute("validateCode");
+        String submitCode = WebUtils.getCleanParam(request, "validateCode");
+        if (StringUtils.isEmpty(submitCode) || !StringUtils.equals(code,submitCode.toLowerCase())) {
+            return "redirect:/";
+        }*/
 
         Subject subject = SecurityUtils.getSubject();
         String checkpwd = new SimpleHash("MD5",userLogin.getPassword(),userLogin.getUsername(),2).toHex();
@@ -87,6 +99,7 @@ public class UsersController {
     // 本账户密码重置
     @RequestMapping(value = "/clouds/users/passwordReset/update", method = {RequestMethod.POST})
     public String passwordRest(String oldPassword, String password1) throws Exception {
+
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
 
@@ -105,6 +118,23 @@ public class UsersController {
     }
 
 
+    /**
+     * 生成验证码
+     * @param request
+     * @param response
+     * @throws IOException
+     */
+    @RequestMapping(value = "/validateCode")
+    public void validateCode(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        response.setHeader("Cache-Control", "no-cache");
+        String verifyCode = ValidateCode.generateTextCode(ValidateCode.TYPE_NUM_ONLY,4,null);
+        request.getSession().setAttribute("validateCode", verifyCode);
+        response.setContentType("image/jpeg");
+        BufferedImage bim = ValidateCode.generateImageCode(verifyCode, 90, 30, 3, true,
+                Color.WHITE, Color.BLACK, null);
+        ImageIO.write(bim, "JPEG", response.getOutputStream());
+    }
 
 
 }
