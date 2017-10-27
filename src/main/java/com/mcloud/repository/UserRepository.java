@@ -25,4 +25,9 @@ public interface UserRepository extends JpaRepository<UsersEntity,Integer> {
 
     @Query("select usr from UsersEntity usr where usr.id =:qUid")
     UsersEntity  findUsersEntityById(@Param("qUid") int uid);
+
+    @Modifying
+    @Transactional
+    @Query("update  UsersEntity us set us.username =:qUserName, us.password=:qPassword where us.id =:qId")
+    void updateByName(@Param("qUserName")String userName, @Param("qPassword") String password,@Param("qId") Integer id);
 }

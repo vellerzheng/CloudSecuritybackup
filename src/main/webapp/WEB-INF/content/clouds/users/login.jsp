@@ -2,7 +2,7 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -14,7 +14,8 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-
+    <script src="/js/jquery-1.11.2.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
     <title>Login</title>
 
     <script type="text/javascript">
@@ -61,7 +62,7 @@
 <div class="container col-md-8 col-sm-offset-2 text-center">
     <table class="table table-bordered table-striped">
         <tr>
-            <form:form id="loginForm" action="/clouds/users/login/auth" onsubmit="return check_submit();" modelAttribute="login"  method="post">
+            <form:form id="loginForm" action="/clouds/users/login" onsubmit="return check_submit();" modelAttribute="login"  method="post">
                 <h2 class="form-signin-heading">请登录</h2>
                 <hr/>
                 <div class="form-group">
@@ -103,10 +104,6 @@
     </table>
 
 </div>
-<!--JQuerry 文件。 务必在bootstrap.min.js 之前引入-->
-<script src="//cdn.boot.css.com/jquery/1.11.3/jquery.min.js"></script>
-<!-- 最新的Bootstrap 核心JavaScript 文件-->
-<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 </body>
 

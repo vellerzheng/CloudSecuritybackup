@@ -1,9 +1,13 @@
 package com.mcloud.controller;
 
 import com.mcloud.model.UsersEntity;
+import com.mcloud.repository.RoleRepository;
 import com.mcloud.repository.UserRegisterRepository;
 import com.mcloud.repository.UserRepository;
 import com.mcloud.service.users.UserLogin;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,17 +27,19 @@ public class UsersController {
     UserRepository userRepository;
     @Autowired
     UserRegisterRepository userRegisterRepository;
+    @Autowired
+    RoleRepository roleRepository;
 
     @RequestMapping(value = "/clouds/users/register", method = RequestMethod.GET)
     public String getRegister() {
         return "clouds/users/register";
     }
 
-    @RequestMapping(value = "/clouds/users/register/addP", method = RequestMethod.POST)
-    public String addUserPost(@ModelAttribute("userRegister") UsersEntity usersEntity){
+    @RequestMapping(value = "/clouds/users/register", method = RequestMethod.POST)
+    public String addUserPost(@ModelAttribute("usersRegister") UsersEntity usersEntity){
         List<UsersEntity> userList=userRepository.findAll();
         for (UsersEntity uty: userList) {
-            if(!usersEntity.getEmail().isEmpty() &&!uty.getUsername().equals(usersEntity.getUsername())&&!uty.getEmail().equals(usersEntity.getEmail())
+            if(!(usersEntity==null) &&!uty.getUsername().equals(usersEntity.getUsername())&&!uty.getEmail().equals(usersEntity.getEmail())
                     &&!uty.getPhone().equals(usersEntity.getPhone())){
 
             }else{
@@ -41,43 +47,65 @@ public class UsersController {
             }
         }
         System.out.println(usersEntity.getUsername());
+        usersEntity.setUserRoleIdByRoleId(roleRepository.findOne(3));
         userRepository.saveAndFlush(usersEntity);
-        return "clouds/welcome";
+        return "redirect:/clouds/users/login";
     }
 
     @RequestMapping(value ="/clouds/users/login",method = RequestMethod.GET)
     public String getLogin(){ return "clouds/users/login"; }
 
-    @RequestMapping(value = "/clouds/users/login/auth", method = RequestMethod.POST)
+    @RequestMapping(value = "/clouds/users/login", method = RequestMethod.POST)
     public String  authLoagin(HttpServletRequest request, ModelMap modelMap, @ModelAttribute("login") UserLogin userLogin){
-        List<UsersEntity> userList=userRepository.findAll();
+/*        List<UsersEntity> userList=userRepository.findAll();
 
         for (UsersEntity uty: userList) {
             if(uty.getUsername().equals(userLogin.getUsername()) && uty.getPassword().equals(userLogin.getPassword())){
                 modelMap.addAttribute("loginUser",uty);
                 return "clouds/welcome";
             }
-        }
+        }*/
 
-
-
-/*         shiro 实现登陆 */
-/*
+                  /*         shiro 实现登陆 */
         UsernamePasswordToken token = new UsernamePasswordToken(userLogin.getUsername(),userLogin.getPassword());
         Subject subject = SecurityUtils.getSubject();
 
         //如果获取不到用户名就是登录失败，但登录失败的话，会直接抛出异常
         subject.login(token);
 
-        if (subject.hasRole("usr")) {
+        if (subject.hasRole("user")) {
             UsersEntity uty = userRepository.findByUsernameEndsWith(userLogin.getUsername());
             modelMap.addAttribute("loginUser",uty);
-            return "redirect:/clouds/welcome";
+            return "clouds/welcome";
         } else if (subject.hasRole("admin")) {
-            return "redirect:/clouds/users/admin/admin";
+            UsersEntity utyAdmin = userRepository.findByUsernameEndsWith(userLogin.getUsername());
+            modelMap.addAttribute("loginUser",utyAdmin);
+            return "clouds/welcome";
         }
-*/
 
         return "redirect:/clouds/users/login";
     }
+
+
+    // 本账户密码重置
+    @RequestMapping(value = "/clouds/users/passwordReset/update", method = {RequestMethod.POST})
+    public String passwordRest(String oldPassword, String password1) throws Exception {
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipal();
+
+        UsersEntity userlogin = userRepository.findByUsernameEndsWith(username);
+
+        if (!oldPassword.equals(userlogin.getPassword())) {
+            throw new Exception("旧密码不正确");
+        } else {
+            userlogin.setPassword(password1);
+            userRepository.updateByName(username, userlogin.getPassword(),userlogin.getId());
+        }
+
+        return "redirect:/clouds/users/logout";
+    }
+
+
+
+
 }

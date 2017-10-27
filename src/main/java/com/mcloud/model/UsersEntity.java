@@ -16,8 +16,10 @@ public class UsersEntity {
     private String phone;
     private Collection<FilesEntity> filesById;
     private Collection<UserAuthsEntity> authsById;
+    private RoleEntity userRoleIdByRoleId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     public int getId() {
         return id;
@@ -109,5 +111,15 @@ public class UsersEntity {
 
     public void setAuthsById(Collection<UserAuthsEntity> authsById) {
         this.authsById = authsById;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "roleId", referencedColumnName = "roleId")
+    public RoleEntity getUserRoleIdByRoleId() {
+        return userRoleIdByRoleId;
+    }
+
+    public void setUserRoleIdByRoleId(RoleEntity userRoleIdByRoleId) {
+        this.userRoleIdByRoleId = userRoleIdByRoleId;
     }
 }

@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<!DOCTYPE html>
 <title>Cloud Storage </title>
 <!-- [endif] -->
 <html lang="zh-CN">
 <head>
+
+
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
@@ -13,6 +15,8 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="/js/jquery-1.11.2.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
 
 
     <title>文件上传</title>
@@ -51,6 +55,8 @@
 
 </head>
 <body>
+<!-- 顶栏 -->
+<jsp:include page="/clouds/users/top"></jsp:include>
 <div class="container col-md-8 col-sm-offset-2 text-center">
 
     <table class="table table-bordered table-striped">
@@ -91,10 +97,7 @@
 
     </table>
 </div>
-<!--JQuerry 文件。 务必在bootstrap.min.js 之前引入-->
-<script src="//cdn.boot.css.com/jquery/1.11.3/jquery.min.js"></script>
-<!-- 最新的Bootstrap 核心JavaScript 文件-->
-<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
 
 </body>
 </html>

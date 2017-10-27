@@ -1,14 +1,19 @@
 package com.mcloud.realm;
 
-import com.mcloud.service.UserLoginService;
-import com.mcloud.service.users.UserLogin;
+import com.mcloud.model.RoleEntity;
+import com.mcloud.model.UsersEntity;
+import com.mcloud.repository.RoleRepository;
+import com.mcloud.repository.UserRepository;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by vellerzheng on 2017/10/13.
@@ -18,11 +23,11 @@ import javax.annotation.Resource;
 @Component
 public class LoginRealm extends AuthorizingRealm{
 
-/*    @Resource(name = "userloginServiceImpl")
-    private UserloginService userloginService;*/
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
-    @Resource(name="userLoginServiceImpl")
-    private UserLoginService userLoginService;
 
     /**
      * 获取身份信息，我们可以在这个方法中，从数据库获取该用户的权限和角色信息
@@ -30,27 +35,26 @@ public class LoginRealm extends AuthorizingRealm{
      */
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
-/*        String username = (String) getAvailablePrincipal(principalCollection);
+       String username = (String) getAvailablePrincipal(principalCollection);
 
-        Role role = null;
+        RoleEntity roleEntity = null;
 
         try {
-            Userlogin userlogin = userloginService.findByName(username);
+            UsersEntity userlogin =userRepository.findByUsernameEndsWith(username);
             //获取角色对象
-            role = roleService.findByid(userlogin.getRole());
+            roleEntity = roleRepository.findRoleEntityById(userlogin.getUserRoleIdByRoleId().getRoleId());
         } catch (Exception e) {
             e.printStackTrace();
         }
         //通过用户名从数据库获取权限/角色信息
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         Set<String> r = new HashSet<String>();
-        if (role != null) {
-            r.add(role.getRolename());
+        if (roleEntity != null) {
+            r.add(roleEntity.getRoleName());
             info.setRoles(r);
         }
 
-        return info;*/
-        return null;
+        return info;
     }
 
     /**
@@ -63,9 +67,9 @@ public class LoginRealm extends AuthorizingRealm{
         //密码
         String password = new String((char[])token.getCredentials());
 
-        UserLogin userLogin = null;
+        UsersEntity userLogin = null;
         try {
-            userLogin = userLoginService.findByName(username);
+            userLogin = userRepository.findByUsernameEndsWith(username);
         } catch (Exception e) {
             e.printStackTrace();
         }

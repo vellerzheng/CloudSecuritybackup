@@ -19,7 +19,7 @@
                         </button>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                             <li role="presentation">
-                                <a role="menuitem" tabindex="-1" href="#">
+                                <a role="menuitem" tabindex="-1" href="/clouds/users/passwordReset">
                                     <span class="glyphicon glyphicon-cog pull-right"></span>
                                     修改个人信息
                                 </a>

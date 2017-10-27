@@ -27,8 +27,19 @@ public class mainController {
 
 
     @RequestMapping(value = "/clouds/welcome", method = RequestMethod.GET)
-    public String getwelcome() {
+    public String getWelcome() {
         return "clouds/welcome";
+    }
+
+    @RequestMapping(value = "/clouds/users/top")
+    public String getTop() { return "clouds/users/top"; }
+
+    @RequestMapping(value = "/clouds/users/logout", method = RequestMethod.GET)
+    public String logOut() { return "clouds/users/logout"; }
+
+    @RequestMapping(value = "/clouds/users/passwordReset", method = RequestMethod.GET)
+    public String getPasswordReset() {
+        return "clouds/users/passwordReset";
     }
 
 }

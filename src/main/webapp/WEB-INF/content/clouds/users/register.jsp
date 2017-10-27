@@ -1,7 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -68,7 +68,7 @@
     <h1>Cloud secure storage 注册用户</h1>
     <hr/>
         <tr>
-        <form:form action="/clouds/users/register/addP"  method="post" commandName="userRegister" role="form" onsubmit="return check_submit();">
+        <form:form action="/clouds/users/register"  method="post" commandName="usersRegister" role="form" onsubmit="return check_submit();">
 
 
         <div class="form-group">
@@ -88,6 +88,7 @@
             <label for="Phone">Phone: </label>
             <input type="text" class="from-control" id ="Phone" name="Phone" onmouseover="mover();"  placeholder="Enter phone:"/>
         </div>
+
         <div class="form-group">
             <button type="submit" class="btn btn-sm btn-success">提交</button>
         </div>
