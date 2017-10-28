@@ -15,7 +15,7 @@
 </head>
 <body>
 <div class="container">
-    <h1 style="text-align: center"> Cloud safe Storage 首页</h1>
+    <h1 style="text-align: center"> Cloud Secure Storage </h1>
     <hr/>
     <table align="center">
 

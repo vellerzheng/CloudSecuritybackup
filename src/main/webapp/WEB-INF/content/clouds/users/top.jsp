@@ -8,7 +8,9 @@
             <!--加入导航条标题-->
             <div class="navbar navbar-default" role="navigation">
                 　<div class="navbar-header">
-                　    <a href="##" class="navbar-brand">用户信息管理</a>
+                　    <a href="/clouds/home"  class="navbar-brand" >Home
+                           <%-- home可换成小图片 <img alt="Brand" style="max-width:100px;margin-top:-7px;" src="...">--%>
+                      </a>
                 　</div>
                 <form action="##" class="navbar-form navbar-right" rol="search">
                     <div class="dropdown">

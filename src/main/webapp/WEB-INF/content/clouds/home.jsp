@@ -2,20 +2,26 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-
-    <title>Cloud Storage </title>
-    <!--新 Bootstrap 核心 CSS 文件-->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Cloud Secure Storage</title>
+    <!-- 引入bootstrap -->
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <!-- 引入JQuery  bootstrap.js-->
+    <script src="/js/jquery-1.11.2.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
     <!-- [endif] -->
 </head>
 <body>
+<!-- 顶栏 -->
+<jsp:include page="users/top.jsp"></jsp:include>
+
 <div class="container">
-    <h1 style="text-align: center"> Cloud safe Storage 首页</h1>
+    <h1 style="text-align: center"> Cloud Secure Storage </h1>
     <hr/>
     <table align="center">
 
@@ -34,10 +40,7 @@
         </tr>
 
     </table>
-    <!--JQuerry 文件。 务必在bootstrap.min.js 之前引入-->
-    <script src="//cdn.boot.css.com/jquery/1.11.3/jquery.min.js"></script>
-    <!-- 最新的Bootstrap 核心JavaScript 文件-->
-    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
 </div>
 </body>
 </html>
