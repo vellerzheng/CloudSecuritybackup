@@ -52,13 +52,11 @@ public class FileController {
     @RequestMapping(value="/clouds/filemanager/uploadfile/add",method = RequestMethod.POST)
     public String upload(HttpServletRequest request,@RequestParam("file") MultipartFile file,
                          @RequestParam("description") String description,@RequestParam("curAuthUserEntity") int usrloginId, ModelMap modelMap) throws Exception {
-        System.out.println("start!");
-        System.out.println(description);
-        System.out.println(usrloginId);
+
         /*还需要判断文件是否大于4M */
         //如果文件不为空，写入上传路径
         if(!file.isEmpty()) {
-            //上传文件路径
+            //上传文件路径  s:upload
             String path = request.getServletContext().getRealPath("upload");
             //上传文件分块路径
             String pathPart =request.getServletContext().getRealPath("upload")+"\\filepart";
@@ -68,6 +66,10 @@ public class FileController {
             File filepath = new File(path,filename);
             //判断路径是否存在，如果不存在就创建一个
             if (!filepath.getParentFile().exists()) {
+                filepath.getParentFile().mkdirs();
+            }else{
+                FileManage.deleteDirectory(pathPart);
+                FileManage.deleteDirectory(path);
                 filepath.getParentFile().mkdirs();
             }
 

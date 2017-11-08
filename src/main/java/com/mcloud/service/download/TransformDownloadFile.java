@@ -11,7 +11,7 @@ public class TransformDownloadFile {
 
     private String[] vectPartFileNames;
 
-    public void getPartFilePath(String partFileDirectory){
+    public int getPartFilePath(String partFileDirectory){
         File file =new File(partFileDirectory);
         File[] fileList=file.listFiles();
         vectPartFileNames = new String[5];
@@ -21,6 +21,7 @@ public class TransformDownloadFile {
                 vectPartFileNames[i]=fileList[i].getPath();
             }
         }
+        return fileList.length;
     }
 
     public void mergeDownloadFile(String realFilePath){

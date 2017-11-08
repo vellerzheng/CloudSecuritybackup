@@ -49,38 +49,52 @@ public class DownloadFileServiceImpl implements DownloadFileService{
     public boolean downloadCloudFilePart() {
         AliyunOSS aliyun= new AliyunOSS();
         String yunFilePath=filesHashEntity.getAliyunHash();
-        aliyun.downloadFile(yunFilePath, partFilePath);
+        if(yunFilePath!=null)
+            aliyun.downloadFile(yunFilePath, partFilePath);
+
 
         Netease netease =new Netease();
         String netsFilePath=filesHashEntity.getNeteaseHash();
-        netease.downFile(netsFilePath,partFilePath);
+        if(netsFilePath!=null)
+            netease.downFile(netsFilePath,partFilePath);
 
         Qcloud qcloud = new Qcloud();
         String dstCosFilePath = filesHashEntity.getQcloudHash();
-        qcloud.downFile(dstCosFilePath,partFilePath);
+        if(dstCosFilePath!=null)
+            qcloud.downFile(dstCosFilePath,partFilePath);
 
         Qiniu qiniu = new Qiniu();
         String yunFileName=filesHashEntity.getQiniuHash();
         try {
-            qiniu.downLoadPrivateFile(yunFileName,partFilePath);
+            if(yunFileName!=null)
+                qiniu.downLoadPrivateFile(yunFileName,partFilePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         Upyun upyun =new Upyun();
         String upyunFilePath=filesHashEntity.getUpyunHash();
-        String upyunPartFilePath = partFilePath+ File.separator+upyunFilePath;
-        upyun.downloadFile(upyunFilePath,upyunPartFilePath);
+        if(upyunFilePath!=null) {
+            String upyunPartFilePath = partFilePath + File.separator + upyunFilePath;
+            upyun.downloadFile(upyunFilePath, upyunPartFilePath);
+        }
         return true;
     }
 
     @Override
     public File getRealFile(){
+        String filePath=null;
         TransformDownloadFile transformFile =new TransformDownloadFile();
-        transformFile.getPartFilePath(partFilePath);
-        transformFile.mergeDownloadFile(realFilePath);
-        /*需要修改上传文件命名*/
-        String filePath = realFilePath +File.separator+filesHashEntity.getFileHash();
+        int numfile = transformFile.getPartFilePath(partFilePath);
+        if(numfile==5) {
+            transformFile.mergeDownloadFile(realFilePath);
+                  /*需要修改上传文件命名*/
+            filePath = realFilePath +File.separator+filesHashEntity.getFileHash();
+        }
+        if(numfile==1){
+            filePath =partFilePath+File.separator+filesHashEntity.getFileHash();
+        }
+
         return FileManage.md5FileNameToRealFilename(filePath,filesEntity.getFileName());
     }
 

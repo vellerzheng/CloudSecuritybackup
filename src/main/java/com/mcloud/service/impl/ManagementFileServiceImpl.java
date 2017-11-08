@@ -42,23 +42,28 @@ public class ManagementFileServiceImpl implements ManagementFileService {
     public boolean deleteCloudFile() {
         AliyunOSS aliyun= new AliyunOSS();
         String yunFilePath=filesHashEntity.getAliyunHash();
-        aliyun.deleteFile(yunFilePath);
+        if(yunFilePath != null)
+            aliyun.deleteFile(yunFilePath);
 
         Netease netease =new Netease();
         String netsFilePath=filesHashEntity.getNeteaseHash();
-        netease.deleteFile(netsFilePath);
+        if(netsFilePath != null)
+            netease.deleteFile(netsFilePath);
 
         Qcloud qcloud = new Qcloud();
         String dstCosFilePath =filesHashEntity.getQcloudHash();
-        qcloud.deleteFile(dstCosFilePath);
+        if(dstCosFilePath != null)
+            qcloud.deleteFile(dstCosFilePath);
 
         Qiniu qiniu = new Qiniu();
         String qiniuYunFilePath=filesHashEntity.getQiniuHash();
-        qiniu.deleteCloudFile(qiniuYunFilePath);
+        if(qiniuYunFilePath != null)
+            qiniu.deleteCloudFile(qiniuYunFilePath);
 
         Upyun upyun =new Upyun();
         String upyunFilePath=filesHashEntity.getUpyunHash();
-        upyun.deleteYunFile(upyunFilePath);
+        if(upyunFilePath != null)
+            upyun.deleteYunFile(upyunFilePath);
 
         return true;
     }

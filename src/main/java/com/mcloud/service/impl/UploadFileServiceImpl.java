@@ -10,6 +10,7 @@ import com.mcloud.service.UploadFileService;
 import com.mcloud.service.supportToolClass.FileManage;
 import com.mcloud.service.upload.deliverFile.PartitionFile;
 import com.mcloud.service.upload.fileToMulClouds.MulCloudsDispose;
+import com.mcloud.yunData.qcloud.Qcloud;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,23 +55,29 @@ public class UploadFileServiceImpl implements UploadFileService{
     @Override
     public void dealFileUpload() {
 
-
-
-        int fs = fileSize/1024/1024/4;     //  unit  MB  , each file after splited
         String srcPath =path+"\\"+filename;
-                /* 修改文件名为文件的hash值*/
+        /* 修改文件名为文件的hash值*/
         String newFileName =userRepository.findUsersEntityById(usrId).getUsername()+FileManage.getMD5ByFile(srcPath);
         String newFileNamePath = FileManage.renameFile(srcPath,newFileName);
         this.hashFileName = newFileName;
-                /* 文件分片*/
-        PartitionFile partitionFile= new PartitionFile();
-        boolean spt = partitionFile.split(newFileNamePath,fs,pathPart);
+        //文件小于4M,仅仅单文件处理
+        if(fileSize<=1024*1024*4){
+            // 腾讯云，数据库编号2
+            Qcloud qcloud = new Qcloud();
+            qcloud.uploadFile(newFileNamePath);
+        }else {
+            int fs = fileSize / 1024 / 1024 / 4;     //  unit  MB  , each file after splited
 
-           // 多云上传
-        if(spt) {
-            MulCloudsDispose mulCloudsDispose = new MulCloudsDispose();
-            mulCloudsDispose.getPartFilePath(pathPart);
-            mulCloudsDispose.uploadPartFileToClouds();
+                /* 文件分片*/
+            PartitionFile partitionFile = new PartitionFile();
+            boolean spt = partitionFile.split(newFileNamePath, fs, pathPart);
+
+            // 多云上传
+            if (spt) {
+                MulCloudsDispose mulCloudsDispose = new MulCloudsDispose();
+                mulCloudsDispose.getPartFilePath(pathPart);
+                mulCloudsDispose.uploadPartFileToClouds();
+            }
         }
     }
 
@@ -135,6 +142,10 @@ public class UploadFileServiceImpl implements UploadFileService{
                 filesHashEntity.setQcloudHash(partFileNamePath.get(2));
                 filesHashEntity.setQiniuHash(partFileNamePath.get(3));
                 filesHashEntity.setUpyunHash(partFileNamePath.get(4));
+            }else{
+                String suffix = filesEntity.getFileName().substring(filesEntity.getFileName().lastIndexOf(".") + 1);
+                String newFileHashNamePath =fileHashName+"."+suffix;
+                filesHashEntity.setQcloudHash(newFileHashNamePath);
             }
       //      FilesEntity fty =fileRepository.findOne(fileId);
             filesHashEntity.setFilesIdByFileId(filesEntity);
