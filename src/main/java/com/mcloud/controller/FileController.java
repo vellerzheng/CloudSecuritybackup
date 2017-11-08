@@ -8,6 +8,7 @@ import com.mcloud.service.ManagementFileService;
 import com.mcloud.service.UploadFileService;
 import com.mcloud.service.supportToolClass.FileManage;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -56,10 +57,12 @@ public class FileController {
         /*还需要判断文件是否大于4M */
         //如果文件不为空，写入上传路径
         if(!file.isEmpty()) {
-            //上传文件路径  s:upload
-            String path = request.getServletContext().getRealPath("upload");
+            //产生随机文件名防止重复
+            String uploadDirectory = RandomStringUtils.randomAlphanumeric(10);
+            //上传文件路径
+            String path = request.getServletContext().getRealPath(uploadDirectory);
             //上传文件分块路径
-            String pathPart =request.getServletContext().getRealPath("upload")+"\\filepart";
+            String pathPart =request.getServletContext().getRealPath(uploadDirectory)+"\\filepart";
             //上传文件名
             System.out.println(path);
             String filename = file.getOriginalFilename();
@@ -81,7 +84,7 @@ public class FileController {
 
             //将上传文件保存到一个目标文件当中
             file.transferTo(new File(path + File.separator + filename));
-            modelMap.addAttribute("fileUrl", request.getContextPath()+"/upload/"+filename);
+            modelMap.addAttribute("fileUrl", request.getContextPath()+uploadDirectory+filename);
             System.out.println("upload file finished!");
 
             int fileSize = (int)file.getSize();
@@ -159,10 +162,12 @@ public class FileController {
     public   ResponseEntity<byte[]>  download(HttpServletRequest request, @PathVariable("file.id")int fid,
                                            @PathVariable("file.fileName") String filename,
                                            ModelMap modelMap)throws Exception {
+        //产生下载随机文件名防止重复
+        String downloadDirectory =RandomStringUtils.randomAlphanumeric(10);
         //上传文件路径
-        String path = request.getServletContext().getRealPath("download");
+        String path = request.getServletContext().getRealPath(downloadDirectory);
         //上传文件分块路径
-        String pathPart =request.getServletContext().getRealPath("download")+"\\filepart";
+        String pathPart =request.getServletContext().getRealPath(downloadDirectory)+"\\filepart";
      //   File filepath = new File(path,filename);
         //下载文件路径
         File file = new File(path + File.separator + filename);
