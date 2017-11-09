@@ -16,7 +16,7 @@
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager" />
         <!-- 要求登录时的链接(登录页面地址)，非必须的属性，默认会自动寻找Web工程根目录下的"/login.jsp"页面 -->
-        <property name="loginUrl" value="/clouds/home"/>
+        <property name="loginUrl" value="/index.html"/>
         <property name="successUrl" value="/clouds/welcome"/>
         <property name="unauthorizedUrl" value="/clouds/users/login"/>   <!-- 没有授权跳转页面-->
         <property name="filters">
@@ -31,7 +31,7 @@
             <value>
 
                 <!-- 当访问login时，不用进行认证(anon表示匿名) -->
-                /index=anon
+                /index.html=anon
                 /clouds/home=anon
                 /clouds/users/login = anon
                 /clouds/users/register= anon

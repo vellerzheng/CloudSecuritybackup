@@ -62,7 +62,7 @@ public class FileController {
             //上传文件路径
             String path = request.getServletContext().getRealPath(uploadDirectory);
             //上传文件分块路径
-            String pathPart =request.getServletContext().getRealPath(uploadDirectory)+"\\filepart";
+            String pathPart =request.getServletContext().getRealPath(uploadDirectory)+File.separator+"filepart";
             //上传文件名
             System.out.println(path);
             String filename = file.getOriginalFilename();
@@ -167,7 +167,7 @@ public class FileController {
         //上传文件路径
         String path = request.getServletContext().getRealPath(downloadDirectory);
         //上传文件分块路径
-        String pathPart =request.getServletContext().getRealPath(downloadDirectory)+"\\filepart";
+        String pathPart =request.getServletContext().getRealPath(downloadDirectory)+File.separator+"filepart";
      //   File filepath = new File(path,filename);
         //下载文件路径
         File file = new File(path + File.separator + filename);

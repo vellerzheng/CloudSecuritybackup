@@ -5,11 +5,12 @@
          version="3.1">
   <display-name>Cloud Safe Storage Application</display-name>
 
-  <servlet>
-    <servlet-name>cloudstorage</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
+
+    <servlet>
+        <servlet-name>cloudstorage</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
   <servlet-mapping>
     <servlet-name>cloudstorage</servlet-name>
@@ -58,7 +59,7 @@
   </filter-mapping>
 
     <welcome-file-list>
-        <welcome-file>/clouds/home</welcome-file>
+        <welcome-file>/index.html</welcome-file>
     </welcome-file-list>
 
     <listener>

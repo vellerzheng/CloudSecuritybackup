@@ -34,7 +34,7 @@ p{
 
 a { 
 	color: #ffffff;
-	transition: all 0.8;
+	transition: all;
 }
 a:hover,
 a:focus{
@@ -56,7 +56,7 @@ a:focus{
 
 /* Home Style */
 #tf-home{
-	background: url(../img/01.jpg);
+	background: url(../images/img/01.jpg);
 	background-size: cover;
 	background-position: center;
 	background-attachment: fixed;
@@ -227,7 +227,7 @@ ul.cat.list-inline li a:hover{
 .nopadding{ padding:  0;}
 
 #tf-about{
-	background: url(../img/07.jpg);
+	background: url(../images/img/07.jpg);
 	background-size: cover;
 	background-position: center;
 	background-attachment: scroll;
@@ -242,7 +242,7 @@ ul.cat.list-inline li a:hover{
 }
 
 #tf-why-me{
-	background: url(../img/10.jpg);
+	background: url(../images/img/10.jpg);
 	background-size: cover;
 	background-position: center;
 	background-attachment: scroll;
@@ -259,7 +259,7 @@ ul.why-me li{
 	margin: 10px 0;
 }
 #tf-contact{
-	background: url(../img/08.jpg);
+	background: url(../images/img/08.jpg);
 	background-size: cover;
 	background-position: center;
 	background-attachment: scroll;
