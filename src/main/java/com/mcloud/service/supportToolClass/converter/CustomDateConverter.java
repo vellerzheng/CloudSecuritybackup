@@ -1,4 +1,4 @@
-package com.mcloud.controller.converrter;
+package com.mcloud.service.supportToolClass.converter;
 
 import org.springframework.core.convert.converter.Converter;
 
@@ -21,4 +21,16 @@ public class CustomDateConverter implements Converter<String,Date> {
         }
         return null;
     }
+
+    public static Date currentTime(){
+        // 将日期串转成日期类型（格式是yyyy-MM-dd HH:mm:ss)
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try{
+            return simpleDateFormat.parse(simpleDateFormat.format(new Date()));
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

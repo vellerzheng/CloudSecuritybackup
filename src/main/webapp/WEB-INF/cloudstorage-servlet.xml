@@ -27,21 +27,8 @@
     <context:component-scan base-package="com.mcloud.controller"/>
 
     <!-- 开启注解-->
-    <!-- conversion-service 向处理器适配器注入【自定义的参数绑定组件】   -->
-    <!-- validator 向处理器适配器注入校验器        -->
     <mvc:annotation-driven/>
 
-    <!-- 自定义参数绑定组件 -->
-<!--    <mvc:annotation-driven conversion-service="conversionService"/>
-
-    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
-        &lt;!&ndash; 转换器 &ndash;&gt;
-        <property name="converters">
-            <set>
-                <bean class="com.mcloud.controller.converrter.CustomDateConverter"/>
-            </set>
-        </property>
-    </bean>-->
 
     <!-- 视图解析器  -->
     <bean id="viewResolver"

@@ -1,14 +1,21 @@
 package com.mcloud.controller;
 
+import com.mcloud.repository.UserAdviceRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by vellerzheng on 2017/9/20.
  */
 @Controller
 public class MainController {
+
+    @Autowired
+    UserAdviceRepository userAdviceRepository;
 
     @RequestMapping(value = "/",method = RequestMethod.GET)
     public  String index() {return "index.html";}
@@ -40,6 +47,17 @@ public class MainController {
     @RequestMapping(value = "/clouds/users/passwordReset", method = RequestMethod.GET)
     public String getPasswordReset() {
         return "clouds/users/passwordReset";
+    }
+
+    @RequestMapping(value = "/public/adviceUpload",method = RequestMethod.POST)
+    public String getPublicAdvice(HttpServletRequest request) {
+       /* userAdviceEntity.setSubmitTime(CustomDateConverter.currentTime());
+        userAdviceRepository.saveAndFlush(userAdviceEntity);*/
+ /*       String name = request.getParameter("name");
+        String email =request.getParameter("email");
+        String idea = request.getParameter("idea");
+        String message =request.getParameter("message");*/
+        return null;
     }
 
 }

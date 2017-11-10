@@ -39,8 +39,8 @@
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.25" />
           <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.7.25" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.7.25" />
-          <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:1.1.1" />
-          <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:1.1.1" />
+          <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:1.1.11" />
+          <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:1.1.11" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.39" />
           <element id="library" level="project" name="Maven: com.alibaba:druid:1.0.16" />
           <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.3.0" />

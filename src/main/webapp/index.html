@@ -241,18 +241,18 @@
 
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
-                <form id="contact">
+                <form id="advice" >
                     <div class="form-group">
-                        <input type="text" class="form-control" id="exampleInputName1" placeholder="Enter Name">
+                        <input type="text" class="form-control" id="exampleInputName1" name="name" placeholder="Enter Name">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="exampleInputIdea1" placeholder="Enter idea">
+                        <input type="email" class="form-control" id="exampleInputEmail1" name="email" placeholder="Enter Email">
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Email">
+                        <input type="text" class="form-control" id="exampleInputIdea1" name="idea" placeholder="Enter idea">
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control" rows="4" placeholder="Message"></textarea>
+                        <textarea class="form-control" rows="4" id="exampleInputMessage1" name="message" placeholder="Message"></textarea>
                     </div>
 
                     <!--      <div class="form-group">
@@ -263,8 +263,8 @@
                           <label class="sr-only" for="inputfile">Input file</label>
                           <input type="file" id="inputfile">
                               </div>    -->
-
-                    <button type="submit" class="btn btn-primary my-btn dark">Submit</button>
+                    <!--<button type="submit" class="btn btn-primary my-btn dark">Submit</button>-->
+                    <button type ="submit" class="btn btn-primary my-btn dark" onclick="advicePost()">Submit</button>
                 </form>
             </div>
         </div>

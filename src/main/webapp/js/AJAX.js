@@ -29,3 +29,30 @@ function storage(pub_topic,pub_text,sub_topic,sub_text){
     });
     return ;
 }
+
+function advicePost(){
+    alert("333");
+    var form = new FormData(document.getElementById("advice"));
+//             var req = new XMLHttpRequest();
+//             req.open("post", "${pageContext.request.contextPath}/public/testupload", false);
+//             req.send(form);
+
+    alert(form);
+    alert("111");
+    $.ajax({
+        url:"${pageContext.request.contextPath}/public/adviceUpload",
+        type:"post",
+        data:form,
+        processData:false,
+        contentType:false,
+        success:function(data){
+            window.clearInterval(timer);
+            console.log("over..");
+        },
+        error:function(e){
+            alert("错误！！");
+            window.clearInterval(timer);
+        }
+    });
+    get();//此处为上传文件的进度条
+}
