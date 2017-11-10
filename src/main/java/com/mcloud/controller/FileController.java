@@ -9,6 +9,8 @@ import com.mcloud.service.UploadFileService;
 import com.mcloud.service.supportToolClass.FileManage;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -40,6 +42,7 @@ public class FileController {
     DownloadFileService downloadFileService;
     @Resource(name="uploadFileServiceImpl")
     private UploadFileService uploadFileService;
+    private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
     /*用户上传文件*/
     @RequestMapping(value ="/clouds/filemanager/uploadfile/{id}", method = RequestMethod.GET)
@@ -54,7 +57,6 @@ public class FileController {
     public String upload(HttpServletRequest request,@RequestParam("file") MultipartFile file,
                          @RequestParam("description") String description,@RequestParam("curAuthUserEntity") int usrloginId, ModelMap modelMap) throws Exception {
 
-        /*还需要判断文件是否大于4M */
         //如果文件不为空，写入上传路径
         if(!file.isEmpty()) {
             //产生随机文件名防止重复
@@ -64,7 +66,7 @@ public class FileController {
             //上传文件分块路径
             String pathPart =request.getServletContext().getRealPath(uploadDirectory)+File.separator+"filepart";
             //上传文件名
-            System.out.println(path);
+            logger.info(path);
             String filename = file.getOriginalFilename();
             File filepath = new File(path,filename);
             //判断路径是否存在，如果不存在就创建一个
@@ -85,7 +87,7 @@ public class FileController {
             //将上传文件保存到一个目标文件当中
             file.transferTo(new File(path + File.separator + filename));
             modelMap.addAttribute("fileUrl", request.getContextPath()+uploadDirectory+filename);
-            System.out.println("upload file finished!");
+            logger.info("upload file finished!");
 
             int fileSize = (int)file.getSize();
             uploadFileService.initUploadFile(path,pathPart,fileSize,description,filename,usrloginId);

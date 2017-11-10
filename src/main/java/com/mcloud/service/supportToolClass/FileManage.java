@@ -2,6 +2,8 @@ package com.mcloud.service.supportToolClass;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,6 +15,7 @@ import java.util.List;
  * Created by vellerzheng on 2017/10/2.
  */
 public class FileManage {
+    private static Logger logger = LoggerFactory.getLogger(FileManage.class);
     /**
      * 获得文件的MD5
      * @param filePath 文件路径
@@ -43,7 +46,7 @@ public class FileManage {
         //检查要重命名的文件是否存在，是否是文件
         if (!toBeRenamed.exists() || toBeRenamed.isDirectory()) {
 
-            System.out.println("File does not exist: " + filePath);
+            logger.error("File does not exist: " + filePath);
             return filePath;
         }
 
@@ -51,10 +54,9 @@ public class FileManage {
 
         //修改文件名
         if (toBeRenamed.renameTo(newFile)) {
-            System.out.println("File has been renamed.");
             return newFileNamePath;
         } else {
-            System.out.println("Error renmaing file");
+            logger.error("Error renmaing file");
             return filePath;
         }
 
@@ -73,7 +75,7 @@ public class FileManage {
         //检查要重命名的文件是否存在，是否是文件
         if (!toBeRenamed.exists() || toBeRenamed.isDirectory()) {
 
-            System.out.println("File does not exist: " + filePath);
+            logger.error("File does not exist: " + filePath);
             return toBeRenamed;
         }
 
@@ -81,10 +83,10 @@ public class FileManage {
 
         //修改文件名
         if (toBeRenamed.renameTo(newFile)) {
-            System.out.println("File has been renamed.");
+            logger.debug("File has been renamed.");
             return newFile;
         } else {
-            System.out.println("Error renmaing file");
+            logger.error("Error renmaing file");
             return toBeRenamed;
         }
 
@@ -119,7 +121,7 @@ public class FileManage {
     public static boolean delete(String fileName) {
         File file = new File(fileName);
         if (!file.exists()) {
-            System.out.println("删除文件失败:" + fileName + "不存在！");
+            logger.error("删除文件失败:" + fileName + "不存在！");
             return false;
         } else {
             if (file.isFile())
@@ -141,14 +143,14 @@ public class FileManage {
         // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
         if (file.exists() && file.isFile()) {
             if (file.delete()) {
-                System.out.println("删除单个文件" + fileName + "成功！");
+                logger.info("删除单个文件" + fileName + "成功！");
                 return true;
             } else {
-                System.out.println("删除单个文件" + fileName + "失败！");
+                logger.error("删除单个文件" + fileName + "失败！");
                 return false;
             }
         } else {
-            System.out.println("删除单个文件失败：" + fileName + "不存在！");
+            logger.error("删除单个文件失败：" + fileName + "不存在！");
             return false;
         }
     }
@@ -168,7 +170,7 @@ public class FileManage {
         File dirFile = new File(dir);
         // 如果dir对应的文件不存在，或者不是一个目录，则退出
         if ((!dirFile.exists()) || (!dirFile.isDirectory())) {
-            System.out.println("删除目录失败：" + dir + "不存在！");
+            logger.error("删除目录失败：" + dir + "不存在！");
             return false;
         }
         boolean flag = true;
@@ -190,12 +192,12 @@ public class FileManage {
             }
         }
         if (!flag) {
-            System.out.println("删除目录失败！");
+            logger.error("删除目录失败！");
             return false;
         }
         // 删除当前目录
         if (dirFile.delete()) {
-            System.out.println("删除目录" + dir + "成功！");
+            logger.info("删除目录" + dir + "成功！");
             return true;
         } else {
             return false;
