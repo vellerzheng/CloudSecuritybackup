@@ -9,8 +9,7 @@ import com.mcloud.service.UploadFileService;
 import com.mcloud.service.supportToolClass.FileManage;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -42,7 +41,7 @@ public class FileController {
     DownloadFileService downloadFileService;
     @Resource(name="uploadFileServiceImpl")
     private UploadFileService uploadFileService;
-    private static final Logger logger = LoggerFactory.getLogger(FileController.class);
+    private static final Logger logger = Logger.getLogger(FileController.class);
 
     /*用户上传文件*/
     @RequestMapping(value ="/clouds/filemanager/uploadfile/{id}", method = RequestMethod.GET)
@@ -185,9 +184,9 @@ public class FileController {
         }
 
         //处理云文件下载与合并
-        downloadFileService.initDownloadFileServiceImpl(fid,pathPart,path);
-        downloadFileService.downloadCloudFilePart();
-        File downLoadNewFile = downloadFileService.getRealFile();
+        boolean downLoadRes = downloadFileService.downloadCloudFilePart(pathPart,fid);
+        File   downLoadNewFile = downloadFileService.getRealFile(pathPart, path, fid);
+
 
 
          /* 将文件下载下来*/

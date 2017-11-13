@@ -2,8 +2,7 @@ package com.mcloud.service.supportToolClass;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,7 +14,7 @@ import java.util.List;
  * Created by vellerzheng on 2017/10/2.
  */
 public class FileManage {
-    private static Logger logger = LoggerFactory.getLogger(FileManage.class);
+    private static Logger logger = Logger.getLogger(FileManage.class);
     /**
      * 获得文件的MD5
      * @param filePath 文件路径
@@ -143,7 +142,6 @@ public class FileManage {
         // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
         if (file.exists() && file.isFile()) {
             if (file.delete()) {
-                logger.info("删除单个文件" + fileName + "成功！");
                 return true;
             } else {
                 logger.error("删除单个文件" + fileName + "失败！");

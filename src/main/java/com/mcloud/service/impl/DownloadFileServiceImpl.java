@@ -23,30 +23,19 @@ import java.io.IOException;
  */
 @Service
 public class DownloadFileServiceImpl implements DownloadFileService{
-    private String fileName;
-    private String partFilePath;
-    private String realFilePath;
-    private int fileId;
+
+
     @Autowired
     private FileRepository fileRepository;
-    private FilesEntity filesEntity;
     @Autowired
     private HashFileRepository hashFileRepository;
-    private FilesHashEntity filesHashEntity;
-
-
-
-    public void initDownloadFileServiceImpl(int fileId,String partFilePath,String realFilePath){
-        this.fileId = fileId;
-        this.filesHashEntity= hashFileRepository.findEntityByFileId(fileId);
-        this.filesEntity = fileRepository.findOne(fileId);
-        this.partFilePath = partFilePath;
-        this.realFilePath = realFilePath;
-    }
 
 
     @Override
-    public boolean downloadCloudFilePart() {
+    public boolean downloadCloudFilePart(String partFilePath,int fileId) {
+
+        FilesHashEntity filesHashEntity;
+         filesHashEntity = hashFileRepository.findEntityByFileId(fileId);
         AliyunOSS aliyun= new AliyunOSS();
         String yunFilePath=filesHashEntity.getAliyunHash();
         if(yunFilePath!=null)
@@ -82,7 +71,13 @@ public class DownloadFileServiceImpl implements DownloadFileService{
     }
 
     @Override
-    public File getRealFile(){
+    public File getRealFile(String partFilePath,String realFilePath,int fileId){
+
+        FilesHashEntity filesHashEntity;
+        filesHashEntity = hashFileRepository.findEntityByFileId(fileId);
+
+        FilesEntity filesEntity;
+        filesEntity = fileRepository.findOne(fileId);
         String filePath=null;
         TransformDownloadFile transformFile =new TransformDownloadFile();
         int numfile = transformFile.getPartFilePath(partFilePath);

@@ -1,6 +1,7 @@
 package com.mcloud.service.upload.deliverFile;
 
 import java.io.*;
+import java.util.List;
 
 /**
  * Created by vellerzheng on 2017/8/14.
@@ -47,8 +48,6 @@ public class PartitionFile {
                 bos.close();
                 out.close();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }finally{
@@ -68,10 +67,11 @@ public class PartitionFile {
      *  @param destPath  target file path
      *  @param srcPaths   source file Path
      */
-    public  void merge(String destPath,String ...srcPaths){
+    public  void merge(String destPath,List<String> srcPaths){
         if(destPath==null|| "".equals(destPath)||srcPaths==null){
             System.out.println("merge file fail!");
         }
+        if(srcPaths!=null)
         for(String string :srcPaths){
             if("".equals(string)||string==null){
                 System.out.println("merge file fail!");
@@ -79,7 +79,7 @@ public class PartitionFile {
         }
 
         //the file name after merged
-        String name = srcPaths[0].substring((srcPaths[0].lastIndexOf("\\")));
+        String name = srcPaths.get(0).substring((srcPaths.get(0).lastIndexOf("\\")));
         String destName = name.substring(0,name.lastIndexOf("-"));
         destPath = destPath+destName; //  the file path after merged
 
@@ -101,8 +101,6 @@ public class PartitionFile {
                 bis.close();
                 in.close();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }finally{

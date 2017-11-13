@@ -142,7 +142,7 @@
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-spring:1.2.3" />
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-web:1.2.3" />
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-ehcache:1.2.3" />
-          <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache-core:2.6.11" />
+          <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache-core:2.5.0" />
         </element>
       </element>
       <element id="directory" name="META-INF">

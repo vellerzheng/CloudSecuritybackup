@@ -1,8 +1,10 @@
 package com.mcloud.controller;
 
+import com.mcloud.model.UserAdviceEntity;
 import com.mcloud.repository.UserAdviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -50,13 +52,13 @@ public class MainController {
     }
 
     @RequestMapping(value = "/public/adviceUpload",method = RequestMethod.POST)
-    public String getPublicAdvice(HttpServletRequest request) {
+    public String getPublicAdvice(HttpServletRequest request, @ModelAttribute("advice")UserAdviceEntity userAdviceEntity) {
        /* userAdviceEntity.setSubmitTime(CustomDateConverter.currentTime());
         userAdviceRepository.saveAndFlush(userAdviceEntity);*/
- /*       String name = request.getParameter("name");
-        String email =request.getParameter("email");
-        String idea = request.getParameter("idea");
-        String message =request.getParameter("message");*/
+        String usrName =userAdviceEntity.getName();
+        String usrEmail =userAdviceEntity.getEmail();
+
+
         return null;
     }
 

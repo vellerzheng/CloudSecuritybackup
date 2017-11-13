@@ -237,6 +237,6 @@
     <orderEntry type="library" name="Maven: org.apache.shiro:shiro-spring:1.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.shiro:shiro-web:1.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.shiro:shiro-ehcache:1.2.3" level="project" />
-    <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache-core:2.6.11" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache-core:2.5.0" level="project" />
   </component>
 </module>
