@@ -195,7 +195,6 @@ public class FileManage {
         }
         // 删除当前目录
         if (dirFile.delete()) {
-            logger.info("删除目录" + dir + "成功！");
             return true;
         } else {
             return false;

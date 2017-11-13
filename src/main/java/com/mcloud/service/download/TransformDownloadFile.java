@@ -29,7 +29,7 @@ public class TransformDownloadFile {
             }
             return fileList.length;
         }else {
-            logger.info("读取多云下载文件数目出错！");
+            logger.error("读取多云下载文件数目出错！");
             return -1;
         }
     }
@@ -39,7 +39,7 @@ public class TransformDownloadFile {
             PartitionFile partitionFile = new PartitionFile();
             partitionFile.merge(realFilePath, listPartFileNames);
         }else{
-            System.out.println("信息不完整，或下载文件数不为5！");
+            logger.error("信息不完整，或下载文件数不为5！");
         }
 
 
