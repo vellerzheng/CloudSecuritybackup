@@ -4,6 +4,7 @@ import com.mcloud.model.UsersEntity;
 import com.mcloud.repository.UserRepository;
 import com.mcloud.service.UserLoginService;
 import com.mcloud.service.users.UserLogin;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserLoginServiceImpl implements UserLoginService {
 
+    @Autowired
     UserRepository userRepository;
 
     @Override

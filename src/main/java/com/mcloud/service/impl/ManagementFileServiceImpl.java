@@ -1,7 +1,6 @@
 package com.mcloud.service.impl;
 
 import com.mcloud.model.FilesHashEntity;
-import com.mcloud.repository.FileRepository;
 import com.mcloud.repository.HashFileRepository;
 import com.mcloud.service.ManagementFileService;
 import com.mcloud.yunData.aliyun.AliyunOSS;
@@ -18,28 +17,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class ManagementFileServiceImpl implements ManagementFileService {
 
-  //  private String fileName;
-    private int fileId;
-    @Autowired
-    private FileRepository fileRepository;
+
     @Autowired
     private HashFileRepository hashFileRepository;
-    private FilesHashEntity filesHashEntity;
 
-    /**
-     *  初始化
-     * @param fileId  为原文件的file_id
-     * @param hashFileId 为file_hash 表中的id;
-     */
-    @Override
-    public void initManagementFileService(int fileId,int hashFileId){
-        this.fileId = fileId;
-      //  this.fileName = fileRepository.findOne(fileId).getFileName();
-        this.filesHashEntity = hashFileRepository.findOne(hashFileId);
-    }
 
     @Override
-    public boolean deleteCloudFile() {
+    public boolean deleteCloudFile(int hashFileId) {
+        FilesHashEntity filesHashEntity =hashFileRepository.findOne(hashFileId);
+
         AliyunOSS aliyun= new AliyunOSS();
         String yunFilePath=filesHashEntity.getAliyunHash();
         if(yunFilePath != null)

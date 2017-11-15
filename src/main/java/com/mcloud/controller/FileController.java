@@ -89,9 +89,9 @@ public class FileController {
 
 
             int fileSize = (int)file.getSize();
-            uploadFileService.initUploadFile(path,pathPart,fileSize,description,filename,usrloginId);
-            uploadFileService.dealFileUpload();
-            uploadFileService.saveFileInfoToDateBase();
+          //  uploadFileService.initUploadFile(path,pathPart,fileSize,description,filename,usrloginId);
+            String hashFileName = uploadFileService.dealFileUpload(path,pathPart,filename,fileSize,usrloginId);
+            uploadFileService.saveFileInfoToDateBase(pathPart,filename,hashFileName,description,fileSize,usrloginId);
 
 
             /*判断路径是否存在，如果存在就删除*/
@@ -131,8 +131,7 @@ public class FileController {
     @RequestMapping(value = "/clouds/filemanager/files/delete/{file.id}",method = RequestMethod.GET)
     public String deleteFile(@PathVariable("file.id") int id){
         int hashFileId = hashFileRepository.findEntityByFileId(id).getId();
-        manageFileService.initManagementFileService(id, hashFileId);
-        manageFileService.deleteCloudFile();
+        manageFileService.deleteCloudFile(hashFileId);
         int usrId=fileRepository.findOne(id).getUserByUserId().getId();
         hashFileRepository.delete(hashFileId);
         hashFileRepository.flush();

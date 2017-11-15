@@ -26,14 +26,6 @@ import java.util.List;
 @Service
 public class UploadFileServiceImpl implements UploadFileService{
 
-    private String path;
-    private String pathPart;
-    private String filename;
-    private String hashFileName;
-    private String description;
-    private int usrId;
-    private int fileSize;
-
     @Autowired
     private FileRepository fileRepository;
     @Autowired
@@ -41,25 +33,23 @@ public class UploadFileServiceImpl implements UploadFileService{
     @Autowired
     private HashFileRepository hashFileRepository;
 
+    /**
+     *
+     * @param path
+     * @param pathPart
+     * @param filename
+     * @param fileSize
+     * @param usrId
+     * @return   newHashFileName   即为修改后的文件hash名.
+     */
     @Override
-    public void initUploadFile(String path,String pathPart,int fileSize,String description,String filename,int usrEty){
-        this.path=path;
-        this.pathPart=pathPart;
-        this.fileSize=fileSize;
-        this.description=description;
-        this.filename=filename;
-        this.usrId = usrEty;
-    }
-
-
-    @Override
-    public void dealFileUpload() {
+    public String  dealFileUpload(String path,String pathPart,String filename,int fileSize,int usrId) {
 
         String srcPath =path+"\\"+filename;
         /* 修改文件名为文件的hash值*/
-        String newFileName =userRepository.findUsersEntityById(usrId).getUsername()+FileManage.getMD5ByFile(srcPath);
-        String newFileNamePath = FileManage.renameFile(srcPath,newFileName);
-        this.hashFileName = newFileName;
+        String newHashFileName =userRepository.findUsersEntityById(usrId).getUsername()+FileManage.getMD5ByFile(srcPath);
+        String newFileNamePath = FileManage.renameFile(srcPath,newHashFileName);
+       // String hashFileName = newFileName;
         //文件小于4M,仅仅单文件处理
         if(fileSize<=1024*1024*4){
             // 腾讯云，数据库编号2
@@ -79,10 +69,12 @@ public class UploadFileServiceImpl implements UploadFileService{
                 mulCloudsDispose.uploadPartFileToClouds();
             }
         }
+
+        return newHashFileName;
     }
 
     @Override
-    public void saveFileInfoToDateBase() {
+    public void saveFileInfoToDateBase(String pathPart,String filename,String hashFileName,String description,int fileSize,int usrId) {
           List<FilesEntity> allUserFileEty= fileRepository.findFilesEntityByUserIdEndsWith(usrId);
           for(FilesEntity uty:allUserFileEty){
               if(uty.getFileName().equals(filename))
