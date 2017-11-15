@@ -27,6 +27,7 @@
 
 
     <context:component-scan base-package="com.mcloud.service.impl, com.mcloud.repository"/>
+    <context:component-scan base-package="com.mcloud.service.factory"/>
    <!-- <bean id="UploadFileServiceImpl" class="com.mcloud.service.impl.UploadFileServiceImpl"></bean>
     <bean id="UserLoginServiceImpl" class="com.mcloud.service.impl.UserLoginServiceImpl"></bean>         -->
 

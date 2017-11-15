@@ -31,6 +31,7 @@ import java.util.List;
 @Controller
 public class FileController {
 
+
     @Autowired
     FileRepository fileRepository;
     @Autowired
@@ -65,7 +66,6 @@ public class FileController {
             //上传文件分块路径
             String pathPart =request.getServletContext().getRealPath(uploadDirectory)+File.separator+"filepart";
             //上传文件名
-            logger.info(path);
             String filename = file.getOriginalFilename();
             File filepath = new File(path,filename);
             //判断路径是否存在，如果不存在就创建一个
@@ -86,7 +86,7 @@ public class FileController {
             //将上传文件保存到一个目标文件当中
             file.transferTo(new File(path + File.separator + filename));
             modelMap.addAttribute("fileUrl", request.getContextPath()+uploadDirectory+filename);
-            logger.info("upload file finished!");
+
 
             int fileSize = (int)file.getSize();
             uploadFileService.initUploadFile(path,pathPart,fileSize,description,filename,usrloginId);
