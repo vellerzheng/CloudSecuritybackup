@@ -1,5 +1,7 @@
 package com.mcloud.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -11,6 +13,7 @@ public class UserAdviceEntity {
     private String email;
     private String mainIdea;
     private String messageDetail;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date submitTime;
 
     @Id

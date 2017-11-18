@@ -1,58 +1,61 @@
 /**
  * Created by vellerzheng on 2017/11/10.
  */
+function mover(){
+    event.srcElement.focus();
+    event.srcElement.select();
+}
 
+function checkEmail(){
+    var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"); //正则表达式
+    var obj = document.getElementById("email"); //要验证的对象
+    if(obj.value === ""){ //输入不能为空
+        alert("输入不能为空!");
+        return false;
+    }else if(!reg.test(obj.value)){ //正则验证不通过，格式不对
+        alert("邮箱验证不通过!");
+        return false;
+    }else{
+        return true;
+    }
+}
 
-function advicePost(){
-    alert("333");
-    var form = new FormData(document.getElementById("advice"));
-//             var req = new XMLHttpRequest();
-//             req.open("post", "${pageContext.request.contextPath}/public/testupload", false);
-//             req.send(form);
-
+function advicePostJson(){
+    var formToJson =$("#adviceId").serializeObject();
     $.ajax({
-        url:"${pageContext.request.contextPath}/public/adviceUpload",
+        url:"http://localhost:8080/api/publicUser/adviceUpload",
         type:"post",
-        data:form,
-        processData:false,
-        contentType:false,
+        data:JSON.stringify(formToJson),
+        contentType:"application/json",
+
         success:function(data){
-            window.clearInterval(timer);
+            alert("提交成功！");
+            console.log(data);
             console.log("over..");
         },
         error:function(e){
-            alert("错误！！");
-            window.clearInterval(timer);
+            console.log('wrong');
+            console.log(e);
         }
     });
-    get();//此处为上传文件的进度条
+    document.getElementById("adviceId").reset();
+    //get();//此处为上传文件的进度条
 }
 
-//从后台API获取信息
-function storage(pub_topic,pub_text,sub_topic,sub_text){
-    var pub_topic = pub_topic;
-    var pub_text = pub_text;
-    var sub_topic = sub_topic;
-    var sub_text = sub_text;
-    var result;
-    jQuery.ajax({
-        url:'http://121.42.174.208/wxc/MQTT_test/nodev1_2_2/mysql.php',
-        //url:'http://121.42.174.208/hmt/cpsApi/webservice.php',
-        type:"post",
-        async: false,
-        data:{
-            pub_topic:pub_topic,
-            pub_text:pub_text,
-            sub_topic:sub_topic,
-            sub_text:sub_text
-        },
-        success: function (success) {
-            console.log("成功"+pub_topic);
 
-        },
-        error:function(){
-            console.log("错误");
+$.fn.serializeObject = function()
+{
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name]) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
         }
     });
-    return ;
-}
+    return o;
+};

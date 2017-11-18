@@ -2,13 +2,17 @@ package com.mcloud.controller;
 
 import com.mcloud.model.UserAdviceEntity;
 import com.mcloud.repository.UserAdviceRepository;
+import com.mcloud.service.supportToolClass.converter.CustomDateConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Created by vellerzheng on 2017/9/20.
@@ -19,10 +23,17 @@ public class MainController {
     @Autowired
     UserAdviceRepository userAdviceRepository;
 
+    @RequestMapping(value = "/api/test",method = RequestMethod.GET)
+    @ResponseBody
+    public String test(){
+        return "123";
+    }
+
     @RequestMapping(value = "/",method = RequestMethod.GET)
-    public  String index() {return "index.html";}
+    public  String index() {
 
-
+        return "index.html";
+    }
 
     @RequestMapping(value ="/clouds/error", method = RequestMethod.GET)
     public String getError(){
@@ -51,15 +62,20 @@ public class MainController {
         return "clouds/users/passwordReset";
     }
 
-    @RequestMapping(value = "/public/adviceUpload",method = RequestMethod.POST)
-    public String getPublicAdvice(HttpServletRequest request, @ModelAttribute("advice")UserAdviceEntity userAdviceEntity) {
-       /* userAdviceEntity.setSubmitTime(CustomDateConverter.currentTime());
-        userAdviceRepository.saveAndFlush(userAdviceEntity);*/
-        String usrName =userAdviceEntity.getName();
-        String usrEmail =userAdviceEntity.getEmail();
+    @RequestMapping(value = "/api/publicUser/adviceUpload",method = RequestMethod.POST)
+    @ResponseBody
+    public String getPublicAdvice(HttpServletRequest request, HttpServletResponse response, @RequestBody UserAdviceEntity userAdviceEntity) throws IOException {
 
+
+        String email = userAdviceEntity.getEmail();
+        String name = userAdviceEntity.getName();
+        String idea =userAdviceEntity.getMainIdea();
+        String message = userAdviceEntity.getMessageDetail();
+        userAdviceEntity.setSubmitTime(CustomDateConverter.currentTime());
+        userAdviceRepository.saveAndFlush(userAdviceEntity);
 
         return null;
     }
 
 }
+
