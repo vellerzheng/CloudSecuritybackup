@@ -67,9 +67,9 @@ public class FileManage {
      */
     public  static  File  md5FileNameToRealFilename(String filePath,String newFileName){
 
-        String suffix = newFileName.substring(newFileName.lastIndexOf(".") + 1);
-        String sourceFilePath = filePath+"."+suffix;
-        File toBeRenamed = new File(sourceFilePath);
+/*        String suffix = newFileName.substring(newFileName.lastIndexOf(".") + 1);
+        String sourceFilePath = filePath+"."+suffix;*/
+        File toBeRenamed = new File(filePath);
         String newFileNamePath =toBeRenamed.getParent()+File.separator+newFileName;
         //检查要重命名的文件是否存在，是否是文件
         if (!toBeRenamed.exists() || toBeRenamed.isDirectory()) {

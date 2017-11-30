@@ -7,6 +7,7 @@ import com.mcloud.repository.HashFileRepository;
 import com.mcloud.service.DownloadFileService;
 import com.mcloud.service.download.TransformDownloadFile;
 import com.mcloud.service.supportToolClass.FileManage;
+import com.mcloud.service.supportToolClass.fileHandle.FileEncAndDecByDES;
 import com.mcloud.yunData.aliyun.AliyunOSS;
 import com.mcloud.yunData.netease.Netease;
 import com.mcloud.yunData.qcloud.Qcloud;
@@ -79,16 +80,50 @@ public class DownloadFileServiceImpl implements DownloadFileService{
         FilesEntity filesEntity;
         filesEntity = fileRepository.findOne(fileId);
         String filePath=null;
+
+
         TransformDownloadFile transformFile =new TransformDownloadFile();
-        int numfile = transformFile.getPartFilePath(partFilePath);
-        if(numfile==5) {
-            transformFile.mergeDownloadFile(realFilePath);
-                  /*需要修改上传文件命名*/
-            filePath = realFilePath +File.separator+filesHashEntity.getFileHash();
+        int numFile = transformFile.getPartFilePath(partFilePath);
+        if(numFile==5) {
+            String mergedFile = realFilePath+File.separator+"mergedfile";
+            File mergedFilePart = new File(mergedFile);
+            //判断路径是否存在，如果不存在就创建一个
+            if (!mergedFilePart.exists()) {
+                mergedFilePart.mkdirs();
+            }
+            //合并文件
+            String mergedFilePath = transformFile.mergeDownloadFile(mergedFile);
+
+            //解密
+            FileEncAndDecByDES bt = new FileEncAndDecByDES(filesEntity.getUserByUserId().getUsername());
+                              /*需要修改上传文件命名*/
+            filePath = realFilePath +File.separator+new File(mergedFilePath).getName();
+            try {
+                bt.decrypt(mergedFilePath,filePath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+           /*判断加密的文件路径是否存在，如果存在就删除*/
+            if (mergedFilePart.exists()) {
+                FileManage.deleteDirectory(mergedFile);
+            }
+
         }
-        if(numfile==1){
-            filePath =partFilePath+File.separator+filesHashEntity.getFileHash();
+        if(numFile==1){
+            //解密
+            FileEncAndDecByDES bt = new FileEncAndDecByDES(filesEntity.getUserByUserId().getUsername());
+                              /*需要修改上传文件命名*/
+            String downloadPartFileName = FileManage.getPartFileName(partFilePath).get(0);
+            String downloadPartFileNamePath =partFilePath+File.separator+downloadPartFileName;
+            filePath = realFilePath +File.separator+downloadPartFileName;
+            try {
+                bt.decrypt(downloadPartFileNamePath,filePath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
 
         return FileManage.md5FileNameToRealFilename(filePath,filesEntity.getFileName());
     }

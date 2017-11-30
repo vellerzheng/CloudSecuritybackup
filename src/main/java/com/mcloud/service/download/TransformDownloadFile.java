@@ -27,22 +27,23 @@ public class TransformDownloadFile {
                     listPartFileNames.add(aFileList.getPath());
                 }
             }
-            return fileList.length;
         }else {
             logger.error("读取多云下载文件数目出错！");
             return -1;
         }
+        return fileList.length;
     }
 
-    public void mergeDownloadFile(String realFilePath){
+    public String mergeDownloadFile(String realFilePath){
+        String mergedFilePath=null;
         if(listPartFileNames.size()==5) {
             PartitionFile partitionFile = new PartitionFile();
-            partitionFile.merge(realFilePath, listPartFileNames);
+            mergedFilePath =partitionFile.merge(listPartFileNames,realFilePath);
         }else{
             logger.error("信息不完整，或下载文件数不为5！");
         }
 
-
+        return mergedFilePath;
     }
 
 }

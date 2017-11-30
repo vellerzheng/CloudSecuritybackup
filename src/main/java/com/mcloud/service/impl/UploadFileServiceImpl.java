@@ -8,12 +8,14 @@ import com.mcloud.repository.HashFileRepository;
 import com.mcloud.repository.UserRepository;
 import com.mcloud.service.UploadFileService;
 import com.mcloud.service.supportToolClass.FileManage;
+import com.mcloud.service.supportToolClass.fileHandle.FileEncAndDecByDES;
 import com.mcloud.service.upload.deliverFile.PartitionFile;
 import com.mcloud.service.upload.fileToMulClouds.MulCloudsDispose;
 import com.mcloud.yunData.qcloud.Qcloud;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,23 +47,62 @@ public class UploadFileServiceImpl implements UploadFileService{
     @Override
     public String  dealFileUpload(String path,String pathPart,String filename,int fileSize,int usrId) {
 
-        String srcPath =path+"\\"+filename;
+        String srcPath =path+ File.separator+filename;
         /* 修改文件名为文件的hash值*/
         String newHashFileName =userRepository.findUsersEntityById(usrId).getUsername()+FileManage.getMD5ByFile(srcPath);
         String newFileNamePath = FileManage.renameFile(srcPath,newHashFileName);
        // String hashFileName = newFileName;
         //文件小于4M,仅仅单文件处理
         if(fileSize<=1024*1024*4){
+            String encryptFile = path+File.separator+"encryptFile";
+            File encryptFilePart = new File(encryptFile);
+            //判断路径是否存在，如果不存在就创建一个
+            if (!encryptFilePart.exists()) {
+                encryptFilePart.mkdirs();
+            }
+
+            //文件加密
+            FileEncAndDecByDES td = new FileEncAndDecByDES(userRepository.findUsersEntityById(usrId).getUsername());
+            String encryptFilePath = encryptFile+File.separator+ new File(newFileNamePath).getName();
+            try {
+                td.encrypt(newFileNamePath,encryptFilePath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             // 腾讯云，数据库编号2
             Qcloud qcloud = new Qcloud();
-            qcloud.uploadFile(newFileNamePath);
+            qcloud.uploadFile(encryptFilePath);
+
+            /*判断加密的文件路径是否存在，如果存在就删除*/
+            if (encryptFilePart.exists()) {
+                FileManage.deleteDirectory(encryptFile);
+            }
         }else {
             int fs = fileSize / 1024 / 1024 / 4;     //  unit  MB  , each file after splited
 
+            String encryptFile = path+File.separator+"encryptFile";
+            File encryptFilePart = new File(encryptFile);
+            //判断路径是否存在，如果不存在就创建一个
+            if (!encryptFilePart.exists()) {
+                encryptFilePart.mkdirs();
+            }
+            //文件加密
+            FileEncAndDecByDES td = new FileEncAndDecByDES(userRepository.findUsersEntityById(usrId).getUsername());
+            String encryptFilePath = encryptFile+File.separator+ new File(newFileNamePath).getName();
+            try {
+                td.encrypt(newFileNamePath,encryptFilePath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
                 /* 文件分片*/
             PartitionFile partitionFile = new PartitionFile();
-            boolean spt = partitionFile.split(newFileNamePath, fs, pathPart);
+            boolean spt = partitionFile.split(encryptFilePath, fs, pathPart);
 
+            /*判断加密的文件路径是否存在，如果存在就删除*/
+            if (encryptFilePart.exists()) {
+                FileManage.deleteDirectory(encryptFile);
+            }
             // 多云上传
             if (spt) {
                 MulCloudsDispose mulCloudsDispose = new MulCloudsDispose();

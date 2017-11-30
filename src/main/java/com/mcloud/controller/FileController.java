@@ -191,9 +191,9 @@ public class FileController {
          /* 将文件下载下来*/
         HttpHeaders headers = new HttpHeaders();
         //下载显示的文件名，解决中文名称乱码问题
-        String downloadFielName = new String(filename.getBytes("UTF-8"),"iso-8859-1");
+        String downloadFileName = new String(filename.getBytes("UTF-8"),"iso-8859-1");
         //通知浏览器以attachment（下载方式）打开文件
-        headers.setContentDispositionFormData("attachment", downloadFielName);
+        headers.setContentDispositionFormData("attachment", downloadFileName);
         /*application/octet-stream ： 二进制流数据（最常见的文件下载）*/
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         ResponseEntity<byte[]>  resEty = new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(downLoadNewFile),

@@ -67,7 +67,7 @@ public class PartitionFile {
      *  @param destPath  target file path
      *  @param srcPaths   source file Path
      */
-    public  void merge(String destPath,List<String> srcPaths){
+    public String merge(List<String> srcPaths,String destPath){
         if(destPath==null|| "".equals(destPath)||srcPaths==null){
             System.out.println("merge file fail!");
         }
@@ -81,9 +81,9 @@ public class PartitionFile {
         //the file name after merged
         String name = srcPaths.get(0).substring((srcPaths.get(0).lastIndexOf("\\")));
         String destName = name.substring(0,name.lastIndexOf("-"));
-        destPath = destPath+destName; //  the file path after merged
+        String realDestPath = destPath+File.separator+destName.replace("\\",""); //  the file path after merged
 
-        File destFile = new File(destPath); // the file after merged
+        File destFile = new File(realDestPath); // the file after merged
         OutputStream out =null;
         BufferedOutputStream bos = null;
         try {
@@ -111,7 +111,7 @@ public class PartitionFile {
                 e.printStackTrace();
             }
         }
-
+        return realDestPath;
     }
 
     public static void main(String[] args){
@@ -146,7 +146,7 @@ public class PartitionFile {
                 "D:\\Test\\split\\[阳光电影www.ygdy8.com].星际穿越.BD.720p.中英双字幕.rmvb-3.dat",
         };
         System.out.println("Start merging file...");
-        partitionFile.merge(destPath,srcPaths);
+        partitionFile.merge(srcPaths,destPath);
         System.out.println("merge file finished!");
         long endTime=System.currentTimeMillis(); //获取结束时间
         System.out.println("程序运行时间： "+(endTime-startTime)+"ms");
