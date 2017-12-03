@@ -54,17 +54,17 @@ public class FileController {
 
     /*上传文件会自动绑定到MultipartFile中*/
     @RequestMapping(value="/clouds/filemanager/uploadfile/add",method = RequestMethod.POST)
-    public String upload(HttpServletRequest request,@RequestParam("file") MultipartFile file,
-                         @RequestParam("description") String description,@RequestParam("curAuthUserEntity") int usrloginId, ModelMap modelMap) throws Exception {
+    public String upload(HttpServletRequest request, @RequestParam("file") MultipartFile file,
+                         @RequestParam("description") String description, @RequestParam("curAuthUserEntity") int usrloginId, ModelMap modelMap) throws Exception {
 
         //如果文件不为空，写入上传路径
         if(!file.isEmpty()) {
             //产生随机文件名防止重复
             String uploadDirectory = RandomStringUtils.randomAlphanumeric(10);
             //上传文件路径
-            String path = request.getServletContext().getRealPath(uploadDirectory);
+            String path = request.getSession().getServletContext().getRealPath(uploadDirectory);
             //上传文件分块路径
-            String pathPart =request.getServletContext().getRealPath(uploadDirectory)+File.separator+"filepart";
+            String pathPart =request.getSession().getServletContext().getRealPath(uploadDirectory)+File.separator+"filepart";
             //上传文件名
             String filename = file.getOriginalFilename();
             File filepath = new File(path,filename);
@@ -165,9 +165,9 @@ public class FileController {
         //产生下载随机文件名防止重复
         String downloadDirectory =RandomStringUtils.randomAlphanumeric(10);
         //上传文件路径
-        String path = request.getServletContext().getRealPath(downloadDirectory);
+        String path = request.getSession().getServletContext().getRealPath(downloadDirectory);
         //上传文件分块路径
-        String pathPart =request.getServletContext().getRealPath(downloadDirectory)+File.separator+"filepart";
+        String pathPart =request.getSession().getServletContext().getRealPath(downloadDirectory)+File.separator+"filepart";
      //   File filepath = new File(path,filename);
         //下载文件路径
         File file = new File(path + File.separator + filename);
