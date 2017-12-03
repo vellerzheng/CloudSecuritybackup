@@ -124,29 +124,26 @@
 
       <!--1.志相关依赖 -->
       <!--slf4j规范接口 -->
+
       <dependency>
           <groupId>org.slf4j</groupId>
           <artifactId>slf4j-api</artifactId>
           <version>1.7.25</version>
       </dependency>
-      <dependency>
-          <groupId>org.slf4j</groupId>
-          <artifactId>jcl-over-slf4j</artifactId>
-          <version>1.7.25</version>
-          <scope>runtime</scope>
-      </dependency>
+
 
       <!--logback日志-->
       <dependency>
           <groupId>ch.qos.logback</groupId>
           <artifactId>logback-core</artifactId>
-          <version>1.1.11</version>
+          <version>1.2.3</version>
       </dependency>
+
       <!--实现slf4j接口并整合-->
       <dependency>
           <groupId>ch.qos.logback</groupId>
           <artifactId>logback-classic</artifactId>
-          <version>1.1.11</version>
+          <version>1.2.3</version>
       </dependency>
       <!--2. 数据库相关依赖-->
       <dependency>
@@ -333,6 +330,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
+        <version>3.0.1</version>
         <executions>
           <execution>
             <id>attach-sources</id>

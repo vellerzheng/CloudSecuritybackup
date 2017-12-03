@@ -2,7 +2,8 @@ package com.mcloud.service.supportToolClass;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,7 +15,7 @@ import java.util.List;
  * Created by vellerzheng on 2017/10/2.
  */
 public class FileManage {
-    private static Logger logger = Logger.getLogger(FileManage.class);
+    private static Logger logger = LoggerFactory.getLogger(FileManage.class);
     /**
      * 获得文件的MD5
      * @param filePath 文件路径

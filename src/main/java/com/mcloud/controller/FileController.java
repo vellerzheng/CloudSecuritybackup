@@ -9,7 +9,8 @@ import com.mcloud.service.UploadFileService;
 import com.mcloud.service.supportToolClass.FileManage;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -42,7 +43,7 @@ public class FileController {
     DownloadFileService downloadFileService;
     @Resource(name="uploadFileServiceImpl")
     private UploadFileService uploadFileService;
-    private static final Logger logger = Logger.getLogger(FileController.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
     /*用户上传文件*/
     @RequestMapping(value ="/clouds/filemanager/uploadfile/{id}", method = RequestMethod.GET)
