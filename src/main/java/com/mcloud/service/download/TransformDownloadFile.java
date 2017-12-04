@@ -1,7 +1,8 @@
 package com.mcloud.service.download;
 
 import com.mcloud.service.upload.deliverFile.PartitionFile;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
 public class TransformDownloadFile {
 
     private List<String> listPartFileNames=new ArrayList<>();
-    private static Logger logger =Logger.getLogger(TransformDownloadFile.class);
+    private static Logger logger = LoggerFactory.getLogger(TransformDownloadFile.class);
 
 
     public int getPartFilePath(String partFileDirectory){
