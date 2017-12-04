@@ -19,7 +19,7 @@
 </head>
 <body>
 <!-- 顶栏 -->
-<jsp:include page="/clouds/users/top"></jsp:include>
+<jsp:include page="../users/top.jsp"></jsp:include>
 <div class="container">
     <h1> 个人文件库</h1>
     <hr/>

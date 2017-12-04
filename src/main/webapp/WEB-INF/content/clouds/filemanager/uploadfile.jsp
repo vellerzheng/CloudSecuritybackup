@@ -56,7 +56,7 @@
 </head>
 <body>
 <!-- 顶栏 -->
-<jsp:include page="/clouds/users/top"></jsp:include>
+<jsp:include page="../users/top.jsp"></jsp:include>
 <div class="container col-md-8 col-sm-offset-2 text-center">
 
     <table class="table table-bordered table-striped">

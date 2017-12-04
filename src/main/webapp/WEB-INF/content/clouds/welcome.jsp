@@ -23,7 +23,7 @@
 
 <body>
 <!-- 顶栏 -->
-<jsp:include page="/clouds/users/top" flush="true"></jsp:include>
+<jsp:include page="users/top.jsp" flush="true"></jsp:include>
 
 <div class="container">
     <table align="center">
