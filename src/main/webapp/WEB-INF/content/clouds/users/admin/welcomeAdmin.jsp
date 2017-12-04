@@ -59,8 +59,8 @@
 
 
                 <tr>
-                    <th>Upload File </th>
-                    <td><a href="/clouds/filemanager/uploadfile/${loginUser.id}" type="button" class="btn btn-sm btn-success">Upload File</a></td>
+                    <th>Advice & Information Manage</th>
+                    <td><a href="/clouds/users/admin/findNoQuery/AdviceInfo" type="button" class="btn btn-sm btn-success"> Advice & INfo Manage</a></td>
                 </tr>
 
 
@@ -68,6 +68,7 @@
                     <th>File Manage</th>
                     <td><a href="/clouds/filemanager/files/${loginUser.id}" type="button" class="btn btn-sm btn-success">File Manage</a></td>
                 </tr>
+
 
 
 

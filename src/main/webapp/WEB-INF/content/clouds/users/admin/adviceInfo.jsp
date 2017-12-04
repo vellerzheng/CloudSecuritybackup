@@ -20,23 +20,23 @@
 </head>
 <body>
 <!-- 顶栏 -->
-<jsp:include page="../users/top.jsp"></jsp:include>
+<jsp:include page="../top.jsp"></jsp:include>
 
 <div class="container">
     <h1> 文件系统-文件管理</h1>
     <hr/>
 
-    <h3>所有文件 <a href="/clouds/filemanager/uploadfile/${loginId}" type="button" class="btn btn-primary btn-sm">添加文件</a></h3>
+<%--    <h3>所有文件 <a href="/clouds/itemmanager/uploaditem/${loginId}" type="button" class="btn btn-primary btn-sm">添加文件</a></h3>
     <h4>                                                ${message}</h4>
     <!-- 如果用户列表为空 -->
-    <c:if test="${empty fileList}">
+    <c:if test="${empty pageAdviceEty}">
         <div class="alert alert-warning" role="alert">
-            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>files表为空，请<a href="/clouds/filemanager/files/add" type="button" class="btn btn-primary btn-sm">添加</a>
+            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>items表为空，请<a href="/clouds/itemmanager/items/add" type="button" class="btn btn-primary btn-sm">添加</a>
         </div>
-    </c:if>
+    </c:if>--%>
 
     <!-- 如果用户列表非空 -->
-    <c:if test="${!empty fileList}">
+    <c:if test="${!empty adviceLists}">
         <table class="table table-bordered table-striped">
             <tr>
                 <th>ID</th>
@@ -47,25 +47,27 @@
                 <th>操作</th>
             </tr>
 
-            <c:forEach items="${fileList}" var="file">
+            <c:forEach items="${adviceLists}" var="item">
                 <tr>
-                    <td>${file.id}</td>
-                    <td>${file.fileName}</td>
-                    <td>${file.description}</td>
-                    <td>${file.size}</td>
-                    <td><fmt:formatDate value="${file.pubDate }" pattern="yyyy-MM-dd"/></td>
+                    <td>${item.id}</td>
+                    <td>${item.name}</td>
+                    <td>${item.mainIdea}</td>
+                    <td>${item.messageDetail}</td>
+                    <td><fmt:formatDate value="${item.submitTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                     <td>
-                        <a href="/clouds/filemanager/files/show/${file.id}" type="button" class="btn btn-sm btn-success">详情</a>
-                        <a href="/clouds/filemanager/files/update/${file.id}" type="button" class="btn btn-sm btn-warning">修改</a>
-                        <a href="/clouds/filemanager/files/delete/${file.id}" type="button" class="btn btn-sm btn-danger">删除</a>
-                        <a href="/clouds/filemanager/files/download/${file.id}/${file.fileName}" type="button" class="btn btns-sm btn-info">下载</a>
+                        <a href="/clouds/itemmanager/items/show/${item.id}" type="button" class="btn btn-sm btn-success">详情</a>
+                        <a href="/clouds/itemmanager/items/update/${item.id}" type="button" class="btn btn-sm btn-warning">修改</a>
+                        <a href="/clouds/itemmanager/items/delete/${item.id}" type="button" class="btn btn-sm btn-danger">删除</a>
+                        <a href="/clouds/itemmanager/items/download/${item.id}" type="button" class="btn btns-sm btn-info">下载</a>
                     </td>
                 </tr>
             </c:forEach>
         </table>
     </c:if>
+
 </div>
 
+<%--<jsp:include page="../../pluggablePage/page.jsp"></jsp:include>--%>
 
 </body>
 </html>

@@ -23,12 +23,6 @@ public class MainController {
     @Autowired
     UserAdviceRepository userAdviceRepository;
 
-    @RequestMapping(value = "/api/test",method = RequestMethod.GET)
-    @ResponseBody
-    public String test(){
-        return "123";
-    }
-
     @RequestMapping(value = "/",method = RequestMethod.GET)
     public  String index() {
 

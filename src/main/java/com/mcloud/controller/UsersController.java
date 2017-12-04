@@ -89,7 +89,7 @@ public class UsersController {
         } else if (subject.hasRole("admin")) {
             UsersEntity utyAdmin = userRepository.findByUsernameEndsWith(userLogin.getUsername());
             modelMap.addAttribute("loginUser",utyAdmin);
-            return "clouds/welcome";
+            return "clouds/users/admin/welcomeAdmin";
         }
 
         return "redirect:/clouds/users/login";

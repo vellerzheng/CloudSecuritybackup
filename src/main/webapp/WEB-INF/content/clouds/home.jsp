@@ -12,7 +12,7 @@
     <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <!-- 引入JQuery  bootstrap.js-->
-    <script src="/js/jquery-1.11.2.min.js"></script>
+    <script src="/js/jquery-3.2.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <!-- [endif] -->
 </head>

@@ -34,9 +34,9 @@
                 /index.html=anon
                 /clouds/home=anon
                 /clouds/users/login = anon
-                /api/** = anon
                 /clouds/users/register= anon
                 /clouds/users/logout = logout
+                /clouds/users/admin/** =authc,roles[admin]
                 /clouds/welcome = authc,roles[admin,user]
                 /clouds/users/passwordReset = authc,roles[admin,user]
                 /clouds/users/top = authc,roles[admin,user]
