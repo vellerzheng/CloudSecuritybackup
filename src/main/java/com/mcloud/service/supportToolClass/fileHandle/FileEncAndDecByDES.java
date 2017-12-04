@@ -24,7 +24,11 @@ public class FileEncAndDecByDES {
     public void getKey(String strKey) {
         try {
             KeyGenerator _generator = KeyGenerator.getInstance("DES");
-            _generator.init(new SecureRandom(strKey.getBytes()));
+            //防止linux下 随机生成key
+            SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG" );
+            secureRandom.setSeed(strKey.getBytes());
+
+            _generator.init(56,secureRandom);
             this.key = _generator.generateKey();
             _generator = null;
         } catch (Exception e) {
