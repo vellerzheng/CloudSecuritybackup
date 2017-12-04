@@ -5,6 +5,8 @@ import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.request.*;
 import com.qcloud.cos.sign.Credentials;
 
+import java.io.File;
+
 /**
  * Created by vellerzheng on 2017/9/18.
  */
@@ -47,8 +49,8 @@ public class Qcloud {
      * @Description:上传文件
      */
     public  String uploadFile(String localFilePath) {
-        String fileName = localFilePath.substring((localFilePath.lastIndexOf("\\")));
-        String yunfilePath = "/backupFile/"+ fileName.replace("\\","");  //key 为上传的文件名
+        String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
+        String yunfilePath = "/backupFile/"+ fileName.replace(File.separator,"");  //key 为上传的文件名
 
         UploadFileRequest uploadFileRequest = new UploadFileRequest(bucketName,yunfilePath, localFilePath);
         String uploadFileRet = getCOSClient().uploadFile(uploadFileRequest);
@@ -65,7 +67,7 @@ public class Qcloud {
     public  String downFile(String yunfileName,String localPathDown) {
         String cosFilePath="/backupFile/"+yunfileName;
         String fileName =cosFilePath.substring((cosFilePath.lastIndexOf("/")));
-        String localFilePath = localPathDown+"\\"+ fileName.replace("/","");  //key 为上传的文件名
+        String localFilePath = localPathDown+ File.separator+ fileName.replace("/","");  //key 为上传的文件名
         GetFileLocalRequest getFileLocalRequest = new GetFileLocalRequest(bucketName, cosFilePath, localFilePath);
         getFileLocalRequest.setUseCDN(false);
         getFileLocalRequest.setReferer("*.myweb.cn");

@@ -32,8 +32,8 @@ public class Upyun {
 
       // 文件上传
     public void uploadFile(String localFilePath){
-        String fileName = localFilePath.substring((localFilePath.lastIndexOf("\\")));
-        String yunfilePath = "/up/tt/"+ fileName.replace("\\","");  //key 为上传的文件名
+        String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
+        String yunfilePath = "/up/tt/"+ fileName.replace(File.separator,"");  //key 为上传的文件名
         File file = new File(localFilePath);
         boolean result4 = false;
         try {

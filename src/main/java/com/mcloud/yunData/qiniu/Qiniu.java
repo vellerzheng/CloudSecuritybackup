@@ -39,8 +39,8 @@ public class Qiniu {
 //如果是Windows情况下，格式是 D:\\qiniu\\test.png
     //        String localFilePath = "D:\\Test\\split\\README.txt";
 //默认不指定key的情况下，以文件内容的hash值作为文件名
-            String fileName = localFilePath.substring((localFilePath.lastIndexOf("\\")));
-            String key =  fileName.replace("\\","");  //key 为上传的文件名
+            String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
+            String key =  fileName.replace(File.separator,"");  //key 为上传的文件名
             Auth auth = Auth.create(accessKey, secretKey);
             String upToken = auth.uploadToken(bucket);
             try {
@@ -70,8 +70,8 @@ public class Qiniu {
 //如果是Windows情况下，格式是 D:\\qiniu\\test.png
     //    String localFilePath = "D:\\Test\\split\\README.txt";
 //默认不指定key的情况下，以文件内容的hash值作为文件名
-        String fileName = localFilePath.substring((localFilePath.lastIndexOf("\\")));
-        String key =  fileName.replace("\\","");  //key 为上传的文件名
+        String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
+        String key =  fileName.replace(File.separator,"");  //key 为上传的文件名
         Auth auth = Auth.create(accessKey, secretKey);
         String upToken = auth.uploadToken(bucket);
         String localTempDir = Paths.get(System.getenv("java.io.tmpdir"), bucket).toString();

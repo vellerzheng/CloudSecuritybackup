@@ -24,7 +24,7 @@ public class PartitionFile {
         int number=(int)(srcSize/destSize);
         number = srcSize%destSize==0? number:number+1; // the file number finished devision
 
-        String fileName = src.substring((src.lastIndexOf("\\")));  // the name of source file
+        String fileName = src.substring((src.lastIndexOf(File.separator)));  // the name of source file
         InputStream in = null;
         BufferedInputStream bis =null; // input cache stream
         byte[] bytes = new byte[1024*1024];
@@ -79,9 +79,9 @@ public class PartitionFile {
         }
 
         //the file name after merged
-        String name = srcPaths.get(0).substring((srcPaths.get(0).lastIndexOf("\\")));
+        String name = srcPaths.get(0).substring((srcPaths.get(0).lastIndexOf(File.separator)));
         String destName = name.substring(0,name.lastIndexOf("-"));
-        String realDestPath = destPath+File.separator+destName.replace("\\",""); //  the file path after merged
+        String realDestPath = destPath+File.separator+destName.replace(File.separator,""); //  the file path after merged
 
         File destFile = new File(realDestPath); // the file after merged
         OutputStream out =null;

@@ -39,8 +39,8 @@ public class AliyunOSS {
         }
         OSSClient ossClient = new OSSClient(ossConfigure.getEndpoint(), ossConfigure.getAccessKeyId(),
                 ossConfigure.getAccessKeySecret());
-        String fileName = localFilePath.substring((localFilePath.lastIndexOf("\\")));
-        String yunfileName ="backupFile/"+ fileName.replace("\\","");  //key 为上传的文件名
+        String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
+        String yunfileName ="backupFile/"+ fileName.replace(File.separator,"");  //key 为上传的文件名
         ossClient.putObject(ossConfigure.getBucketName(),yunfileName,new File(localFilePath));
         ossClient.shutdown();
         return true;
@@ -104,7 +104,7 @@ public class AliyunOSS {
                     // 获取Object的输入流
                     InputStream objectContent = object.getObjectContent();
                     String fileName =yunFilePath.substring((yunFilePath.lastIndexOf("/")));
-                    String localFilePath = saveLocalFilePath+"\\"+ fileName.replace("/","");  //key 为上传的文件名
+                    String localFilePath = saveLocalFilePath+File.separator+ fileName.replace("/","");  //key 为上传的文件名
                     ObjectMetadata objectData = ossClient.getObject(new GetObjectRequest(ossConfigure.getBucketName(), yunFilePath),
                             new File(localFilePath));
                     // 关闭数据流

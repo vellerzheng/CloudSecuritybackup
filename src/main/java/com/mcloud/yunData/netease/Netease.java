@@ -64,8 +64,8 @@ public class Netease {
      * @Description:上传文件
      */
     public  boolean uploadMultiPartFile(String localFilePath) {
-        String fileName = localFilePath.substring((localFilePath.lastIndexOf("\\")));
-        String yunfileName = fileName.replace("\\","");  //key 为上传的文件名
+        String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
+        String yunfileName = fileName.replace(File.separator,"");  //key 为上传的文件名
 
       //  UploadFileRequest uploadFileRequest = new UploadFileRequest(bucketName,yunfilePath, localFilePath);
       //  String uploadFileRet = getCOSClient().uploadFile(uploadFileRequest);
@@ -141,8 +141,8 @@ public class Netease {
      */
     public  boolean uploadFile(String localFilePath) {
 
-        String fileName = localFilePath.substring((localFilePath.lastIndexOf("\\")));
-        String yunfileName = fileName.replace("\\","");  //key 为上传的文件名
+        String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
+        String yunfileName = fileName.replace(File.separator,"");  //key 为上传的文件名
         try {
             getNosClient().putObject(bucketName,yunfileName, new File(localFilePath));
         }catch (Exception e){
@@ -161,7 +161,7 @@ public class Netease {
 
       //  String fileName =yunFilePath.substring((yunFilePath.lastIndexOf("/")));
         String fileName = yunFilePath;
-        String localFilePath = localPathDown+"\\"+ fileName.replace("/","");  //key 为上传的文件名
+        String localFilePath = localPathDown+File.separator+ fileName.replace("/","");  //key 为上传的文件名
         GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName,yunFilePath);
         ObjectMetadata objectMetadata = getNosClient().getObject(getObjectRequest,new File(localFilePath));
         return true;
