@@ -28,6 +28,9 @@ public class MulCloudsDispose {
                 subdirtylist.add(fileList[i].getPath());
             }
         }
+        //路径排序防止linux 和windows下file.listFiles() 读取路径顺序不同
+        subdirtylist.sort(String::compareTo);
+
         return subdirtylist;
     }
 

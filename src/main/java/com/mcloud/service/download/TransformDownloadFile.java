@@ -32,6 +32,7 @@ public class TransformDownloadFile {
             logger.error("读取多云下载文件数目出错！");
             return -1;
         }
+        listPartFileNames.sort(String::compareTo);
         return fileList.length;
     }
 
