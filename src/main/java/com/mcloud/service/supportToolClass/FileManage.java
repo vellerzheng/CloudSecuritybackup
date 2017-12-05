@@ -107,6 +107,7 @@ public class FileManage {
                 subdirtylist.add(fileList[i].getName());
             }
         }
+        subdirtylist.sort(String::compareTo);
         return subdirtylist;
     }
 
