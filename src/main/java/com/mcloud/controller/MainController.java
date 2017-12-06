@@ -56,7 +56,7 @@ public class MainController {
         return "clouds/users/passwordReset";
     }
 
-    @RequestMapping(value = "/api/publicUser/adviceUpload",method = RequestMethod.POST)
+    @RequestMapping(value = "/js/AJAX.js/adviceUpload",method = RequestMethod.POST)
     @ResponseBody
     public String getPublicAdvice(HttpServletRequest request, HttpServletResponse response, @RequestBody UserAdviceEntity userAdviceEntity) throws IOException {
 
@@ -68,7 +68,7 @@ public class MainController {
         userAdviceEntity.setSubmitTime(CustomDateConverter.currentTime());
         userAdviceRepository.saveAndFlush(userAdviceEntity);
 
-        return null;
+        return "upload advice successfully!";
     }
 
 }

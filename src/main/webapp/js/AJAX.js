@@ -23,13 +23,13 @@ function checkEmail(){
 function advicePostJson(){
     var formToJson =$("#adviceId").serializeObject();
     $.ajax({
-        url:"http://localhost:8080/api/publicUser/adviceUpload",
+        url:"/js/AJAX.js/adviceUpload",
         type:"post",
         data:JSON.stringify(formToJson),
         contentType:"application/json",
 
         success:function(data){
-            alert("提交成功！");
+            alert(data);
             console.log(data);
             console.log("over..");
         },
