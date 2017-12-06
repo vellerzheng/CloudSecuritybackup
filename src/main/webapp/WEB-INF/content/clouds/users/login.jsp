@@ -41,7 +41,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 alert("用户名不能为空!");
                 return false;
             }
-            if($("password").value ==""){
+            if($("#password").value ==""){
                 alert("密码不能为空！");
                 return false;
             }
@@ -61,6 +61,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             if(event.srcElement.value=="")
                 event.srcElement.value="请输入密码";
         }
+
+        function doReset(){
+            /* 按输入类型清除*/
+            for(i=0;i<document.all.tags("input").length;i++){
+                if(document.all.tags("input")[i].type=="text"){
+                    document.all.tags("input")[i].value="";
+                }
+            }
+
+        }
+
     </script>
 
     <style>
@@ -75,7 +86,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <div class="container col-md-8 col-sm-offset-2 text-center">
     <table class="table table-bordered table-striped">
         <tr>
-            <form:form id="loginForm" action="/clouds/users/login" onsubmit="return check_submit();" modelAttribute="login"  method="post">
+            <form:form id="loginForm" action="/clouds/users/login" onsubmit="return check_submit();"  modelAttribute="login"  method="post">
                 <h2 class="form-signin-heading">请登录</h2>
                 <hr/>
                 <div class="form-group">
@@ -92,7 +103,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         <a href="#" onclick="javascript:reloadValidateCode();">看不清？</a></li>
                 </div>--%>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-sm btn-success">登录</button>
+                    <button type="submit" class="btn btn-sm btn-success"  >登录</button>
                 </div>
             </form:form>
         </tr>
