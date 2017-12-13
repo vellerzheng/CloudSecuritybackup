@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="lab420YunSafe:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="lab420-YunSafe.war">
-      <element id="artifact" artifact-name="lab420YunSafe:war exploded" />
-    </root>
-  </artifact>
-</component>

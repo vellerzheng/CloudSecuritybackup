@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/lab420YunSafe.iml" filepath="$PROJECT_DIR$/lab420YunSafe.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lab420-YunSafe.iml" filepath="$PROJECT_DIR$/lab420-YunSafe.iml" />
     </modules>
   </component>
 </project>
