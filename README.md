@@ -48,11 +48,11 @@
 
        1.登陆模块
        
-       ![登陆界面]（https://github.com/vellerzheng/CloudSecuritybackup/tree/master/doc/image/loginImage.png）
+![登陆界面](https://github.com/vellerzheng/CloudSecuritybackup/tree/master/doc/image/loginImage.jpg)
        
        2.文件管理模块
        
-       ![文件管理界面]（https://github.com/vellerzheng/CloudSecuritybackup/tree/master/doc/image/fileManageImage.png）
+![文件管理界面](https://github.com/vellerzheng/CloudSecuritybackup/tree/master/doc/image/fileManageImage.jpg)
        
        
 
