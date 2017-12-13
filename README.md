@@ -7,19 +7,19 @@
 
 ###使用技术
 
-    IOC容器：Spring
+        IOC容器：Spring
 
-    Web框架：SpringMVC
+        Web框架：SpringMVC
 
-    ORM框架：hibernate
+        ORM框架：hibernate
 
-    安全框架：Shiro
+        安全框架：Shiro
 
-    数据源：C3P0
+        数据源：C3P0
 
-    日志：log4j
+        日志：log4j
 
-    前端框架：Bootstrap
+        前端框架：Bootstrap
 
 
 * 运行环境和所需工具
