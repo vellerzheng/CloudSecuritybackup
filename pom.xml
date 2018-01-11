@@ -110,7 +110,7 @@
       <dependency>
           <groupId>org.springframework.data</groupId>
           <artifactId>spring-data-redis</artifactId>
-          <version>2.0.2.RELEASE</version>
+          <version>1.7.2.RELEASE</version>
       </dependency>
       <!-- springframe end -->
 
@@ -255,6 +255,11 @@
           <groupId>commons-codec</groupId>
           <artifactId>commons-codec</artifactId>
           <version>1.10</version>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-pool2</artifactId>
+          <version>2.4.3</version>
       </dependency>
       <!-- Cloud file Storage 相关依赖 -->
       <dependency>
