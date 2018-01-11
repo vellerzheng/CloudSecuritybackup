@@ -22,7 +22,7 @@ public class RedisClusterClient {
     private RedisTemplate<String,String> clusterRedisTemplate;
 
     //添加数据
-    public void put(Object key, Object value) {
+    public void set(Object key, Object value) {
         if(null == value) {
             return;
         }
@@ -33,7 +33,6 @@ public class RedisClusterClient {
             }
         }
 
-        // TODO Auto-generated method stub
         final String keyf = key + "";
         final Object valuef = value;
         final long liveTime = 86400;
