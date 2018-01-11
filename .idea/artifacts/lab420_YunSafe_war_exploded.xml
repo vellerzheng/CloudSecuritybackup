@@ -27,10 +27,11 @@
           <element id="library" level="project" name="Maven: org.springframework.data:spring-data-jpa:1.10.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjrt:1.8.9" />
           <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.7.19" />
-          <element id="library" level="project" name="Maven: org.springframework.data:spring-data-commons:1.12.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.data:spring-data-commons:1.12.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.2.6.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework.data:spring-data-redis:1.7.2.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework.data:spring-data-keyvalue:1.1.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.data:spring-data-redis:1.8.6.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.data:spring-data-keyvalue:1.2.6.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.session:spring-session:1.2.2.RELEASE" />
           <element id="library" level="project" name="Maven: redis.clients:jedis:2.9.0" />
           <element id="library" level="project" name="Maven: com.github.pagehelper:pagehelper:4.0.1" />
           <element id="library" level="project" name="Maven: com.github.jsqlparser:jsqlparser:0.9.1" />

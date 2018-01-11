@@ -6,11 +6,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -21,8 +26,44 @@ public class RedisClusterClient {
     @Autowired
     private RedisTemplate<String,String> clusterRedisTemplate;
 
+    private static Logger logger = LoggerFactory.getLogger(RedisClusterClient.class);
+    public static RedisSerializer<Object> valueRedisSerializer = new JdkSerializationRedisSerializer();
+    public static StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
+
+
+    /**
+     * 设置key和value
+     * @param key
+     * @param value
+     */
+    public void set(final String key, final Object value) {
+        clusterRedisTemplate.execute(new RedisCallback<Long>() {
+            public Long doInRedis(RedisConnection connection)
+                    throws DataAccessException {
+                connection.set(stringRedisSerializer.serialize(key), valueRedisSerializer.serialize(value));
+                return null;
+            }
+        });
+    }
+
+    /**
+     * 获取key值对应的value，如果出现异常返回null
+     * @param key
+     * @return
+     */
+    public Object get(final String key) {
+        Object object;
+        object = clusterRedisTemplate.execute(new RedisCallback<Object>() {
+            public Object doInRedis(RedisConnection connection)
+                    throws DataAccessException {
+                return valueRedisSerializer.deserialize(connection.get(stringRedisSerializer.serialize(key)));
+            }
+        });
+        return object;
+    }
+
     //添加数据
-    public void set(Object key, Object value) {
+    public void set(Object key, Object value, long liveTime) {
         if(null == value) {
             return;
         }
@@ -32,19 +73,16 @@ public class RedisClusterClient {
                 return;
             }
         }
-
         final String keyf = key + "";
         final Object valuef = value;
-        final long liveTime = 86400;
-
         clusterRedisTemplate.execute(new RedisCallback<Long>() {
             public Long doInRedis(RedisConnection connection)
                     throws DataAccessException {
                 byte[] keyb = keyf.getBytes();
                 byte[] valueb = toByteArray(valuef);
-                connection.set(keyb, valueb);
+                connection.set(valueRedisSerializer.serialize(keyb), valueRedisSerializer.serialize(valueb));
                 if (liveTime > 0) {
-                    connection.expire(keyb, liveTime);
+                    connection.expire(valueRedisSerializer.serialize(keyb), liveTime);
                 }
                 return 1L;
             }

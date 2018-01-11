@@ -6,10 +6,13 @@ import com.mcloud.repository.UserRegisterRepository;
 import com.mcloud.repository.UserRepository;
 import com.mcloud.service.supportToolClass.shiro.verificationCode.ValidateCode;
 import com.mcloud.service.users.UserLogin;
+import com.mcloud.util.redis.RedisClusterClient;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,6 +28,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
+
+
 /**
  * Created by vellerzheng on 2017/10/2.
  */
@@ -37,6 +42,10 @@ public class UsersController {
     UserRegisterRepository userRegisterRepository;
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    private RedisClusterClient redisClusterClient;
+
+    private static final Logger logger = LoggerFactory.getLogger(UsersController.class);
 
     @RequestMapping(value = "/clouds/users/register", method = RequestMethod.GET)
     public String getRegister() {
@@ -67,12 +76,17 @@ public class UsersController {
 
     @RequestMapping(value = "/clouds/users/login", method = RequestMethod.POST)
     public String  authLoagin(HttpServletRequest request, HttpSession session, ModelMap modelMap, @ModelAttribute("login") UserLogin userLogin){
+
+
+
         // 验证码处理
 /*        String code = (String) session.getAttribute("validateCode");
         String submitCode = WebUtils.getCleanParam(request, "validateCode");
         if (StringUtils.isEmpty(submitCode) || !StringUtils.equals(code,submitCode.toLowerCase())) {
             return "redirect:/";
         }*/
+/*        redisClusterClient.set(userLogin.getUsername(),userLogin.getPassword(),86400);
+        logger.info(redisClusterClient.get(userLogin.getUsername()).toString());*/
 
         Subject subject = SecurityUtils.getSubject();
         String checkpwd = new SimpleHash("MD5",userLogin.getPassword(),userLogin.getUsername(),2).toHex();

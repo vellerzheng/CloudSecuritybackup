@@ -100,7 +100,7 @@
       <dependency>
           <groupId>org.springframework.data</groupId>
           <artifactId>spring-data-commons</artifactId>
-          <version>1.12.1.RELEASE</version>
+          <version>1.12.5.RELEASE</version>
       </dependency>
       <dependency>
           <groupId>org.springframework</groupId>
@@ -110,8 +110,14 @@
       <dependency>
           <groupId>org.springframework.data</groupId>
           <artifactId>spring-data-redis</artifactId>
-          <version>1.7.2.RELEASE</version>
+          <version>1.8.6.RELEASE</version>
       </dependency>
+      <dependency>
+          <groupId>org.springframework.session</groupId>
+          <artifactId>spring-session</artifactId>
+          <version>1.2.2.RELEASE</version>
+      </dependency>
+
       <!-- springframe end -->
 
       <!-- Redis 工具依赖 jedis  -->
