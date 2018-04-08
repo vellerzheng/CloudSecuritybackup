@@ -5,7 +5,7 @@ import com.mcloud.repository.RoleRepository;
 import com.mcloud.repository.UserRegisterRepository;
 import com.mcloud.repository.UserRepository;
 import com.mcloud.service.supportToolClass.shiro.verificationCode.ValidateCode;
-import com.mcloud.service.users.UserLogin;
+import com.mcloud.model.common.UserLogin;
 import com.mcloud.util.redis.RedisClusterClient;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;

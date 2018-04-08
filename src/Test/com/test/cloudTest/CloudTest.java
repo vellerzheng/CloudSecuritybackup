@@ -16,9 +16,10 @@ public class CloudTest {
     @Test
     public void mulCloudsUploadFileTest(){
         long startTime=System.currentTimeMillis();
-        String directory="D:\\Test\\split";
+        String uploadDirectory="D:\\Test\\split\\cloudStorageService.pdf";
+        String downloadDirectory="D:\\Test\\merge";
         MulCloudsDispose mulCloudsDispose = new MulCloudsDispose();
-        mulCloudsDispose.getPartFilePath(directory);
+        mulCloudsDispose.getPartFilePath(uploadDirectory);
         mulCloudsDispose.uploadPartFileToClouds();
         long endTime=System.currentTimeMillis(); //获取结束时间
         System.out.println("程序运行时间： "+(endTime-startTime)+"ms");

@@ -1,6 +1,6 @@
 package com.mcloud.service;
 
-import com.mcloud.service.users.UserLogin;
+import com.mcloud.model.common.UserLogin;
 
 /**
  * Created by vellerzheng on 2017/10/13.

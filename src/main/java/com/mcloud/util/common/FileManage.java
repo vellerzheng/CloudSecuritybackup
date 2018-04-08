@@ -1,4 +1,4 @@
-package com.mcloud.service.supportToolClass;
+package com.mcloud.util.common;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;

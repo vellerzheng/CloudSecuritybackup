@@ -1,6 +1,6 @@
 package com.test.fileOperation;
 
-import com.mcloud.service.supportToolClass.FileManage;
+import com.mcloud.util.common.FileManage;
 import org.junit.Test;
 
 import java.io.File;

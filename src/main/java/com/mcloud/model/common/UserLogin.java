@@ -1,4 +1,4 @@
-package com.mcloud.service.users;
+package com.mcloud.model.common;
 
 /**
  * Created by vellerzheng on 2017/10/4.

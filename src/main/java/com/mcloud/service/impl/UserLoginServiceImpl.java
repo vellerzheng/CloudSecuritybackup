@@ -3,7 +3,7 @@ package com.mcloud.service.impl;
 import com.mcloud.model.UsersEntity;
 import com.mcloud.repository.UserRepository;
 import com.mcloud.service.UserLoginService;
-import com.mcloud.service.users.UserLogin;
+import com.mcloud.model.common.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

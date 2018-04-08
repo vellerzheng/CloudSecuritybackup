@@ -6,7 +6,7 @@ import com.mcloud.repository.FileRepository;
 import com.mcloud.repository.HashFileRepository;
 import com.mcloud.service.DownloadFileService;
 import com.mcloud.service.download.TransformDownloadFile;
-import com.mcloud.service.supportToolClass.FileManage;
+import com.mcloud.util.common.FileManage;
 import com.mcloud.service.supportToolClass.fileHandle.FileEncAndDecByDES;
 import com.mcloud.yunData.aliyun.AliyunOSS;
 import com.mcloud.yunData.netease.Netease;
@@ -127,8 +127,6 @@ public class DownloadFileServiceImpl implements DownloadFileService{
 
         return FileManage.md5FileNameToRealFilename(filePath,filesEntity.getFileName());
     }
-
-
 
 
 }

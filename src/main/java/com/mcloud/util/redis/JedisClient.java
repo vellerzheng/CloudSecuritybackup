@@ -1,4 +1,4 @@
-package com.mcloud.util;
+package com.mcloud.util.redis;
 
 
 

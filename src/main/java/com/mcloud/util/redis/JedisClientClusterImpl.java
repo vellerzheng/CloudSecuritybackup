@@ -1,8 +1,6 @@
 package com.mcloud.util.redis;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.mcloud.util.JedisClient;
-import com.mcloud.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 /*import com.thinkgem.jeesite.common.utils.StringUtils;*/  // 用到的StringUtils 应该为这个
 

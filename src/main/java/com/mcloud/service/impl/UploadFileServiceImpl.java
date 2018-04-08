@@ -7,7 +7,7 @@ import com.mcloud.repository.FileRepository;
 import com.mcloud.repository.HashFileRepository;
 import com.mcloud.repository.UserRepository;
 import com.mcloud.service.UploadFileService;
-import com.mcloud.service.supportToolClass.FileManage;
+import com.mcloud.util.common.FileManage;
 import com.mcloud.service.supportToolClass.fileHandle.FileEncAndDecByDES;
 import com.mcloud.service.upload.deliverFile.PartitionFile;
 import com.mcloud.service.upload.fileToMulClouds.MulCloudsDispose;

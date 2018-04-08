@@ -6,7 +6,7 @@ import com.mcloud.repository.HashFileRepository;
 import com.mcloud.service.DownloadFileService;
 import com.mcloud.service.ManagementFileService;
 import com.mcloud.service.UploadFileService;
-import com.mcloud.service.supportToolClass.FileManage;
+import com.mcloud.util.common.FileManage;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
