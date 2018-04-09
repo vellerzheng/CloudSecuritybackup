@@ -72,7 +72,7 @@ public class UsersController {
     }
 
     @RequestMapping(value ="/clouds/users/login",method = RequestMethod.GET)
-    public String getLogin(){ return "clouds/users/login"; }
+    public String getLogin(){ return "/clouds/users/login"; }
 
     @RequestMapping(value = "/clouds/users/login", method = RequestMethod.POST)
     public String  authLoagin(HttpServletRequest request, HttpSession session, ModelMap modelMap, @ModelAttribute("login") UserLogin userLogin){
