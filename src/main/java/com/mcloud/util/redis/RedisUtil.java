@@ -409,6 +409,285 @@ public class RedisUtil {
 
 
 
+
+    /**
+     * 判断key是否存在
+     * @param key
+     * @return
+     */
+    public Boolean exists(final String key) {
+        return template.execute(new RedisCallback<Boolean>() {
+            @Override
+            public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+                return connection.exists(stringRedisSerializer.serialize(key));
+            }
+        });
+    }
+
+
+
+    /**
+     * 自增方法
+     * @param key
+     * @return
+     */
+    public Long incr(final String key) {
+        return template.execute(new RedisCallback<Long>() {
+            @Override
+            public Long doInRedis(RedisConnection connection) throws DataAccessException {
+                return connection.incr(stringRedisSerializer.serialize(key));
+            }
+        });
+    }
+
+
+    /**
+     * 增加指定值
+     * @param key
+     * @param value
+     * @return
+     */
+    public Long incrBy(final String key,final long value) {
+        return template.execute(new RedisCallback<Long>() {
+            @Override
+            public Long doInRedis(RedisConnection connection) throws DataAccessException {
+                return connection.incrBy(stringRedisSerializer.serialize(key),value);
+            }
+        });
+    }
+
+    /**
+     * 增加指定值
+     * @param key
+     * @param value
+     * @return
+     */
+    public Double incrBy(final String key,final double value) {
+        return template.execute(new RedisCallback<Double>() {
+            @Override
+            public Double doInRedis(RedisConnection connection) throws DataAccessException {
+                return connection.incrBy(stringRedisSerializer.serialize(key),value);
+            }
+        });
+    }
+
+
+    /**
+     * hash结构字段增加指定值
+     * @param key
+     * @param field
+     * @param value
+     * @return
+     */
+    public Long hIncrBy(final String key, final Object field, final long value) {
+        return template.execute(new RedisCallback<Long>() {
+            @Override
+            public Long doInRedis(RedisConnection connection) throws DataAccessException {
+                return connection.hIncrBy(stringRedisSerializer.serialize(key),valueRedisSerializer.serialize(field),value);
+            }
+        });
+    }
+
+
+    /**
+     * hash结构字段增加指定值
+     * @param key
+     * @param field
+     * @param value
+     * @return
+     */
+    public Double hIncrBy(final String key, final Object field, final double value) {
+        return template.execute(new RedisCallback<Double>() {
+            @Override
+            public Double doInRedis(RedisConnection connection) throws DataAccessException {
+                return connection.hIncrBy(stringRedisSerializer.serialize(key),valueRedisSerializer.serialize(field),value);
+            }
+        });
+    }
+
+    /**
+     * 向列表尾部添加数据
+     * @param key
+     * @param value
+     * @return
+     */
+    public Long rPush(final String key, final Object value) {
+        return template.execute(new RedisCallback<Long>() {
+            @Override
+            public Long doInRedis(RedisConnection connection) throws DataAccessException {
+                return connection.rPush(stringRedisSerializer.serialize(key),valueRedisSerializer.serialize(value));
+            }
+        });
+    }
+
+    /**
+     * 从列表头部弹出元素
+     * @param key
+     * @return
+     */
+    public Object lPop(final String key) {
+        return template.execute(new RedisCallback<Object>() {
+            @Override
+            public Object doInRedis(RedisConnection connection) throws DataAccessException {
+                return valueRedisSerializer.deserialize(connection.lPop(stringRedisSerializer.serialize(key)));
+            }
+        });
+    }
+
+
+
+    /**
+     * 从列表尾部弹出元素
+     * @param key
+     * @return
+     */
+    public Object rPop(final String key) {
+        return template.execute(new RedisCallback<Object>() {
+            @Override
+            public Object doInRedis(RedisConnection connection) throws DataAccessException {
+                return valueRedisSerializer.deserialize(connection.rPop(stringRedisSerializer.serialize(key)));
+            }
+        });
+    }
+
+
+
+    /**
+     * 如果不存在则设置并返回true，否则返回false
+     * @param key
+     * @param value
+     * @return
+     */
+    public Boolean setnx(final String key,final Object value) {
+        return template.execute(new RedisCallback<Boolean>() {
+            @Override
+            public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+                return connection.setNX(stringRedisSerializer.serialize(key), valueRedisSerializer.serialize(value));
+            }
+        });
+    }
+
+
+    /**
+     * 获取redis时间戳
+     * @return
+     */
+    public Long time() {
+        return template.execute(new RedisCallback<Long>() {
+            @Override
+            public Long doInRedis(RedisConnection connection) throws DataAccessException {
+                return connection.time();
+            }
+        });
+    }
+
+
+    /**
+     * 有序集合set，添加数据方法
+     * @param key
+     * @param score
+     * @param value
+     * @return
+     */
+    public Boolean zAdd(final String key, final double score, final Object value) {
+        return template.execute(new RedisCallback<Boolean>() {
+            @Override
+            public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+                return connection.zAdd(stringRedisSerializer.serialize(key), score, valueRedisSerializer.serialize(value));
+            }
+        });
+    }
+
+
+    /**
+     * 查询有序集合中的元素的个数
+     * @param key
+     * @return
+     */
+    public Long zCard(final String key) {
+        return template.execute(new RedisCallback<Long>() {
+            @Override
+            public Long doInRedis(RedisConnection connection) throws DataAccessException {
+                return connection.zCard(stringRedisSerializer.serialize(key));
+            }
+        });
+    }
+
+    /**
+     * 删除有序集合中的元素
+     * @param key
+     * @param values
+     * @return
+     */
+    public Long zRem(final String key,final Object[] values) {
+        return template.execute(new RedisCallback<Long>() {
+            @Override
+            public Long doInRedis(RedisConnection connection) throws DataAccessException {
+                int l = values.length;
+                byte[][] v = new byte[l][];
+                if(values.length != 0) {
+                    for (int i = 0; i < l; i++) {
+                        v[i] = valueRedisSerializer.serialize(values[i]);
+                    }
+                }
+                return connection.zRem(stringRedisSerializer.serialize(key),v);
+            }
+        });
+    }
+
+
+
+    /**
+     * 根据索引区间返回有序集合中的元素
+     * @param key
+     * @param start
+     * @param stop
+     * @return
+     */
+    public Set<Object> zRange(final String key,final long start, final long stop) {
+        return template.execute(new RedisCallback<Set<Object>>() {
+            @Override
+            public Set<Object> doInRedis(RedisConnection connection) throws DataAccessException {
+                Set<byte[]> bytes = connection.zRange(stringRedisSerializer.serialize(key), start, stop);
+                if(bytes.size() !=0){
+                    Set<Object> sets = new HashSet<Object>();
+                    for (byte[] bs : bytes) {
+                        sets.add(valueRedisSerializer.deserialize(bs));
+                    }
+                    return sets;
+                } else {
+                    return null;
+                }
+            }
+        });
+    }
+
+
+
+    /**
+     * key值减去value
+     * @param key
+     * @param value
+     * @return
+     */
+    public long decrBy(final String key, final long value) {
+        return template.execute(new RedisCallback<Long>() {
+            @Override
+            public Long doInRedis(RedisConnection connection) throws DataAccessException {
+                return connection.decrBy(stringRedisSerializer.serialize(key),value);
+            }
+        });
+    }
+    public Double zScore(final String key, final Object value) {
+        return template.execute(new RedisCallback<Double>() {
+            @Override
+            public Double doInRedis(RedisConnection connection) throws DataAccessException {
+                return connection.zScore(stringRedisSerializer.serialize(key),valueRedisSerializer.serialize(value));
+            }
+        });
+    }
+
+
     private Map<byte[], byte[]> mapTransger1(Map<Object, Object> valueMap) {
         Map<byte[],byte[]> map= new HashMap<byte[], byte[]>();
         for (Map.Entry<Object, Object> en : valueMap.entrySet()) {
