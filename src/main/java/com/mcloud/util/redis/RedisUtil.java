@@ -259,7 +259,6 @@ public class RedisUtil {
         });
     }
 
-
     /**
      * 删除某个hash结构的某个字段
      * @param key
