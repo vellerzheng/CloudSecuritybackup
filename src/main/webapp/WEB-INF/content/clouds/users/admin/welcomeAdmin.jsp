@@ -23,7 +23,7 @@
 
 <body>
 <!-- 顶栏 -->
-<jsp:include page="../../users/top.jsp" flush="true"></jsp:include>
+<jsp:include page="./adminAccount.jsp" flush="true"></jsp:include>
 
 <div class="container">
     <table align="center">
@@ -60,7 +60,7 @@
 
                 <tr>
                     <th>Advice & Information Manage</th>
-                    <td><a href="/clouds/users/admin/findNoQuery/AdviceInfo" type="button" class="btn btn-sm btn-success"> Advice & INfo Manage</a></td>
+                    <td><a href="/clouds/users/admin/adviceInfo/list" type="button" class="btn btn-sm btn-success"> Advice & INfo Manage</a></td>
                 </tr>
 
 

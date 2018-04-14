@@ -21,7 +21,7 @@
 </head>
 <body>
 <!-- 顶栏 -->
-<jsp:include page="../users/top.jsp"></jsp:include>
+<jsp:include page="../utils/account.jsp"></jsp:include>
 
 <div class="container">
     <h1>  修改文件信息 </h1>

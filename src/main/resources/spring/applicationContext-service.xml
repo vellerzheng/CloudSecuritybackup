@@ -34,9 +34,7 @@
    <!-- <bean id="UploadFileServiceImpl" class="com.mcloud.service.impl.UploadFileServiceImpl"></bean>
     <bean id="UserLoginServiceImpl" class="com.mcloud.service.impl.UserLoginServiceImpl"></bean>         -->
 
-    <!-- redis 工具类bean 注册 -->
 
-<!--    <bean id="jedisClient" class="com.mcloud.util.redis.JedisClientClusterImpl"></bean>-->
-    <bean id="redisClusterClient" name="redisClusterClient" class="com.mcloud.util.redis.RedisClusterClient"></bean>
+
 
 </beans>

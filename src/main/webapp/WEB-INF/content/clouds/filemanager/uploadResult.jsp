@@ -12,7 +12,7 @@
 </head>
 <body>
 <!-- 顶栏 -->
-<jsp:include page="../users/top.jsp"></jsp:include>
+<jsp:include page="../utils/account.jsp"></jsp:include>
 <div class="container">
     <h1 style="text-align: center"> 文件上传成功，请回退页面或主页</h1>
     <hr/>

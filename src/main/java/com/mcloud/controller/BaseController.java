@@ -1,14 +1,14 @@
 package com.mcloud.controller;
 
 import com.mcloud.model.UserAdviceEntity;
+import com.mcloud.model.UsersEntity;
 import com.mcloud.repository.UserAdviceRepository;
 import com.mcloud.service.supportToolClass.converter.CustomDateConverter;
+import com.mcloud.util.redis.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,10 +18,13 @@ import java.io.IOException;
  * Created by vellerzheng on 2017/9/20.
  */
 @Controller
-public class MainController {
+public class BaseController {
 
     @Autowired
     UserAdviceRepository userAdviceRepository;
+
+    @Autowired
+    RedisUtil redisUtil;
 
     @RequestMapping(value = "/",method = RequestMethod.GET)
     public  String index() {
@@ -40,13 +43,22 @@ public class MainController {
     }
 
 
-    @RequestMapping(value = "/clouds/welcome", method = RequestMethod.GET)
-    public String getWelcome() {
-        return "clouds/welcome";
+    @RequestMapping(value = "/clouds/users/admin/welcomeAdmin/{userName}", method = RequestMethod.GET)
+    public String getWelcomeAdmin(ModelMap modelMap, @PathVariable("userName")String userName) {
+        UsersEntity utyAdmin = (UsersEntity) redisUtil.get(userName);
+        modelMap.addAttribute("loginUser",utyAdmin);
+        return "clouds/users/admin/welcomeAdmin";
+    }
+
+    @RequestMapping(value = "/clouds/users/default/welcome/{userName}", method = RequestMethod.GET)
+    public String getWelcome(ModelMap modelMap, @PathVariable("userName")String userName) {
+        UsersEntity ordinaryUser = (UsersEntity) redisUtil.get(userName);
+        modelMap.addAttribute("loginUser",ordinaryUser);
+        return "clouds/users/default/welcome";
     }
 
     @RequestMapping(value = "/clouds/users/top")
-    public String getTop() { return "clouds/users/top"; }
+    public String getTop() { return "clouds/utils/account"; }
 
     @RequestMapping(value = "/clouds/users/logout", method = RequestMethod.GET)
     public String logOut() { return "clouds/users/logout"; }

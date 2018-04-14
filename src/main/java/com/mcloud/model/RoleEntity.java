@@ -1,6 +1,7 @@
 package com.mcloud.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Collection;
  */
 @Entity
 @Table(name = "role", schema = "cloud_secureStorage", catalog = "")
-public class RoleEntity {
+public class RoleEntity implements Serializable{
     private int roleId;
     private String roleName;
     private String permissions;

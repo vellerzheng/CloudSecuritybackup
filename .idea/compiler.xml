@@ -6,10 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="cloudSecureStorage" />
         <module name="lab420-YunSafe" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="cloudSecureStorage" target="1.8" />
       <module name="lab420-YunSafe" target="1.8" />
     </bytecodeTargetLevel>
   </component>

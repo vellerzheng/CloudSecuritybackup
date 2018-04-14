@@ -3,11 +3,12 @@ package com.mcloud.model;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "user_advice", schema = "cloud_secureStorage", catalog = "")
-public class UserAdviceEntity {
+public class UserAdviceEntity implements Serializable {
     private int id;
     private String name;
     private String email;

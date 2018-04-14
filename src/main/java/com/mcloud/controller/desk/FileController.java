@@ -1,4 +1,4 @@
-package com.mcloud.controller;
+package com.mcloud.controller.desk;
 
 import com.mcloud.model.FilesEntity;
 import com.mcloud.repository.FileRepository;

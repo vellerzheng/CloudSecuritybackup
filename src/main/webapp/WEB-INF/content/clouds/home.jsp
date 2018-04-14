@@ -18,7 +18,7 @@
 </head>
 <body>
 <!-- 顶栏 -->
-<jsp:include page="users/top.jsp"></jsp:include>
+<jsp:include page="utils/account.jsp"></jsp:include>
 
 <div class="container">
     <h1 style="text-align: center"> Cloud Secure Storage </h1>

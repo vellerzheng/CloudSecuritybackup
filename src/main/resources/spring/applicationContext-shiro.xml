@@ -33,11 +33,12 @@
                 <!-- 当访问login时，不用进行认证(anon表示匿名) -->
                 /index.html=anon
                 /clouds/home=anon
+                /clouds/utils/**=anon
                 /clouds/users/login = anon
                 /clouds/users/register= anon
                 /clouds/users/logout = logout
-                /clouds/pluggablePage/** = anon
                 /clouds/users/admin/** = authc,roles[admin]
+                /clouds/users/default/** = authc,roles[admin,user]
                 /clouds/welcome = authc,roles[admin,user]
                 /clouds/users/passwordReset = authc,roles[admin,user]
                 /clouds/users/top = authc,roles[admin,user]

@@ -1,13 +1,14 @@
 package com.mcloud.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by vellerzheng on 2017/10/13.
  */
 @Entity
 @Table(name = "user_auths", schema = "cloud_secureStorage", catalog = "")
-public class UserAuthsEntity {
+public class UserAuthsEntity implements Serializable{
     private int id;
     private String identifier;
     private String identityType;

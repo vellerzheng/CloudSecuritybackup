@@ -20,10 +20,10 @@
 </head>
 <body>
 <!-- 顶栏 -->
-<jsp:include page="../top.jsp"></jsp:include>
+<jsp:include page="./adminAccount.jsp"></jsp:include>
 
 <div class="container">
-    <h1> 文件系统-文件管理</h1>
+    <h1> 用户系统-用户建议管理</h1>
     <hr/>
 
 <%--    <h3>所有文件 <a href="/clouds/itemmanager/uploaditem/${loginId}" type="button" class="btn btn-primary btn-sm">添加文件</a></h3>
@@ -40,9 +40,10 @@
         <table class="table table-bordered table-striped">
             <tr>
                 <th>ID</th>
-                <th>文件名</th>
-                <th>描述</th>
-                <th>文件大小</th>
+                <th>用户名</th>
+                <th>邮件</th>
+                <th>主题</th>
+                <th>详细情况</th>
                 <th>上传日期</th>
                 <th>操作</th>
             </tr>
@@ -51,6 +52,7 @@
                 <tr>
                     <td>${item.id}</td>
                     <td>${item.name}</td>
+                    <td>${item.email}</td>
                     <td>${item.mainIdea}</td>
                     <td>${item.messageDetail}</td>
                     <td><fmt:formatDate value="${item.submitTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
@@ -65,9 +67,94 @@
         </table>
     </c:if>
 
+    <!-- 翻页部分 -->
+    <jsp:include page="../../utils/page.jsp"></jsp:include>
+
+
 </div>
 
-<%--<jsp:include page="../../pluggablePage/page.jsp"></jsp:include>--%>
+
 
 </body>
+
 </html>
+
+<script type="text/javascript">
+
+
+    //上一页
+    function controlPagePre(){
+        var nowPageNo = $("#nowPageNo1").val();
+        if(parseInt(nowPageNo)-1<=0){
+            controlPages(1,10);
+        }else{
+            controlPages(parseInt(nowPageNo)-1,10);
+        }
+    }
+    //下一页
+    function controlPageNext(){
+        var nowPageNo = $("#nowPageNo1").val();
+        var lastPageNo = $("#lastPageNo").val();
+        if(parseInt(nowPageNo)+1>lastPageNo){
+            controlPages(lastPageNo,10);
+        }else{
+            controlPages(parseInt(nowPageNo)+1,5);
+        }
+    }
+    //末页
+    function controlPageEnd(){
+        var lastPageNo = $("#lastPageNo").val();
+        controlPages(lastPageNo,5);
+    }
+    //首页
+    function controlPageHead(){
+        controlPages(1,5);
+    }
+    //跳转
+    function controlPage4(val){
+        var lastPageNo = $("#lastPageNo").val();
+        if(parseInt(val)>lastPageNo){
+            val = lastPageNo;
+        }
+        controlPages(val,5);
+    }
+
+
+    //翻页方法
+    function controlPages(nowPageNo,sizePerPage){
+        //设置一下   跳转到第几页
+
+/*        $("#pageForm").attr("action","list");
+        $("#selectHql").val($("#adStatus").val());
+        $("#actType").val("list");
+        $("#pageForm").submit();*/
+        $.ajax(
+            {
+                type:"POST",
+                url: '/clouds/users/admin/adviceInfo/list',
+                data: { "pageNo": nowPageNo, "pageSize": pageSize},
+                dataType: "json",
+                success:function (res) {
+                 /*   location.href = "activitySubList?activityId=" + amid+" ";*/
+                 /*   location.href = "/clouds/users/admin/findNoQuery/AdviceInfo";*/
+
+                    $("#totalCount").val(res.data[2]);
+                    $("#lastPageNo").val(res.data[1]);
+                    $("#nowPageNo1").val(nowPageNo);
+                    $("#pageSize").val(pageSize);
+                }
+
+            }
+        );
+    }
+
+    //可以在本页面定制翻页部分的 参数   和  设置方法
+    function pageVarChange(){
+        //对每页条数最大值的定制
+        if( $("#sizePerPage")!=null&&$("#sizePerPage").val()!=""&&$("#sizePerPage").val()>50 ){
+            $("#sizePerPage").val(50);
+        }
+
+    }
+
+</script>

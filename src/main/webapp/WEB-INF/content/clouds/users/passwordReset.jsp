@@ -15,7 +15,7 @@
 </head>
 <body>
 <!-- 顶栏 -->
-<jsp:include page="top.jsp"></jsp:include>
+<jsp:include page="../utils/account.jsp"></jsp:include>
 <!-- 中间主体 -->
 <div class="container" id="content">
     <div class="row">

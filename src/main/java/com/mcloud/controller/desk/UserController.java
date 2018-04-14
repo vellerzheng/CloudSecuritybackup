@@ -1,4 +1,4 @@
-package com.mcloud.controller;
+package com.mcloud.controller.desk;
 
 import com.mcloud.model.UsersEntity;
 import com.mcloud.repository.RoleRepository;
@@ -6,7 +6,7 @@ import com.mcloud.repository.UserRegisterRepository;
 import com.mcloud.repository.UserRepository;
 import com.mcloud.service.supportToolClass.shiro.verificationCode.ValidateCode;
 import com.mcloud.model.common.UserLogin;
-import com.mcloud.util.redis.RedisClusterClient;
+import com.mcloud.util.redis.RedisUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -34,7 +34,7 @@ import java.util.List;
  * Created by vellerzheng on 2017/10/2.
  */
 @Controller
-public class UsersController {
+public class UserController {
 
     @Autowired
     UserRepository userRepository;
@@ -42,10 +42,12 @@ public class UsersController {
     UserRegisterRepository userRegisterRepository;
     @Autowired
     RoleRepository roleRepository;
-    @Autowired
-    private RedisClusterClient redisClusterClient;
 
-    private static final Logger logger = LoggerFactory.getLogger(UsersController.class);
+
+    @Autowired
+    RedisUtil redisUtil;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @RequestMapping(value = "/clouds/users/register", method = RequestMethod.GET)
     public String getRegister() {
@@ -75,7 +77,8 @@ public class UsersController {
     public String getLogin(){ return "/clouds/users/login"; }
 
     @RequestMapping(value = "/clouds/users/login", method = RequestMethod.POST)
-    public String  authLoagin(HttpServletRequest request, HttpSession session, ModelMap modelMap, @ModelAttribute("login") UserLogin userLogin){
+    public String  authLoagin(HttpServletRequest request, HttpSession session,
+                              ModelMap modelMap, @ModelAttribute("login") UserLogin userLogin){
 
 
 
@@ -96,17 +99,18 @@ public class UsersController {
         //如果获取不到用户名就是登录失败，但登录失败的话，会直接抛出异常
         subject.login(token);
 
+        UsersEntity usersEntity = userRepository.findByUsernameEndsWith(userLogin.getUsername());
+        redisUtil.setEx(usersEntity.getUsername(),10000,usersEntity);
         if (subject.hasRole("user")) {
-            UsersEntity uty = userRepository.findByUsernameEndsWith(userLogin.getUsername());
-            modelMap.addAttribute("loginUser",uty);
-            return "clouds/welcome";
+            return "redirect:/clouds/users/default/welcome/"+usersEntity.getUsername();
         } else if (subject.hasRole("admin")) {
-            UsersEntity utyAdmin = userRepository.findByUsernameEndsWith(userLogin.getUsername());
-            modelMap.addAttribute("loginUser",utyAdmin);
-            return "clouds/users/admin/welcomeAdmin";
-        }
 
-        return "redirect:/clouds/users/login";
+            return "redirect:/clouds/users/admin/welcomeAdmin/"+usersEntity.getUsername();
+        } else if(subject.hasRole("manager")){
+            return null;
+        }
+        return  null;
+
     }
 
 
