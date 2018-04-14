@@ -6,8 +6,10 @@ import java.util.concurrent.TimeUnit;
 
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.DefaultSortParameters;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.ReturnType;
+import org.springframework.data.redis.connection.SortParameters;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
@@ -308,9 +310,100 @@ public class RedisUtil {
 
 
 
+    /**
+     * 根据字段名称获取某个用户的部分信息
+     * @param key
+     * @param fields
+     * @return
+     */
+    public List<Object> hMGet(final String key,final Object[] fields) {
+        return template.execute(new RedisCallback<List<Object>>() {
+            @Override
+            public List<Object> doInRedis(RedisConnection connection) throws DataAccessException {
+                byte[][] f = new byte[fields.length][];
+                for(int i=0;i<fields.length;i++) {
+                    f[i] = valueRedisSerializer.serialize(fields[i]);
+                }
+                List<byte[]> result = connection.hMGet(stringRedisSerializer.serialize(key), f);
+                List<Object> list = new ArrayList<Object>();
+                for (byte[] b : result) {
+                    list.add(valueRedisSerializer.deserialize(b));
+                }
+                return list;
+            }
+        });
+    }
+
+    /**
+     * 对list集合中的数据排序
+     * @param key
+     * @param sortParameters
+     * @return
+     */
+    public List<Object> sort(final String key,final SortParameters sortParameters) {
+        SortParameters sp = new DefaultSortParameters();
+        return template.execute(new RedisCallback<List<Object>>() {
+            @Override
+            public List<Object> doInRedis(RedisConnection connection) throws DataAccessException {
+                List<byte[]> bytes = connection.sort(stringRedisSerializer.serialize(key), sortParameters);
+                if(bytes.size() != 0) {
+                    List<Object> list = new ArrayList<Object>();
+                    for (byte[] b:bytes) {
+                        list.add(valueRedisSerializer.deserialize(b));
+                    }
+                    return list;
+                }
+                return null;
+            }
+        });
+    }
 
 
+    /**
+     * 删除set集合中的部分数据
+     * @param key
+     * @param values
+     * @return
+     */
+    public Long sRem(final String key,final Object[] values) {
+        return template.execute(new RedisCallback<Long>() {
+            @Override
+            public Long doInRedis(RedisConnection connection) throws DataAccessException {
+                int l = values.length;
+                byte[][] v = new byte[l][];
+                if(values.length != 0) {
+                    for (int i = 0; i < l; i++) {
+                        v[i] = valueRedisSerializer.serialize(values[i]);
+                    }
+                }
+                return connection.sRem(stringRedisSerializer.serialize(key),v);
+            }
+        });
+    }
 
+
+    /**
+     * 模糊查询key
+     * @param key
+     * @return
+     */
+    public Set<Object> keys(final String key) {
+        return template.execute(new RedisCallback<Set<Object>>() {
+            @Override
+            public Set<Object> doInRedis(RedisConnection connection) throws DataAccessException {
+                Set<byte[]> keys = connection.keys(stringRedisSerializer.serialize(key));
+                if(keys.size() != 0) {
+                    Set<Object> sets = new HashSet<Object>();
+                    for (byte[] bs : keys) {
+                        sets.add(stringRedisSerializer.deserialize(bs));
+                    }
+                    return sets;
+                } else {
+                    return null;
+                }
+            }
+        });
+    }
 
 
 
