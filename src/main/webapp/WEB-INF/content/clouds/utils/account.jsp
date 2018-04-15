@@ -12,7 +12,7 @@
                            <%-- home可换成小图片 <img alt="Brand" style="max-width:100px;margin-top:-7px;" src="...">--%>
                       </a>
                 　</div>
-                <form action="##" class="navbar-form navbar-right" rol="search">
+                <form action="##" class="navbar-form navbar-right"   rol="search">
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" style="margin-right: 20px; ">
                             <%--登录用户名--%>
@@ -21,12 +21,19 @@
                         </button>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                             <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="/clouds/filemanager/files/${loginUser.username}">
+                                    <span class="glyphicon glyphicon-file pull-right"></span>
+                                    我的文件
+                                </a>
+                            </li>
+
+                            <li role="presentation">
                                 <a role="menuitem" tabindex="-1" href="/clouds/users/passwordReset">
                                     <span class="glyphicon glyphicon-cog pull-right"></span>
                                     修改个人信息
                                 </a>
                             </li>
-                            <!-分割线--->
+                            <!-- 分割线 -->
                             <li role="presentation" class="divider"></li>
                             <li role="presentation">
                                 <a role="menuitem" tabindex="-1" href="/clouds/users/logout">

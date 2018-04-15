@@ -6,6 +6,7 @@ import com.mcloud.repository.UserRegisterRepository;
 import com.mcloud.repository.UserRepository;
 import com.mcloud.service.supportToolClass.shiro.verificationCode.ValidateCode;
 import com.mcloud.model.common.UserLogin;
+import com.mcloud.util.common.UserUtils;
 import com.mcloud.util.redis.RedisUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -19,6 +20,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +40,8 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    UserUtils userUtils;
     @Autowired
     UserRegisterRepository userRegisterRepository;
     @Autowired
@@ -99,7 +103,7 @@ public class UserController {
         //如果获取不到用户名就是登录失败，但登录失败的话，会直接抛出异常
         subject.login(token);
 
-        UsersEntity usersEntity = userRepository.findByUsernameEndsWith(userLogin.getUsername());
+        UsersEntity usersEntity =userUtils.getUsersEntity(userLogin.getUsername());
         redisUtil.setEx(usersEntity.getUsername(),10000,usersEntity);
         if (subject.hasRole("user")) {
             return "redirect:/clouds/users/default/welcome/"+usersEntity.getUsername();
@@ -116,22 +120,27 @@ public class UserController {
 
     // 本账户密码重置
     @RequestMapping(value = "/clouds/users/passwordReset/update", method = {RequestMethod.POST})
-    public String passwordRest(String oldPassword, String password1) throws Exception {
+    public String passwordRest(@RequestParam("oldPassword") String oldPassword,@RequestParam("password1") String password1) throws Exception {
 
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
 
-        UsersEntity userlogin = userRepository.findByUsernameEndsWith(username);
+        UsersEntity userlogin = userUtils.getUsersEntity(username);
 
         String oldPwdMd5= new SimpleHash("MD5",oldPassword,userlogin.getUsername(),2).toHex();
         String newpwd = new SimpleHash("MD5",password1,userlogin.getUsername(),2).toHex();
-        if (!oldPwdMd5.equals(userlogin.getPassword())) {
+
+        UsernamePasswordToken token = new UsernamePasswordToken(userlogin.getUsername(),oldPwdMd5);
+        token.setRememberMe(true);
+        //如果获取不到用户名就是登录失败，但登录失败的话，会直接抛出异常
+        subject.login(token);
+
+   /*     if (!oldPwdMd5.equals(userlogin.getPassword())) {
             throw new Exception("旧密码不正确");
-        } else {
+        } else {*/
             userlogin.setPassword(newpwd);
             userRepository.updateByName(username, userlogin.getPassword(),userlogin.getId());
-        }
-
+       // }
         return "redirect:/clouds/users/logout";
     }
 

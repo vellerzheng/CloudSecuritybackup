@@ -60,13 +60,17 @@
 
                 <tr>
                     <th>Advice & Information Manage</th>
-                    <td><a href="/clouds/users/admin/adviceInfo/list" type="button" class="btn btn-sm btn-success"> Advice & INfo Manage</a></td>
+                    <td><a href="/clouds/users/admin/adviceInfo/list/${loginUser.username}" type="button" class="btn btn-sm btn-success">意见反馈</a></td>
                 </tr>
 
+                <tr>
+                    <th>System ManageMent</th>
+                    <td><a href="/clouds/users/admin" type="button" class="btn btn-sm btn-success"> 后台管理 </a></td>
+                </tr>
 
                 <tr>
                     <th>File Manage</th>
-                    <td><a href="/clouds/filemanager/files/${loginUser.id}" type="button" class="btn btn-sm btn-success">File Manage</a></td>
+                    <td><a href="/clouds/filemanager/files/${loginUser.username}" type="button" class="btn btn-sm btn-success">文件管理</a></td>
                 </tr>
 
 

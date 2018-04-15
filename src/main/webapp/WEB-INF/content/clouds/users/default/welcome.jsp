@@ -60,13 +60,13 @@
 
                 <tr>
                     <th>Upload File </th>
-                    <td><a href="/clouds/filemanager/uploadfile/${loginUser.id}" type="button" class="btn btn-sm btn-success">Upload File</a></td>
+                    <td><a href="/clouds/filemanager/uploadfile/${loginUser.username}" type="button" class="btn btn-sm btn-success">Upload File</a></td>
                 </tr>
 
 
                 <tr>
                     <th>File Manage</th>
-                    <td><a href="/clouds/filemanager/files/${loginUser.id}" type="button" class="btn btn-sm btn-success">File Manage</a></td>
+                    <td><a href="/clouds/filemanager/files/${loginUser.username}" type="button" class="btn btn-sm btn-success">File Manage</a></td>
                 </tr>
 
 

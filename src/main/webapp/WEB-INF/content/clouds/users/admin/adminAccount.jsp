@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--shiro标签--%>
 <%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- 顶栏 -->
 <div class="container" id="top">
     <div class="row">
@@ -20,16 +21,24 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="/clouds/filemanager/files/${loginUser.username}">
+                                    <span class="glyphicon glyphicon-file pull-right"></span>
+                                    我的文件
+                                </a>
+                            </li>
+
                             <li role="presentation">
                                 <a role="menuitem" tabindex="-1" href="/clouds/users/passwordReset">
                                     <span class="glyphicon glyphicon-cog pull-right"></span>
                                     修改个人信息
                                 </a>
                             </li>
-                            <!-分割线--->
+                            <!-- 分割线--->
                             <li role="presentation" >
                                 <a role="menuitem" tabindex="-1" href="/clouds/users/admin">
-                                    <span class="glyphicon glyphicon-cog pull-right"></span>
+                                    <span class="glyphicon glyphicon-th-large pull-right"></span>
                                     后台管理
                                 </a>
                             </li>

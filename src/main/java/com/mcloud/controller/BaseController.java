@@ -5,6 +5,8 @@ import com.mcloud.model.UsersEntity;
 import com.mcloud.repository.UserAdviceRepository;
 import com.mcloud.service.supportToolClass.converter.CustomDateConverter;
 import com.mcloud.util.redis.RedisUtil;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -64,7 +66,11 @@ public class BaseController {
     public String logOut() { return "clouds/users/logout"; }
 
     @RequestMapping(value = "/clouds/users/passwordReset", method = RequestMethod.GET)
-    public String getPasswordReset() {
+    public String getPasswordReset(ModelMap modelMap) {
+        Subject subject = SecurityUtils.getSubject();
+        String  username = (String) subject.getPrincipal();
+        UsersEntity loginUser = (UsersEntity) redisUtil.get(username);
+        modelMap.addAttribute("loginUser",loginUser);
         return "clouds/users/passwordReset";
     }
 

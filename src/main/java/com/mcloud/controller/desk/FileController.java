@@ -1,12 +1,17 @@
 package com.mcloud.controller.desk;
 
 import com.mcloud.model.FilesEntity;
+import com.mcloud.model.UsersEntity;
 import com.mcloud.repository.FileRepository;
 import com.mcloud.repository.HashFileRepository;
+import com.mcloud.repository.UserRepository;
 import com.mcloud.service.DownloadFileService;
 import com.mcloud.service.ManagementFileService;
 import com.mcloud.service.UploadFileService;
 import com.mcloud.util.common.FileManage;
+import com.mcloud.util.common.InfoJson;
+import com.mcloud.util.common.UserUtils;
+import com.mcloud.util.redis.RedisUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
@@ -34,6 +39,8 @@ public class FileController {
 
 
     @Autowired
+    UserUtils userUtils;
+    @Autowired
     FileRepository fileRepository;
     @Autowired
     ManagementFileService manageFileService;
@@ -41,23 +48,27 @@ public class FileController {
     HashFileRepository hashFileRepository;
     @Autowired
     DownloadFileService downloadFileService;
+    @Autowired
+    RedisUtil redisUtil;
     @Resource(name="uploadFileServiceImpl")
     private UploadFileService uploadFileService;
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
     /*用户上传文件*/
-    @RequestMapping(value ="/clouds/filemanager/uploadfile/{id}", method = RequestMethod.GET)
-    public String getUploadForm(@PathVariable("id") int uid, ModelMap modelMap){
-        // UsersEntity usersEntity= userRepository.findUsersEntityById(uid);
-        modelMap.addAttribute("authUsersEntity",uid);
+    @RequestMapping(value ="/clouds/filemanager/uploadfile/{userName}", method = RequestMethod.GET)
+    public String getUploadForm(@PathVariable("userName") String userName, ModelMap modelMap){
+        UsersEntity usersEntity= userUtils.getUsersEntity(userName);
+        modelMap.addAttribute("authUsersEntity",usersEntity.getUsername());
+        modelMap.addAttribute("loginUser",usersEntity);
         return "clouds/filemanager/uploadfile";
     }
 
     /*上传文件会自动绑定到MultipartFile中*/
     @RequestMapping(value="/clouds/filemanager/uploadfile/add",method = RequestMethod.POST)
     public String upload(HttpServletRequest request, @RequestParam("file") MultipartFile file,
-                         @RequestParam("description") String description, @RequestParam("curAuthUserEntity") int usrloginId, ModelMap modelMap) throws Exception {
+                         @RequestParam("description") String description, @RequestParam("curAuthUserEntity") String userName, ModelMap modelMap) throws Exception {
 
+        UsersEntity loginUser= userUtils.getUsersEntity(userName);
         //如果文件不为空，写入上传路径
         if(!file.isEmpty()) {
             //产生随机文件名防止重复
@@ -91,8 +102,8 @@ public class FileController {
 
             int fileSize = (int)file.getSize();
           //  uploadFileService.initUploadFile(path,pathPart,fileSize,description,filename,usrloginId);
-            String hashFileName = uploadFileService.dealFileUpload(path,pathPart,filename,fileSize,usrloginId);
-            uploadFileService.saveFileInfoToDateBase(pathPart,filename,hashFileName,description,fileSize,usrloginId);
+            String hashFileName = uploadFileService.dealFileUpload(path,pathPart,filename,fileSize,loginUser.getId());
+            uploadFileService.saveFileInfoToDateBase(pathPart,filename,hashFileName,description,fileSize,loginUser.getId());
 
 
             /*判断路径是否存在，如果存在就删除*/
@@ -103,19 +114,32 @@ public class FileController {
                 FileManage.deleteDirectory(path);
             }
             modelMap.addAttribute("message","文件上传成功");
-            return "redirect:/clouds/filemanager/files/"+usrloginId;
+            modelMap.addAttribute("loginUser",loginUser);
+            return "redirect:/clouds/filemanager/files/"+loginUser.getUsername();
         } else {
             return "clouds/error";
         }
 
     }
 
+
+       /* 查看所有文件*/
+    @RequestMapping(value ="/clouds/filemanager/files/", method = RequestMethod.GET)
+    public String getFilesError(){
+
+        return "/clouds/users/login";
+    }
+
     /* 查看所有文件*/
-    @RequestMapping(value ="/clouds/filemanager/files/{id}", method = RequestMethod.GET)
-    public String getFiles(@PathVariable("id") int id, ModelMap modelMap){
-        List<FilesEntity> fileList = fileRepository.findFilesEntityByUserIdEndsWith(id);
-        modelMap.addAttribute("loginId",id);
+    @RequestMapping(value ="/clouds/filemanager/files/{userName}", method = RequestMethod.GET)
+    public String getFiles(@PathVariable("userName") String userName, ModelMap modelMap){
+
+        UsersEntity loginUser =userUtils.getUsersEntity(userName);
+
+        List<FilesEntity> fileList = fileRepository.findFilesEntityByUserIdEndsWith(loginUser.getId());
+        modelMap.addAttribute("loginId",loginUser.getId());
         modelMap.addAttribute("fileList",fileList);
+        modelMap.addAttribute("loginUser",loginUser);
         return "clouds/filemanager/files";
     }
 
@@ -123,14 +147,13 @@ public class FileController {
     @RequestMapping(value ="/clouds/filemanager/files/show/{id}",method = RequestMethod.GET)
     public String showFiles(@PathVariable("id") int id ,ModelMap modelMap){
         FilesEntity filesDetial = fileRepository.findOne(id);
-
         modelMap.addAttribute("filesDetial",filesDetial);
         return "clouds/filemanager/fileDetial";
     }
 
     /*删除云文件及记录*/
-    @RequestMapping(value = "/clouds/filemanager/files/delete/{file.id}",method = RequestMethod.GET)
-    public String deleteFile(@PathVariable("file.id") int id){
+    @RequestMapping(value = "/clouds/filemanager/files/delete/{userName}/{file.id}",method = RequestMethod.GET)
+    public String deleteFile(@PathVariable("file.id") int id, @PathVariable("userName")String userName){
         int hashFileId = hashFileRepository.findEntityByFileId(id).getId();
         manageFileService.deleteCloudFile(hashFileId);
         int usrId=fileRepository.findOne(id).getUserByUserId().getId();
@@ -138,23 +161,24 @@ public class FileController {
         hashFileRepository.flush();
         fileRepository.delete(id);
         fileRepository.flush();
-        return "redirect:/clouds/filemanager/files/"+usrId;
+        return "redirect:/clouds/filemanager/files/"+userName;
     }
 
     /* 修改文件信息，页面*/
-    @RequestMapping("/clouds/filemanager/files/update/{id}")
-    public String updateFile(@PathVariable("id")int id, ModelMap modelMap){
+    @RequestMapping("/clouds/filemanager/files/update/{userName}/{id}")
+    public String updateFile(@PathVariable("id")int id,@PathVariable("userName")String userName, ModelMap modelMap){
         FilesEntity filesEntity = fileRepository.findOne(id);
         modelMap.addAttribute("fileEty",filesEntity);
+        modelMap.addAttribute("authUsersEntity",userName);
         return "/clouds/filemanager/updatefile";
     }
 
     /* 修改文件信息，post请求 */
     @RequestMapping(value = "/clouds/filemanager/files/updateP", method = RequestMethod.POST)
-    public String updateFilePt(@ModelAttribute("filePt") FilesEntity filesEntity){
+    public String updateFilePt(@ModelAttribute("filePt") FilesEntity filesEntity,@RequestParam("curAuthUserEntity") String userName){
         fileRepository.updateFiles(filesEntity.getDescription(), filesEntity.getPubDate(), filesEntity.getUserByUserId().getId(), filesEntity.getId());
         fileRepository.flush();
-        return "redirect:/clouds/filemanager/files/" + filesEntity.getUserByUserId().getId();
+        return "redirect:/clouds/filemanager/files/" + userName;
     }
 
     /* 下载文件 */

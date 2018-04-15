@@ -53,6 +53,13 @@
             <input type="hidden" class="form-control" id="userByUserId.id" name="userByUserId.id"
                    value="${fileEty.userByUserId.id}" />
         </div>
+
+        <div>
+            <!-- 如果用户列表非空 -->
+            <c:if test="${!empty authUsersEntity}">
+                <input type ="hidden"  class="form-control"  id="curAuthUserEntity" name="curAuthUserEntity" value="${authUsersEntity}"></input>
+            </c:if>
+        </div>
         <!-- 把 id 一并写入 fileP 中 -->
         <input type="hidden" id="id" name="id" value="${fileEty.id}"/>
         <div class="form-group">

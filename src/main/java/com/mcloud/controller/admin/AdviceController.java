@@ -2,9 +2,11 @@ package com.mcloud.controller.admin;
 
 
 import com.mcloud.model.UserAdviceEntity;
+import com.mcloud.model.UsersEntity;
 import com.mcloud.model.common.Pager;
 import com.mcloud.model.common.UsersPage;
 import com.mcloud.repository.UserAdviceRepository;
+import com.mcloud.util.common.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,11 +29,17 @@ public class AdviceController
 {
     @Autowired
     UserAdviceRepository userAdviceRepository;
+
+    @Autowired
+    UserUtils userUtils;
+
     //无条件查询
-    @RequestMapping(value = "/list")
-    public ModelAndView showAdviceInfo(@ModelAttribute("pageAttribute") Pager pager){
+    @RequestMapping(value = "/list/{username}")
+    public ModelAndView showAdviceInfo(@ModelAttribute("pageAttribute") Pager pager, @PathVariable("username")String userName){
 
         ModelAndView mv = new ModelAndView();
+        UsersEntity loginUser = userUtils.getUsersEntity(userName);
+
       //  int FirstResult = (pager.getNowPageNo() - 1) * pager.getSizePerPage();
         int count = (int)userAdviceRepository.count();
         pager.setTotalCount(count);
@@ -48,6 +57,8 @@ public class AdviceController
         for (UserAdviceEntity vec : pageAdviceEty) {
                 adviceLists.add(vec);
         }
+
+        mv.addObject("loginUser",loginUser);
         mv.addObject("pageAdviceEty",pageAdviceEty);
         mv.addObject("adviceLists",adviceLists);
         mv.addObject("pager", pager);

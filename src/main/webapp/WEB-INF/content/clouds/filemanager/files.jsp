@@ -26,8 +26,8 @@
     <h1> 我的文件</h1>
     <hr/>
 
-    <h3>所有文件 <a href="/clouds/filemanager/uploadfile/${loginId}" type="button" class="btn btn-primary btn-sm">添加文件</a></h3>
-    <h4>                                                ${message}</h4>
+    <h3>所有文件 <a href="/clouds/filemanager/uploadfile/${loginUser.username}" type="button" class="btn btn-primary btn-sm">添加文件</a></h3>
+
     <!-- 如果用户列表为空 -->
     <c:if test="${empty fileList}">
         <div class="alert alert-warning" role="alert">
@@ -56,8 +56,8 @@
                     <td><fmt:formatDate value="${file.pubDate }" pattern="yyyy-MM-dd"/></td>
                     <td>
                         <a href="/clouds/filemanager/files/show/${file.id}" type="button" class="btn btn-sm btn-success">详情</a>
-                        <a href="/clouds/filemanager/files/update/${file.id}" type="button" class="btn btn-sm btn-warning">修改</a>
-                        <a href="/clouds/filemanager/files/delete/${file.id}" type="button" class="btn btn-sm btn-danger">删除</a>
+                        <a href="/clouds/filemanager/files/update/${loginUser.username}/${file.id}" type="button" class="btn btn-sm btn-warning">修改</a>
+                        <a href="/clouds/filemanager/files/delete/${loginUser.username}/${file.id}" type="button" class="btn btn-sm btn-danger">删除</a>
                         <a href="/clouds/filemanager/files/download/${file.id}/${file.fileName}" type="button" class="btn btns-sm btn-info">下载</a>
                     </td>
                 </tr>
