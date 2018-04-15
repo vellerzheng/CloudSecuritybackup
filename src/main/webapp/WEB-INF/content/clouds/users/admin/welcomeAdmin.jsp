@@ -60,7 +60,7 @@
 
                 <tr>
                     <th>Advice & Information Manage</th>
-                    <td><a href="/clouds/users/admin/adviceInfo/list/${loginUser.username}" type="button" class="btn btn-sm btn-success">意见反馈</a></td>
+                    <td><a href="/clouds/users/admin/adviceInfo/list" type="button" class="btn btn-sm btn-success">意见反馈</a></td>
                 </tr>
 
                 <tr>

@@ -2,6 +2,7 @@ package com.mcloud.controller.desk;
 
 import com.mcloud.model.FilesEntity;
 import com.mcloud.model.UsersEntity;
+import com.mcloud.model.common.Pager;
 import com.mcloud.repository.FileRepository;
 import com.mcloud.repository.HashFileRepository;
 import com.mcloud.repository.UserRepository;
@@ -14,9 +15,12 @@ import com.mcloud.util.common.UserUtils;
 import com.mcloud.util.redis.RedisUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,10 +29,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -131,16 +138,60 @@ public class FileController {
     }
 
     /* 查看所有文件*/
-    @RequestMapping(value ="/clouds/filemanager/files/{userName}", method = RequestMethod.GET)
-    public String getFiles(@PathVariable("userName") String userName, ModelMap modelMap){
+    @RequestMapping(value ="/clouds/filemanager/files/{userName}")
+    public  ModelAndView  getFiles(@ModelAttribute("pageAttribute") Pager pager, @PathVariable("userName") String userName, ModelMap modelMap){
 
+        ModelAndView mv = new ModelAndView();
         UsersEntity loginUser =userUtils.getUsersEntity(userName);
 
-        List<FilesEntity> fileList = fileRepository.findFilesEntityByUserIdEndsWith(loginUser.getId());
-        modelMap.addAttribute("loginId",loginUser.getId());
-        modelMap.addAttribute("fileList",fileList);
-        modelMap.addAttribute("loginUser",loginUser);
-        return "clouds/filemanager/files";
+
+
+        List<FilesEntity> fileList = new ArrayList<>();
+        fileRepository.flush();
+        fileList = fileRepository.findFilesEntityByUserIdEndsWith(loginUser.getId());
+        Collections.reverse(fileList);
+
+        int count = fileList.size();
+        pager.setTotalCount(count);
+        int firstResult = pager.getNowPageNo()-1;
+        int sizePerPage = pager.getSizePerPage();
+
+        List<FilesEntity> pageFileList =subSourceList(fileList,firstResult,sizePerPage);
+/*
+        Sort sort =new Sort(Sort.Direction.DESC,"id");
+        Pageable pageable =new PageRequest(firstResult,sizePerPage,sort);
+        FilesEntity query = new FilesEntity();
+        query= exFilesEntity.get(0);
+        Example<FilesEntity> example = Example.of(query);
+        Page<FilesEntity> pageAdviceEty =fileRepository.findAll(example,pageable);
+
+        for(FilesEntity fty :pageAdviceEty){
+            fileList.add(fty);
+        }*/
+        mv.addObject("loginId",loginUser.getId());
+        mv.addObject("fileList",pageFileList);
+        mv.addObject("loginUser",loginUser);
+        mv.addObject("pager", pager);
+        mv.setViewName("clouds/filemanager/files");
+        return mv;
+    }
+
+
+
+    public List<FilesEntity> subSourceList(List<FilesEntity> sourceList,Integer curPage, Integer perSize){
+        List<FilesEntity> newList = new ArrayList<>();
+        Integer sourceSize = sourceList.size();
+        if(sourceSize <= perSize){
+            newList =sourceList;
+        }else{
+            Integer nextLocation = curPage*perSize + perSize;
+            if(sourceSize < nextLocation){
+                newList = sourceList.subList(curPage*perSize,sourceSize);
+            }else {
+                newList = sourceList.subList(curPage * perSize, nextLocation);
+            }
+        }
+        return  newList;
     }
 
     /*查看单个文件详情*/

@@ -6,7 +6,7 @@ public class Pager {
 
     private int nowPageNo = 1;
 
-    private int sizePerPage = 5;
+    private int sizePerPage = 10;
 
     private int totalCount = 0;
 
