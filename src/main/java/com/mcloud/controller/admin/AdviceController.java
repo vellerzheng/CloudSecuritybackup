@@ -7,6 +7,8 @@ import com.mcloud.model.common.Pager;
 import com.mcloud.model.common.UsersPage;
 import com.mcloud.repository.UserAdviceRepository;
 import com.mcloud.util.common.UserUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,11 +36,14 @@ public class AdviceController
     UserUtils userUtils;
 
     //无条件查询
-    @RequestMapping(value = "/list/{username}")
-    public ModelAndView showAdviceInfo(@ModelAttribute("pageAttribute") Pager pager, @PathVariable("username")String userName){
+    @RequestMapping(value = "/list")
+    public ModelAndView showAdviceInfo(@ModelAttribute("pageAttribute") Pager pager){
 
         ModelAndView mv = new ModelAndView();
-        UsersEntity loginUser = userUtils.getUsersEntity(userName);
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipal();
+
+        UsersEntity loginUser = userUtils.getUsersEntity(username);
 
       //  int FirstResult = (pager.getNowPageNo() - 1) * pager.getSizePerPage();
         int count = (int)userAdviceRepository.count();
