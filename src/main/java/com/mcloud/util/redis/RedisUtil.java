@@ -307,8 +307,6 @@ public class RedisUtil {
         });
     }
 
-
-
     /**
      * 根据字段名称获取某个用户的部分信息
      * @param key
@@ -357,7 +355,6 @@ public class RedisUtil {
         });
     }
 
-
     /**
      * 删除set集合中的部分数据
      * @param key
@@ -379,7 +376,6 @@ public class RedisUtil {
             }
         });
     }
-
 
     /**
      * 模糊查询key
@@ -404,11 +400,6 @@ public class RedisUtil {
         });
     }
 
-
-
-
-
-
     /**
      * 判断key是否存在
      * @param key
@@ -423,8 +414,6 @@ public class RedisUtil {
         });
     }
 
-
-
     /**
      * 自增方法
      * @param key
@@ -438,7 +427,6 @@ public class RedisUtil {
             }
         });
     }
-
 
     /**
      * 增加指定值
@@ -470,7 +458,6 @@ public class RedisUtil {
         });
     }
 
-
     /**
      * hash结构字段增加指定值
      * @param key
@@ -486,7 +473,6 @@ public class RedisUtil {
             }
         });
     }
-
 
     /**
      * hash结构字段增加指定值
@@ -533,8 +519,6 @@ public class RedisUtil {
         });
     }
 
-
-
     /**
      * 从列表尾部弹出元素
      * @param key
@@ -548,8 +532,6 @@ public class RedisUtil {
             }
         });
     }
-
-
 
     /**
      * 如果不存在则设置并返回true，否则返回false
@@ -566,7 +548,6 @@ public class RedisUtil {
         });
     }
 
-
     /**
      * 获取redis时间戳
      * @return
@@ -579,7 +560,6 @@ public class RedisUtil {
             }
         });
     }
-
 
     /**
      * 有序集合set，添加数据方法
@@ -596,7 +576,6 @@ public class RedisUtil {
             }
         });
     }
-
 
     /**
      * 查询有序集合中的元素的个数
@@ -634,8 +613,6 @@ public class RedisUtil {
         });
     }
 
-
-
     /**
      * 根据索引区间返回有序集合中的元素
      * @param key
@@ -662,7 +639,6 @@ public class RedisUtil {
     }
 
 
-
     /**
      * key值减去value
      * @param key
@@ -685,6 +661,8 @@ public class RedisUtil {
             }
         });
     }
+
+
 
 
     private Map<byte[], byte[]> mapTransger1(Map<Object, Object> valueMap) {
