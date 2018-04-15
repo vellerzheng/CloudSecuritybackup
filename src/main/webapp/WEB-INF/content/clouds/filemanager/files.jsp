@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<html >
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,7 +23,7 @@
 <jsp:include page="../utils/account.jsp"></jsp:include>
 
 <div class="container">
-    <h1> 文件系统-文件管理</h1>
+    <h1> 我的文件</h1>
     <hr/>
 
     <h3>所有文件 <a href="/clouds/filemanager/uploadfile/${loginId}" type="button" class="btn btn-primary btn-sm">添加文件</a></h3>
