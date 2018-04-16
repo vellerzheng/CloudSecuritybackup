@@ -65,16 +65,16 @@
 
 <div class="container col-md-8 col-sm-offset-2 text-center">
     <table class="table table-bordered table-striped">
-    <h1>Cloud secure storage 注册用户</h1>
-    <hr/>
-
-        <div class="row">
+        <div id="aliyunConf">
+        <h1>阿里云初始化配置</h1>
+        <hr/>
+            <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <form id="userRegister" onsubmit="return check_submit();">
                     <div class="form-group">
                         <label for="username">user name:</label>
                         <input type="text" class="from-control" id ="username" name="username" onmouseover="mover();" onclick="mclick();"
-                            placeholder="Enter UserName:"/>
+                               placeholder="Enter UserName:"/>
                     </div>
                     <div class="form-group">
                         <label for="password">PassWord:</label>
@@ -85,7 +85,7 @@
                         <input type="text" class="from-control" id ="email" name="email" onmouseover="mover();"  placeholder="Enter Email:"/>
                     </div>
                     <div class="form-group">
-                    <label for="Phone">Phone: </label>
+                        <label for="Phone">Phone: </label>
                         <input type="text" class="from-control" id ="phone" name="phone" onmouseover="mover();"  placeholder="Enter phone:"/>
                     </div>
                     <div class="form-group">
@@ -93,28 +93,38 @@
                     </div>
                 </form>
             </div>
+            </div>
         </div>
 
+
     </table>
+
+    <button  class="addlabel bigbutton"  onclick="addCloudConfig()" id="savebutton">确定</button>
+    <button onclick="hide()" class="bigbutton">取消</button>
+
+
     <table align="center">
-        <tr></tr>
+        <tr>
 
-<%--        <tr>
 
-            <td></td>
-
-            <td><a href="/clouds/home">Home</a>
-
-            </td>
-
-        </tr>--%>
+        </tr>
 
     </table>
 </div>
 
 </body>
 
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script src="/js/AJAX.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+
+
+
+    function hide() {
+        login.style.display = "none";
+        over.style.display = "none";
+        $("#savebutton").removeAttr("disabled");
+    }
+
+</script>
 </html>

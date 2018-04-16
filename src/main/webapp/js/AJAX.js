@@ -43,6 +43,39 @@ function advicePostJson(){
 }
 
 
+function  userRegisterPost() {
+    var formToJson =$("#userRegister").serializeObject();
+    $.ajax({
+        url:"/js/AJAX.js/userRegister",
+        type:"post",
+        data:JSON.stringify(formToJson),
+        contentType:"application/json",
+
+        success:function(result){
+           if(result.resultCode=="2000"){
+               alert(result.resultMsg+" 点击确定，5秒后跳转页面！");
+               // 5秒后跳转，单位毫秒
+              setTimeout(redirectUrl("/clouds/users/login"),5000);
+           }
+           if(result.resultCode=="5000"){
+               alert(result.resultMsg);
+               setTimeout(redirectUrl("/clouds/users/register"),5000);
+           }
+        },
+        error:function(e){
+            alert('注册失败，用户已经存在，请重试');
+            console.log(e);
+            setTimeout(redirectUrl("/clouds/users/register"),5000);
+        }
+    });
+    document.getElementById("userRegister").reset();
+}
+
+function redirectUrl(url)
+{
+    location.href=url;
+}
+
 $.fn.serializeObject = function()
 {
     var o = {};

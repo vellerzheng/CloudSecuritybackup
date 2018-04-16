@@ -111,24 +111,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </table>
 
     <table align="center">
-        <tr></tr>
-
         <tr>
 
-            <td></td>
 
-            <td>
-                <a href="/clouds/home" type="button" class="btn btn-sm btn-info">Home</a>
-            </td>
 
         </tr>
 
-
-        <tr>
-
-          <!--  <td style="font-style: italic; color: red;">${message}</td> -->
-
-        </tr>
 
     </table>
 
