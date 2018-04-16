@@ -14,9 +14,61 @@
     <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
 
     <title>Registration</title>
+    <style type="text/css">
 
+        .wrap{
+            background:#F5F5F5;
+            display:table;
+            margin:0 auto;
+        }
+
+        #edit {
+            text-align:center;
+            display: none;
+            border: 1px #FFCB00;
+            height: 350px;
+            width: 500px;
+            position: absolute; /*让节点脱离文档流,我的理解就是,从页面上浮出来,不再按照文档其它内容布局*/
+            top: 24%; /*节点脱离了文档流,如果设置位置需要用top和left,right,bottom定位*/
+            left: 30%;
+            z-index: 2; /*个人理解为层级关系,由于这个节点要在顶部显示,所以这个值比其余节点的都大*/
+            background: white;
+        }
+
+        #over {
+            width: 100%;
+            height: 100%;
+            opacity: 0.8; /*设置背景色透明度,1为完全不透明,IE需要使用filter:alpha(opacity=80);*/
+            filter: alpha(opacity = 80);
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            background: silver;
+        }
+        .hid{
+            display: none;
+        }
+        .labelstyle{
+            width:50px;
+            font-size: 14px;
+            border-bottom:4px solid #ec971f;
+            margin-bottom:-2px;
+        }
+        .cp:hover{cursor: pointer;}
+        .labelsnonetyle{
+            width:50px;
+            font-size: 14px;
+            margin-bottom:-2px;
+        }
+        #table2 th,#table1 th{
+            text-align: center;
+        }
+    </style>
 
     <script type="text/javascript">
+
 
         function $(str){
             return (document.getElementById(str));
@@ -57,50 +109,195 @@
                 event.srcElement.value="请输入密码";
         }
 
+
     </script>
 
 </head>
 
 <body>
+    <hr>
+    <h2  class="wrap">多云链接初始化配置</h2>
+    <hr>
 
-<div class="container col-md-8 col-sm-offset-2 text-center">
-    <table class="table table-bordered table-striped">
-        <div id="aliyunConf">
-        <h1>阿里云初始化配置</h1>
-        <hr/>
-            <div class="row">
+<div id="tf-contact">
+    <div class="container">
+        <div class="section-title col-md-6 col-md-offset-3">
+            <h3>阿里云初始化配置</h3>
+            <p>配置阿里云的链接，容器，密码，认证码等。</p>
+            <hr>
+        </div>
+
+        <div class="space"></div>
+
+        <div id="aliyun" class="row">
             <div class="col-md-6 col-md-offset-3">
-                <form id="userRegister" onsubmit="return check_submit();">
+                <form id="aliyunConfig"  >
                     <div class="form-group">
-                        <label for="username">user name:</label>
-                        <input type="text" class="from-control" id ="username" name="username" onmouseover="mover();" onclick="mclick();"
-                               placeholder="Enter UserName:"/>
+                        <label for="EndPoint">EndPoint:</label>
+                        <input type="text" class="form-control" id="EndPoint" name="EndPoint" placeholder="Enter EndPoint" onmouseover="mover();"/>
                     </div>
                     <div class="form-group">
-                        <label for="password">PassWord:</label>
-                        <input type="text" class="from-control" id ="password" name="password" onmouseover="mover();" placeholder="Enter PassWord:"/>
+                        <label for="AccessKey">AccessKey:</label>
+                        <input type="text" class="form-control" id="accessKey" name="accessKey" placeholder="Enter AccessKey" onmouseover="mover();"/>
                     </div>
                     <div class="form-group">
-                        <label for="Email">Email:</label>
-                        <input type="text" class="from-control" id ="email" name="email" onmouseover="mover();"  placeholder="Enter Email:"/>
+                        <label for="AccessKeySecret">AccessKeySecret:</label>
+                        <input type="text" class="form-control" id="accessKeySecret" name="accessKeySecret" placeholder="Enter AccessKeySecreta" onmouseover="mover();"/>
                     </div>
                     <div class="form-group">
-                        <label for="Phone">Phone: </label>
-                        <input type="text" class="from-control" id ="phone" name="phone" onmouseover="mover();"  placeholder="Enter phone:"/>
+                        <label for="BucketName">BucketName:</label>
+                        <input type="text" class="form-control"  id="bucketName" name="bucketName" placeholder="Enter BucketName" onmouseover="mover();"/>
                     </div>
                     <div class="form-group">
-                        <input type ="button" name="submit"  class="btn btn-sm btn-success" onclick="userRegisterPost();" value="submit" />
+                        <label for="AccessUrl">accessUrl:</label>
+                        <input type="text" class="form-control"  id="accessUrl" name="accessUrle" placeholder="Enter AccessUrl" onmouseover="mover();"/>
                     </div>
                 </form>
             </div>
+        </div>
+        <br/>
+        <br/>
+
+        <div class="section-title col-md-6 col-md-offset-3">
+            <h3>网易云初始化配置</h3>
+            <p>配置网易云的链接，容器，密码，认证码等。</p>
+            <hr>
+        </div>
+        <div id="netease" class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <form id="neteaseConfig"  >
+                    <div class="form-group">
+                        <label for="EndPoint">EndPoint:</label>
+                        <input type="text" class="form-control" id="EndPoint1" name="EndPoint" placeholder="Enter EndPoint" onmouseover="mover();"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="SecretId">SecretId:</label>
+                        <input type="text" class="form-control" id="secretId" name="secretId" placeholder="Enter SecretId" onmouseover="mover();"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="SecretKey">SecretKey:</label>
+                        <input type="text" class="form-control" id="secretKey" name="secretKey" placeholder="Enter SecretKey" onmouseover="mover();"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="BucketName">BucketName:</label>
+                        <input type="text" class="form-control"  id="bucketName1" name="bucketName" placeholder="Enter BucketName" onmouseover="mover();"/>
+                    </div>
+                </form>
             </div>
         </div>
+        <br/>
+        <br/>
 
 
-    </table>
 
-    <button  class="addlabel bigbutton"  onclick="addCloudConfig()" id="savebutton">确定</button>
-    <button onclick="hide()" class="bigbutton">取消</button>
+        <div class="section-title col-md-6 col-md-offset-3">
+            <h3>腾讯云初始化配置</h3>
+            <p>配置腾讯云的链接，容器，密码，认证码等。</p>
+            <hr>
+        </div>
+        <div id="qcloud" class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <form id="qcloudConfig"  >
+                    <div class="form-group">
+                        <label for="AppId">AppId:</label>
+                        <input type="text" class="form-control" id="appId" name="appId" placeholder="Enter appId" onmouseover="mover();"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="SecretId">SecretId:</label>
+                        <input type="text" class="form-control" id="secretId2" name="secretId" placeholder="Enter SecretId" onmouseover="mover();"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="SecretKey">SecretKey:</label>
+                        <input type="text" class="form-control" id="secretKey3" name="secretKey" placeholder="Enter SecretKey" onmouseover="mover();"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="BucketName">BucketName:</label>
+                        <input type="text" class="form-control"  id="bucketName3" name="bucketName" placeholder="Enter BucketName" onmouseover="mover();"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br/>
+        <br/>
+
+        <div class="section-title col-md-6 col-md-offset-3">
+            <h3>七牛云初始化配置</h3>
+            <p>配置七牛云的链接，容器，密码，认证码等。</p>
+            <hr>
+        </div>
+        <div id="qiniu" class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <form id="qiniuConfig"  >
+                    <div class="form-group">
+                        <label for="DomainOfBucket">DomainOfBucket:</label>
+                        <input type="text" class="form-control" id="domainOfBucket" name="domainOfBucket" placeholder="Enter DomainOfBucket" onmouseover="mover();"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="AccessKey">AccessKey:</label>
+                        <input type="text" class="form-control" id="accessKey4" name="accessKey" placeholder="Enter AccessKey" onmouseover="mover();"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="SecretKey">SecretKey:</label>
+                        <input type="text" class="form-control" id="secretKey4" name="secretKey" placeholder="Enter SecretKey" onmouseover="mover();"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="Bucket4">Bucket:</label>
+                        <input type="text" class="form-control"  id="bucket4" name="bucket" placeholder="Enter Bucket" onmouseover="mover();"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br/>
+        <br/>
+
+
+        <div class="section-title col-md-6 col-md-offset-3">
+            <h3>又拍云初始化配置</h3>
+            <p>配置又拍云的链接，容器，密码，认证码等。</p>
+            <hr>
+        </div>
+        <div id="upyun" class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <form id="upyunConfig"  >
+                    <div class="form-group">
+                        <label for="BucketName">BucketName:</label>
+                        <input type="text" class="form-control" id="bucketName5" name="bucketName" placeholder="Enter BucketName" onmouseover="mover();"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="UserName">UserName:</label>
+                        <input type="text" class="form-control" id="UserName" name="userName" placeholder="Enter UserName" onmouseover="mover();"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="Password">Password:</label>
+                        <input type="text" class="form-control" id="password" name="password" placeholder="Enter Password" onmouseover="mover();"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br/>
+        <br/>
+
+
+        <div class="section-title col-md-8 col-md-offset-5">
+            <button  class="btn btn-primary btn-success"  onclick="addCloudConfig()" id="savebutton">确定</button>
+            <button  class="btn btn-primary  white"   onclick="hide()" class="bigbutton">取消</button>
+        </div>
+
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
 
 
     <table align="center">
@@ -116,6 +313,7 @@
 
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/js/AJAX.js"></script>
 <script>
 
 

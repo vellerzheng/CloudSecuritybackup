@@ -4,6 +4,7 @@ import com.mcloud.model.UserAdviceEntity;
 import com.mcloud.model.UsersEntity;
 import com.mcloud.repository.UserAdviceRepository;
 import com.mcloud.util.common.CustomDateConverter;
+import com.mcloud.util.common.InfoJson;
 import com.mcloud.util.redis.RedisUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -89,5 +90,14 @@ public class BaseController {
         return "upload advice successfully!";
     }
 
+    @RequestMapping(value = "/clouds/users/default/cloudConfig")
+    public String cloudConfig() { return "/clouds/users/default/cloudConfig"; }
+
+    @RequestMapping(value = "/js/AJAX.js/cloudConfig")
+    public InfoJson saveCloudConfig(){
+
+
+        return  InfoJson.getSucc("配置录入成功！");
+    }
 }
 

@@ -57,6 +57,10 @@
                     <th>操作</th>
                 </tr>
 
+                <tr>
+                    <th>配置云服务链接初始化 </th>
+                    <td><a href="/clouds/users/default/cloudConfig" type="button" class="btn btn-sm btn-success">Cloud Config</a></td>
+                </tr>
 
                 <tr>
                     <th>Upload File </th>
