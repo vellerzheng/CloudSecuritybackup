@@ -1,8 +1,11 @@
 package com.mcloud.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * Created by vellerzheng on 2017/10/13.
@@ -15,6 +18,10 @@ public class UsersEntity implements Serializable {
     private String password;
     private String email;
     private String phone;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createtime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date updatetime;
     private Collection<FilesEntity> filesById;
     private Collection<UserAuthsEntity> authsById;
     private RoleEntity userRoleIdByRoleId;
@@ -68,6 +75,24 @@ public class UsersEntity implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @Basic
+    @Column(name = "createtime", nullable = true)
+    public Date getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
+    }
+
+    @Basic
+    @Column(name = "updatetime", nullable=true)
+    public  Date getUpdatetime(){ return updatetime; }
+
+    public void setUpdatetime(Date updatetime) {
+        this.updatetime = updatetime;
     }
 
     @Override

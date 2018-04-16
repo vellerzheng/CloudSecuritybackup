@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 /**
  * Created by vellerzheng on 2017/9/29.
  */
@@ -28,6 +30,7 @@ public interface UserRepository extends JpaRepository<UsersEntity,Integer> {
 
     @Modifying
     @Transactional
-    @Query("update  UsersEntity us set us.username =:qUserName, us.password=:qPassword where us.id =:qId")
-    void updateByName(@Param("qUserName")String userName, @Param("qPassword") String password,@Param("qId") Integer id);
+    @Query("update  UsersEntity us set us.username =:qUserName, us.password=:qPassword, us.updatetime=:qUpdatetime where us.id =:qId")
+    void updateByName(@Param("qUserName")String userName, @Param("qPassword") String password,
+                             @Param("qUpdatetime")Date updatetime, @Param("qId") Integer id);
 }

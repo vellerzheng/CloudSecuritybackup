@@ -6,6 +6,8 @@ import com.mcloud.repository.UserRegisterRepository;
 import com.mcloud.repository.UserRepository;
 import com.mcloud.service.supportToolClass.shiro.verificationCode.ValidateCode;
 import com.mcloud.model.common.UserLogin;
+import com.mcloud.util.common.CustomDateConverter;
+import com.mcloud.util.common.InfoJson;
 import com.mcloud.util.common.UserUtils;
 import com.mcloud.util.redis.RedisUtil;
 import org.apache.shiro.SecurityUtils;
@@ -17,10 +19,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -58,23 +57,26 @@ public class UserController {
         return "clouds/users/register";
     }
 
-    @RequestMapping(value = "/clouds/users/register", method = RequestMethod.POST)
-    public String addUserPost(@ModelAttribute("usersRegister") UsersEntity usersEntity){
+    @RequestMapping(value = "/js/AJAX.js/userRegister", method = RequestMethod.POST)
+    @ResponseBody
+    public InfoJson addUserPost(@RequestBody  UsersEntity usersEntity){
         List<UsersEntity> userList=userRepository.findAll();
         for (UsersEntity uty: userList) {
             if(!(usersEntity==null) &&!uty.getUsername().equals(usersEntity.getUsername())&&!uty.getEmail().equals(usersEntity.getEmail())
                     &&!uty.getPhone().equals(usersEntity.getPhone())){
 
             }else{
-                return "redirect:/clouds/users/register";
+                return InfoJson.getInfo(InfoJson.INFO_SYSTEMFAIL, "用户已存在，请重新注册！", null);
             }
         }
         String pwd = new SimpleHash("MD5",usersEntity.getPassword(),usersEntity.getUsername(),2).toHex();
         usersEntity.setPassword(pwd);
+        usersEntity.setCreatetime(CustomDateConverter.currentTime());
+        usersEntity.setUpdatetime(CustomDateConverter.currentTime());
         System.out.println(usersEntity.getUsername());
         usersEntity.setUserRoleIdByRoleId(roleRepository.findOne(3));
         userRepository.saveAndFlush(usersEntity);
-        return "redirect:/clouds/users/login";
+        return InfoJson.getInfo(InfoJson.INFO_SUCCESS, "用户注册成功！", null);
     }
 
     @RequestMapping(value ="/clouds/users/login",method = RequestMethod.GET)
@@ -104,15 +106,18 @@ public class UserController {
         subject.login(token);
 
         UsersEntity usersEntity =userUtils.getUsersEntity(userLogin.getUsername());
-        redisUtil.setEx(usersEntity.getUsername(),10000,usersEntity);
+        usersEntity.setUpdatetime(CustomDateConverter.currentTime());
+
         if (subject.hasRole("user")) {
+            userRepository.saveAndFlush(usersEntity);
             return "redirect:/clouds/users/default/welcome/"+usersEntity.getUsername();
         } else if (subject.hasRole("admin")) {
-
+            userRepository.saveAndFlush(usersEntity);
             return "redirect:/clouds/users/admin/welcomeAdmin/"+usersEntity.getUsername();
         } else if(subject.hasRole("manager")){
             return null;
         }
+        redisUtil.setEx(usersEntity.getUsername(),10000,usersEntity);
         return  null;
 
     }
@@ -139,8 +144,10 @@ public class UserController {
             throw new Exception("旧密码不正确");
         } else {*/
             userlogin.setPassword(newpwd);
-            userRepository.updateByName(username, userlogin.getPassword(),userlogin.getId());
+            userlogin.setUpdatetime(CustomDateConverter.currentTime());
+            userRepository.updateByName(username, userlogin.getPassword(),userlogin.getUpdatetime(),userlogin.getId());
        // }
+        redisUtil.setEx(userlogin.getUsername(),10000,userlogin);
         return "redirect:/clouds/users/logout";
     }
 
