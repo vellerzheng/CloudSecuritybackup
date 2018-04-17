@@ -93,11 +93,5 @@ public class BaseController {
     @RequestMapping(value = "/clouds/users/default/cloudConfig")
     public String cloudConfig() { return "/clouds/users/default/cloudConfig"; }
 
-    @RequestMapping(value = "/js/AJAX.js/cloudConfig")
-    public InfoJson saveCloudConfig(){
-
-
-        return  InfoJson.getSucc("配置录入成功！");
-    }
 }
 

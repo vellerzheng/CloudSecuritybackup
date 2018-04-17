@@ -72,30 +72,22 @@ function  userRegisterPost() {
 }
 
 
-function addCloudConfig(){
-    var aliyun = $('#aliyunConfig').serializeObject();
-    var netease = $('#neteaseConfig').serializeObject();
-    var qcloud = $('#qcloudConfig').serializeObject();
-    var qiniu = $('#qiniuConfig').serializeObject();
-    var upyun = $('#upyunConfig').serializeObject();
-    var formData = new FormData();
-    formData.append("aliyunConf",aliyun);
-    formData.append("neteaseConf",netease);
-    formData.append("qcloudConf",qcloud);
-    formData.append("qiniuConf",qiniu);
-    formData.append("upyunConf",upyun);
+function addCloudConfig(name,__curl){
+    var jspAttr ='#'+name;
+    var obj = $(jspAttr).serializeObject();
+
 
     $.ajax({
-        url:"/js/AJAX.js/cloudConfig",
+        url:__curl,
         type:"post",
-        data:JSON.stringify(formData),
+        data:JSON.stringify(obj),
         contentType:"application/json",
 
         success:function(result){
             if(result.resultCode=="2000"){
-                alert(result.resultMsg+" 点击确定，5秒后跳转页面！");
-                // 5秒后跳转，单位毫秒
-                setTimeout(redirectUrl("/clouds/users/login"),5000);
+                alert(result.resultMsg +" 点击确定，2秒后跳转页面！");
+                var f=document.referrer;
+                window.location.href=f;
             }
             if(result.resultCode=="5000"){
                 alert(result.resultMsg);
@@ -105,14 +97,14 @@ function addCloudConfig(){
         error:function(e){
             alert('设置失败，请重试');
             console.log(e);
-            setTimeout(redirectUrl("/clouds/users/register"),5000);
+            setTimeout(redirectUrl("/clouds/users/default/"+name),5000);
         }
     });
-    document.getElementById("aliyunConfig").reset();
+/*    document.getElementById("aliyunConfig").reset();
     document.getElementById("neteaseConfig").reset();
     document.getElementById("qcloudConfig").reset();
     document.getElementById("qiniuConfig").reset();
-    document.getElementById("upyunConfig").reset();
+    document.getElementById("upyunConfig").reset();*/
 
 
 }

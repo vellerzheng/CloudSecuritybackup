@@ -1,11 +1,13 @@
 package com.mcloud.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "conf_qiniu", schema = "cloud_secureStorage", catalog = "")
+@Table(name = "conf_qiniu", schema = "cloud_secureStorage")
 public class ConfQiniuEntity {
     private int id;
     private String domainOfBucket;
@@ -14,8 +16,10 @@ public class ConfQiniuEntity {
     private String bucket;
     private Integer userId;
     private String creator;
-    private Timestamp createtime;
-    private Timestamp updatetime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createtime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date updatetime;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -89,21 +93,21 @@ public class ConfQiniuEntity {
 
     @Basic
     @Column(name = "createtime", nullable = true)
-    public Timestamp getCreatetime() {
+    public Date getCreatetime() {
         return createtime;
     }
 
-    public void setCreatetime(Timestamp createtime) {
+    public void setCreatetime(Date createtime) {
         this.createtime = createtime;
     }
 
     @Basic
     @Column(name = "updatetime", nullable = true)
-    public Timestamp getUpdatetime() {
+    public Date getUpdatetime() {
         return updatetime;
     }
 
-    public void setUpdatetime(Timestamp updatetime) {
+    public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
     }
 

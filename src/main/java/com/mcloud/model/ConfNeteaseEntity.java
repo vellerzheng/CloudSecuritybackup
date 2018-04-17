@@ -1,7 +1,9 @@
 package com.mcloud.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -11,11 +13,13 @@ public class ConfNeteaseEntity {
     private String endPoint;
     private String secretId;
     private String secretKey;
-    private String buckerName;
+    private String bucketName;
     private Integer userId;
     private String creator;
-    private Timestamp createtime;
-    private Timestamp updatetime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createtime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date updatetime;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -58,13 +62,13 @@ public class ConfNeteaseEntity {
     }
 
     @Basic
-    @Column(name = "buckerName", nullable = true, length = 255)
-    public String getBuckerName() {
-        return buckerName;
+    @Column(name = "bucketName", nullable = true, length = 255)
+    public String getBucketName() {
+        return bucketName;
     }
 
-    public void setBuckerName(String buckerName) {
-        this.buckerName = buckerName;
+    public void setBucketName(String bucketName) {
+        this.bucketName = bucketName;
     }
 
     @Basic
@@ -89,21 +93,21 @@ public class ConfNeteaseEntity {
 
     @Basic
     @Column(name = "createtime", nullable = true)
-    public Timestamp getCreatetime() {
+    public Date getCreatetime() {
         return createtime;
     }
 
-    public void setCreatetime(Timestamp createtime) {
+    public void setCreatetime(Date createtime) {
         this.createtime = createtime;
     }
 
     @Basic
     @Column(name = "updatetime", nullable = true)
-    public Timestamp getUpdatetime() {
+    public Date getUpdatetime() {
         return updatetime;
     }
 
-    public void setUpdatetime(Timestamp updatetime) {
+    public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
     }
 
@@ -116,7 +120,7 @@ public class ConfNeteaseEntity {
                 Objects.equals(endPoint, that.endPoint) &&
                 Objects.equals(secretId, that.secretId) &&
                 Objects.equals(secretKey, that.secretKey) &&
-                Objects.equals(buckerName, that.buckerName) &&
+                Objects.equals(bucketName, that.bucketName) &&
                 Objects.equals(userId, that.userId) &&
                 Objects.equals(creator, that.creator) &&
                 Objects.equals(createtime, that.createtime) &&
@@ -126,6 +130,6 @@ public class ConfNeteaseEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, endPoint, secretId, secretKey, buckerName, userId, creator, createtime, updatetime);
+        return Objects.hash(id, endPoint, secretId, secretKey, bucketName, userId, creator, createtime, updatetime);
     }
 }
