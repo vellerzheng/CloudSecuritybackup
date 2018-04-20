@@ -27,16 +27,19 @@ import java.util.Date;
  */
 public class AliyunOSS {
 
+
+   private String  endpoint="http://oss-cn-shanghai.aliyuncs.com";
+    private String accessKey= "LTAINzwv3zQD1cln";
+    private String accessKeySecret="8mVBgRYFJeKE5UWFS3Chy4F2CaKVm3";
+    private String bucketName="alicloudfile";
+    private String accessUrl="alicloudfile.oss-cn-shanghai.aliyuncs.com";
+
     /**
      * 上传本地文件      @Title: uploadFile
      */
     public boolean uploadFile(String localFilePath)  {
         OSSConfigure ossConfigure = null;
-        try {
-            ossConfigure = new OSSConfigure("conf/accessCloud.properties");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ossConfigure = new OSSConfigure(endpoint,accessKey,accessKeySecret,bucketName,accessUrl);
         OSSClient ossClient = new OSSClient(ossConfigure.getEndpoint(), ossConfigure.getAccessKeyId(),
                 ossConfigure.getAccessKeySecret());
         String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
