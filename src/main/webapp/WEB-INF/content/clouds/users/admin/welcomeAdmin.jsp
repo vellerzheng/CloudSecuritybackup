@@ -69,6 +69,17 @@
                 </tr>
 
                 <tr>
+                    <th>配置多云服务链接初始化 </th>
+                    <td>
+                        <a href="/clouds/users/default/cloudConf/aliyunConfig" type="button" class="btn btn-sm btn-success">阿里云</a>
+                        <a href="/clouds/users/default/cloudConf/neteaseConfig" type="button" class="btn btn-sm btn-success">网易云</a>
+                        <a href="/clouds/users/default/cloudConf/qcloudConfig" type="button" class="btn btn-sm btn-success">腾讯云</a>
+                        <a href="/clouds/users/default/cloudConf/qiniuConfig" type="button" class="btn btn-sm btn-success">七牛云</a>
+                        <a href="/clouds/users/default/cloudConf/upyunConfig" type="button" class="btn btn-sm btn-success">又拍云</a>
+                    </td>
+                </tr>
+
+                <tr>
                     <th>File Manage</th>
                     <td><a href="/clouds/filemanager/files/${loginUser.username}" type="button" class="btn btn-sm btn-success">文件管理</a></td>
                 </tr>
