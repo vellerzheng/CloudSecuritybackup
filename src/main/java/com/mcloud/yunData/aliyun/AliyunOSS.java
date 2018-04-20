@@ -7,7 +7,11 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.GetObjectRequest;
 import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.ObjectMetadata;
+import com.mcloud.model.ConfAliyunEntity;
+import com.mcloud.repository.ConfAliyunRespository;
 import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -25,6 +29,7 @@ import java.util.Date;
  * @date 2017-5-3 上午10:47:00
  *
  */
+@Component
 public class AliyunOSS {
 
 
@@ -34,6 +39,18 @@ public class AliyunOSS {
     private String bucketName="alicloudfile";
     private String accessUrl="alicloudfile.oss-cn-shanghai.aliyuncs.com";
 
+
+/*     @Autowired
+     ConfAliyunRespository confAliyunRespository;
+     private ConfAliyunEntity ossConfigure;
+     private OSSClient ossClient;
+
+     public AliyunOSS(){
+
+         this.ossConfigure= confAliyunRespository.findOne(1);
+         this.ossClient = new OSSClient(ossConfigure.getEndPoint(), ossConfigure.getAccessKey(),
+                 ossConfigure.getAccessKeySecret());
+     }*/
     /**
      * 上传本地文件      @Title: uploadFile
      */
@@ -127,12 +144,12 @@ public class AliyunOSS {
         OSSConfigure ossConfigure = null;
         try {
             ossConfigure = new OSSConfigure("conf/accessCloud.properties");
-            OSSClient ossClient = new OSSClient(ossConfigure.getEndpoint(), ossConfigure.getAccessKeyId(),
-                    ossConfigure.getAccessKeySecret());
-            ossClient.deleteObject(ossConfigure.getBucketName(), yunfilePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        OSSClient ossClient = new OSSClient(ossConfigure.getEndpoint(), ossConfigure.getAccessKeyId(),
+                            ossConfigure.getAccessKeySecret());
+        ossClient.deleteObject(ossConfigure.getBucketName(), yunfilePath);
     }
 
     /**
