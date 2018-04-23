@@ -1,6 +1,10 @@
-package com.mcloud.yunData.qiniu;
+package com.mcloud.service.cloudService.cloudServiceImpl;
 
 import com.google.gson.Gson;
+import com.mcloud.model.ConfQiniuEntity;
+import com.mcloud.repository.ConfQcloudRespository;
+import com.mcloud.repository.ConfQiniuRespository;
+import com.mcloud.service.cloudService.QiniuServie;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
@@ -11,6 +15,8 @@ import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.storage.model.FileInfo;
 import com.qiniu.storage.persistent.FileRecorder;
 import com.qiniu.util.Auth;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -23,15 +29,30 @@ import java.nio.file.Paths;
 /**
  * Created by vellerzheng on 2017/8/24.
  */
-public class Qiniu {
+@Service
+public class QiniuServiceImpl implements QiniuServie {
 
-    private String accessKey = "yrQJe6hknpAgTL7Spe1x138FW0AaDMn6Vh8NaXVL";
+/*    private String accessKey = "yrQJe6hknpAgTL7Spe1x138FW0AaDMn6Vh8NaXVL";
     private String secretKey = "kHO2DI6nwbSSwoSL0SYLXVbwOfo50coEB6q-WMk0";
-    private String bucket = "qiniufile";
+    private String bucket = "qiniufile";*/
+    @Autowired
+    ConfQiniuRespository confQiniuRespository;
+    ConfQiniuEntity confQiniuEntity;
+
+    Configuration cfg;
+
+    private Auth getAuthClient(){
+
+        if(confQiniuEntity == null)
+        confQiniuEntity = confQiniuRespository.findOne(1);
+        if(cfg == null)
+            cfg = new Configuration(Zone.zone2());
+        //构造一个带指定Zone对象的配置类
+        return Auth.create(confQiniuEntity.getAccessKey(), confQiniuEntity.getSecretKey());
+    }
 
     public void uploadFile(String localFilePath){
-            //构造一个带指定Zone对象的配置类
-            Configuration cfg = new Configuration(Zone.zone2());
+
 //...其他参数参考类注释
             UploadManager uploadManager = new UploadManager(cfg);
 //...生成上传凭证，然后准备上传
@@ -41,8 +62,8 @@ public class Qiniu {
 //默认不指定key的情况下，以文件内容的hash值作为文件名
             String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
             String key =  fileName.replace(File.separator,"");  //key 为上传的文件名
-            Auth auth = Auth.create(accessKey, secretKey);
-            String upToken = auth.uploadToken(bucket);
+
+            String upToken = getAuthClient().uploadToken(confQiniuEntity.getBucket());
             try {
                 Response response = uploadManager.put(localFilePath, key, upToken);
                 //解析上传成功的结果
@@ -62,19 +83,15 @@ public class Qiniu {
 
         /*断点续传文件方式*/
     public void randomAcessUpLoadFile(String localFilePath){
-        //构造一个带指定Zone对象的配置类
-        Configuration cfg = new Configuration(Zone.zone2());
-//...其他参数参考类注释
-//...生成上传凭证，然后准备上传
+
 
 //如果是Windows情况下，格式是 D:\\qiniu\\test.png
     //    String localFilePath = "D:\\Test\\split\\README.txt";
 //默认不指定key的情况下，以文件内容的hash值作为文件名
         String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
         String key =  fileName.replace(File.separator,"");  //key 为上传的文件名
-        Auth auth = Auth.create(accessKey, secretKey);
-        String upToken = auth.uploadToken(bucket);
-        String localTempDir = Paths.get(System.getenv("java.io.tmpdir"), bucket).toString();
+        String upToken = getAuthClient().uploadToken(confQiniuEntity.getBucket());
+        String localTempDir = Paths.get(System.getenv("java.io.tmpdir"), confQiniuEntity.getBucket()).toString();
         try {
             //设置断点续传文件进度保存目录
             FileRecorder fileRecorder = new FileRecorder(localTempDir);
@@ -160,31 +177,28 @@ public class Qiniu {
         System.out.println("info:"+url+" download success");
     }
     public void downLoadPublicFile(String fileName,String saveFilePath) throws IOException {
-        String domainOfBucket = "http://ov6imccl2.bkt.clouddn.com";
+     //   String domainOfBucket = "http://ov6imccl2.bkt.clouddn.com";
         String encodedFileName = URLEncoder.encode(fileName, "utf-8");
-        String finalUrl = String.format("%s/%s", domainOfBucket, encodedFileName);
-        System.out.println(finalUrl);
+        String finalUrl = String.format("%s/%s",confQiniuEntity.getDomainOfBucket(), encodedFileName);
         urlDownLoadSource(finalUrl,fileName,saveFilePath);
 
     }
     public void downLoadPrivateFile(String fileName, String saveFilePath) throws IOException {
-        String domainOfBucket = "http://ov6imccl2.bkt.clouddn.com";
+      //  String domainOfBucket = "http://ov6imccl2.bkt.clouddn.com";
         String encodedFileName = URLEncoder.encode(fileName, "utf-8");
-        String privateUrl = String.format("%s/%s", domainOfBucket, encodedFileName);
+        Auth authlocal = getAuthClient();
+        String privateUrl = String.format("%s/%s",confQiniuEntity.getDomainOfBucket(), encodedFileName);
 
-        Auth auth = Auth.create(accessKey, secretKey);
         long expireInSeconds = 3600;//1小时，可以自定义链接过期时间
-        String finalUrl = auth.privateDownloadUrl(privateUrl, expireInSeconds);
-        System.out.println(finalUrl);
+        String finalUrl = authlocal.privateDownloadUrl(privateUrl, expireInSeconds);
         urlDownLoadSource(finalUrl,fileName,saveFilePath);
     }
 
     public void getYunFileInfomation(String yunFileName){
-        Configuration cfg = new Configuration(Zone.zone2());
-        Auth auth = Auth.create(accessKey, secretKey);
-        BucketManager bucketManager = new BucketManager(auth, cfg);
+
+        BucketManager bucketManager = new BucketManager(getAuthClient(), cfg);
         try {
-            FileInfo fileInfo = bucketManager.stat(bucket, yunFileName);
+            FileInfo fileInfo = bucketManager.stat(confQiniuEntity.getBucket(), yunFileName);
             System.out.println("YunFile hash:"+fileInfo.hash);
             System.out.println("YunFile size:"+fileInfo.fsize);
             System.out.println("YunFile mimeType:"+fileInfo.mimeType);
@@ -197,11 +211,9 @@ public class Qiniu {
     public void deleteCloudFile(String fileName){
 
         String yunfilePath=fileName;
-        Configuration cfg = new Configuration(Zone.zone2());
-        Auth auth = Auth.create(accessKey, secretKey);
-        BucketManager bucketManager = new BucketManager(auth, cfg);
+        BucketManager bucketManager = new BucketManager(getAuthClient(), cfg);
         try {
-            bucketManager.delete(bucket, yunfilePath);
+            bucketManager.delete(confQiniuEntity.getBucket(), yunfilePath);
         } catch (QiniuException ex) {
             //如果遇到异常，说明删除失败
             System.err.println(ex.code());
@@ -212,9 +224,9 @@ public class Qiniu {
     }
 
 
-    public static void main(String [] args) throws IOException {
+/*    public static void main(String [] args) throws IOException {
         String localFilePath="D:\\Test\\split\\Hadoop，The Definitive Guide.pdf-2.dat";
-        Qiniu qiniu = new Qiniu();
+        QiniuServiceImpl qiniu = new QiniuServiceImpl();
       //  qiniu.randomAcessUpLoadFile(localFilePath);
       //  qiniu.uploadFile(localFilePath);
         String saveFilePath="D:\\Test\\merge";
@@ -223,5 +235,5 @@ public class Qiniu {
   //      qiniu.deleteCloudFile(fileName);
         String yunFileName ="README.txt";
       //  qiniu.getYunFileInfomation(yunFileName);
-    }
+    }*/
 }

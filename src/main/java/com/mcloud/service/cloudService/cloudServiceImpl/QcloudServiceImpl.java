@@ -1,17 +1,27 @@
-package com.mcloud.yunData.qcloud;
+package com.mcloud.service.cloudService.cloudServiceImpl;
 
+import com.mcloud.model.ConfQcloudEntity;
+import com.mcloud.repository.ConfQcloudRespository;
+import com.mcloud.service.cloudService.QcloudService;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.request.*;
 import com.qcloud.cos.sign.Credentials;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 
 /**
  * Created by vellerzheng on 2017/9/18.
  */
-public class Qcloud {
-    private static String bucketName = "tencentfile";
+@Service
+public class QcloudServiceImpl implements QcloudService{
+
+    @Autowired
+    private ConfQcloudRespository confQcloudRespository;
+    private ConfQcloudEntity confQcloudEntity;
+
 
     /**
      *
@@ -22,13 +32,15 @@ public class Qcloud {
     public  COSClient getCOSClient() {
 
         // 初始化秘钥信息
-        long appId = 1254362959;
+ /*       long appId = 1254362959;
         String secretId = "AKIDjLlz2sfh4VyN2ZzgSHoFVaTAf2PBlDdt";
-        String secretKey = "DF5jGl5B8ze7VwEMJ5f7QZVKyQfintul";
+        String secretKey = "DF5jGl5B8ze7VwEMJ5f7QZVKyQfintul";*/
+        if(confQcloudEntity == null)
+          confQcloudEntity = confQcloudRespository.findOne(1);
         // 设置要操作的bucket
         // String bucketName = "goods";
         // 初始化秘钥信息
-        Credentials cred = new Credentials(appId, secretId, secretKey);
+        Credentials cred = new Credentials(Long.parseLong(confQcloudEntity.getAppId()), confQcloudEntity.getSecretId(), confQcloudEntity.getSecretKey());
 
         // 初始化客户端配置(如设置园区)
         // 初始化客户端配置
@@ -51,9 +63,9 @@ public class Qcloud {
     public  String uploadFile(String localFilePath) {
         String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
         String yunfilePath = "/backupFile/"+ fileName.replace(File.separator,"");  //key 为上传的文件名
-
-        UploadFileRequest uploadFileRequest = new UploadFileRequest(bucketName,yunfilePath, localFilePath);
-        String uploadFileRet = getCOSClient().uploadFile(uploadFileRequest);
+        COSClient cos =getCOSClient();
+        UploadFileRequest uploadFileRequest = new UploadFileRequest(confQcloudEntity.getBucketName(),yunfilePath, localFilePath);
+        String uploadFileRet = cos.uploadFile(uploadFileRequest);
 
         return uploadFileRet;
     }
@@ -68,10 +80,11 @@ public class Qcloud {
         String cosFilePath="/backupFile/"+yunfileName;
         String fileName =cosFilePath.substring((cosFilePath.lastIndexOf("/")));
         String localFilePath = localPathDown+ File.separator+ fileName.replace("/","");  //key 为上传的文件名
-        GetFileLocalRequest getFileLocalRequest = new GetFileLocalRequest(bucketName, cosFilePath, localFilePath);
+        COSClient cos =getCOSClient();
+        GetFileLocalRequest getFileLocalRequest = new GetFileLocalRequest(confQcloudEntity.getBucketName(), cosFilePath, localFilePath);
         getFileLocalRequest.setUseCDN(false);
         getFileLocalRequest.setReferer("*.myweb.cn");
-        String getFileResult = getCOSClient().getFileLocal(getFileLocalRequest);
+        String getFileResult = cos.getFileLocal(getFileLocalRequest);
         return getFileResult;
     }
 
@@ -79,7 +92,7 @@ public class Qcloud {
 
        // String cosFilePath = "/backupFile/README.txt";
        // String dstCosFilePath = "/README.txt";
-        MoveFileRequest moveRequest = new MoveFileRequest(bucketName, cosFilePath, dstCosFilePath);
+        MoveFileRequest moveRequest = new MoveFileRequest(confQcloudEntity.getBucketName(), cosFilePath, dstCosFilePath);
         String moveFileResult = getCOSClient().moveFile(moveRequest);
         return moveFileResult;
     }
@@ -93,7 +106,7 @@ public class Qcloud {
     public  String getFileProp(String yunFilePath) {
 
 
-        StatFileRequest statFileRequest = new StatFileRequest(bucketName,yunFilePath);
+        StatFileRequest statFileRequest = new StatFileRequest(confQcloudEntity.getBucketName(),yunFilePath);
         String statFileRet = getCOSClient().statFile(statFileRequest);
 
         return statFileRet;
@@ -108,20 +121,21 @@ public class Qcloud {
     public String deleteFile(String fileName) {
 
         String yunFilePath="/backupFile/"+fileName;
-        DelFileRequest delFileRequest = new DelFileRequest(bucketName,yunFilePath);
-        String delFileRet = getCOSClient().delFile(delFileRequest);
+        COSClient cos =getCOSClient();
+        DelFileRequest delFileRequest = new DelFileRequest(confQcloudEntity.getBucketName(),yunFilePath);
+        String delFileRet = cos.delFile(delFileRequest);
 
         return delFileRet;
     }
 
 
 
-    public static  void main(String[] args) {
+/*    public static  void main(String[] args) {
         String localFilePath ="D:\\Test\\split\\Hadoop，The Definitive Guide.pdf";
         String saveFilepath = "D:\\Test\\merge";
 
         String yunFileName="cloudStorageService.pdf-2.dat";
-        Qcloud qcloud = new Qcloud();
+        QcloudServiceImpl qcloud = new QcloudServiceImpl();
       // qcloud.uploadFile(localFilePath);
          qcloud.downFile(yunFileName,saveFilepath);
 
@@ -132,5 +146,5 @@ public class Qcloud {
         System.out.println(qcloud.deleteFile(dstCosFilePath));
 
 
-    }
+    }*/
 }

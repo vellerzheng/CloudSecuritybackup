@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="cloudSecureStorage:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="lab420-YunSafe.war">
+      <element id="artifact" artifact-name="cloudSecureStorage:war exploded" />
+    </root>
+  </artifact>
+</component>

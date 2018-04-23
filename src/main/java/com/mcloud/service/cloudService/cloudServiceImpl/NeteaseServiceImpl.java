@@ -1,11 +1,16 @@
-package com.mcloud.yunData.netease;
+package com.mcloud.service.cloudService.cloudServiceImpl;
 
+import com.mcloud.model.ConfNeteaseEntity;
+import com.mcloud.repository.ConfNeteaseRespository;
+import com.mcloud.service.cloudService.NeteaseService;
 import com.netease.cloud.ClientConfiguration;
 import com.netease.cloud.Protocol;
 import com.netease.cloud.auth.BasicCredentials;
 import com.netease.cloud.auth.Credentials;
 import com.netease.cloud.services.nos.NosClient;
 import com.netease.cloud.services.nos.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,9 +25,13 @@ import java.util.List;
 /**
  * Created by vellerzheng on 2017/9/21.
  */
-public class Netease {
-    // 设置要操作的bucket
-    private static String bucketName = "neteasefile";
+@Service
+public class NeteaseServiceImpl implements NeteaseService {
+
+    @Autowired
+    private ConfNeteaseRespository confNeteaseRespository;
+    private ConfNeteaseEntity confNeteaseEntity;
+
 
     /**
      *
@@ -34,12 +43,14 @@ public class Netease {
 
         // 初始化秘钥信息
 
-        String secretId = "657c5001cf0c46ee92df876415d04033";
+  /*      String secretId = "657c5001cf0c46ee92df876415d04033";
         String secretKey = "e660f8c5185d4317a3a3cff8447fcc4f";
-        String endPoint = "nos-eastchina1.126.net";
+        String endPoint = "nos-eastchina1.126.net";*/
+       if(confNeteaseEntity ==null)
+            confNeteaseEntity = confNeteaseRespository.findOne(1);
 
         // 初始化秘钥信息
-        Credentials cred = new BasicCredentials( secretId, secretKey);
+        Credentials cred = new BasicCredentials( confNeteaseEntity.getSecretId(), confNeteaseEntity.getSecretKey());
         // 初始化客户端配置
         ClientConfiguration conf = new ClientConfiguration();
         // 设置 NosClient 使用的最大连接数
@@ -54,7 +65,7 @@ public class Netease {
         // 生成客户端
         // 初始化cosClient
         NosClient nosClient = new NosClient(cred, conf);
-        nosClient.setEndpoint(endPoint);
+        nosClient.setEndpoint(confNeteaseEntity.getEndPoint());
         return nosClient;
     }
 
@@ -79,7 +90,7 @@ public class Netease {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        InitiateMultipartUploadRequest initRequest = new InitiateMultipartUploadRequest(bucketName, localFilePath);
+        InitiateMultipartUploadRequest initRequest = new InitiateMultipartUploadRequest(confNeteaseEntity.getBucketName(), localFilePath);
       //你还可以在初始化分块上传时，设置文件的Content-Type
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentType(contentType);
@@ -113,7 +124,7 @@ public class Netease {
 
         int nextMarker = 0;
         while (true) {
-            ListPartsRequest listPartsRequest = new ListPartsRequest(bucketName, yunfileName, uploadId);
+            ListPartsRequest listPartsRequest = new ListPartsRequest(confNeteaseEntity.getBucketName(), yunfileName, uploadId);
             listPartsRequest.setPartNumberMarker(nextMarker);
 
             PartListing partList = getNosClient().listParts(listPartsRequest);
@@ -127,7 +138,7 @@ public class Netease {
                 break;
             }
         }
-        CompleteMultipartUploadRequest completeRequest =  new CompleteMultipartUploadRequest(bucketName,yunfileName, uploadId, partETags);
+        CompleteMultipartUploadRequest completeRequest =  new CompleteMultipartUploadRequest(confNeteaseEntity.getBucketName(),yunfileName, uploadId, partETags);
         CompleteMultipartUploadResult completeResult = getNosClient().completeMultipartUpload(completeRequest);
 
         return true;
@@ -144,7 +155,7 @@ public class Netease {
         String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
         String yunfileName = fileName.replace(File.separator,"");  //key 为上传的文件名
         try {
-            getNosClient().putObject(bucketName,yunfileName, new File(localFilePath));
+            getNosClient().putObject(confNeteaseEntity.getBucketName(),yunfileName, new File(localFilePath));
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -162,7 +173,7 @@ public class Netease {
       //  String fileName =yunFilePath.substring((yunFilePath.lastIndexOf("/")));
         String fileName = yunFilePath;
         String localFilePath = localPathDown+File.separator+ fileName.replace("/","");  //key 为上传的文件名
-        GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName,yunFilePath);
+        GetObjectRequest getObjectRequest = new GetObjectRequest(confNeteaseEntity.getBucketName(),yunFilePath);
         ObjectMetadata objectMetadata = getNosClient().getObject(getObjectRequest,new File(localFilePath));
         return true;
     }
@@ -176,16 +187,16 @@ public class Netease {
      */
     public boolean deleteFile(String yunFilePath) {
 
-        boolean isExist = getNosClient().doesObjectExist(bucketName,yunFilePath);
+        boolean isExist = getNosClient().doesObjectExist(confNeteaseEntity.getBucketName(),yunFilePath);
         if(isExist)
-            getNosClient().deleteObject(bucketName,yunFilePath);
+            getNosClient().deleteObject(confNeteaseEntity.getBucketName(),yunFilePath);
         else
             System.out.println("yunFile is not exist!");
         return true;
     }
 
-    public static void main(String[] args){
-        Netease netease = new Netease();
+/*    public static void main(String[] args){
+        NeteaseServiceImpl netease = new NeteaseServiceImpl();
         String localFilePath="D:\\Test\\split\\README.txt";
         netease.uploadFile(localFilePath);
         System.out.println("Upload file successful!");
@@ -195,7 +206,7 @@ public class Netease {
         netease.downFile(yunFileName,saveLocalFilePath);
         netease.deleteFile(yunFileName);
 
-    }
+    }*/
 
 
 }

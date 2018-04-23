@@ -7,11 +7,11 @@ import com.mcloud.repository.FileRepository;
 import com.mcloud.repository.HashFileRepository;
 import com.mcloud.repository.UserRepository;
 import com.mcloud.service.UploadFileService;
+import com.mcloud.service.upload.MulCloudSDisposeService;
 import com.mcloud.util.common.FileManage;
 import com.mcloud.service.supportToolClass.fileHandle.FileEncAndDecByDES;
-import com.mcloud.service.upload.deliverFile.PartitionFile;
-import com.mcloud.service.upload.fileToMulClouds.MulCloudsDispose;
-import com.mcloud.yunData.qcloud.Qcloud;
+import com.mcloud.service.upload.PartitionFile;
+import com.mcloud.service.cloudService.cloudServiceImpl.QcloudServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +34,8 @@ public class UploadFileServiceImpl implements UploadFileService{
     private UserRepository userRepository;
     @Autowired
     private HashFileRepository hashFileRepository;
+    @Autowired
+    private MulCloudSDisposeService mulCloudSDisService;
 
     /**
      *
@@ -70,7 +72,7 @@ public class UploadFileServiceImpl implements UploadFileService{
                 e.printStackTrace();
             }
             // 腾讯云，数据库编号2
-            Qcloud qcloud = new Qcloud();
+            QcloudServiceImpl qcloud = new QcloudServiceImpl();
             qcloud.uploadFile(encryptFilePath);
 
             /*判断加密的文件路径是否存在，如果存在就删除*/
@@ -105,9 +107,8 @@ public class UploadFileServiceImpl implements UploadFileService{
             }
             // 多云上传
             if (spt) {
-                MulCloudsDispose mulCloudsDispose = new MulCloudsDispose();
-                mulCloudsDispose.getPartFilePath(pathPart);
-                mulCloudsDispose.uploadPartFileToClouds();
+                mulCloudSDisService.getPartFilePath(pathPart);
+                mulCloudSDisService.uploadPartFileToClouds();
             }
         }
 

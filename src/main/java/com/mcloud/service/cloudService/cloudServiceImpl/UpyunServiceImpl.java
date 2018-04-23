@@ -1,7 +1,12 @@
-package com.mcloud.yunData.upyun;
+package com.mcloud.service.cloudService.cloudServiceImpl;
 
 
+import com.mcloud.model.ConfUpyunEntity;
+import com.mcloud.repository.ConfUpyunRespository;
+import com.mcloud.service.cloudService.UpyunService;
 import main.java.com.UpYun;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,19 +15,26 @@ import java.util.Map;
 /**
  * Created by vellerzheng on 2017/8/25.
  */
-public class Upyun {
-    private String bucketName ="youpaiyunfile";
+@Service
+public class UpyunServiceImpl implements UpyunService {
+/*    private String bucketName ="youpaiyunfile";
     private String userName = "guyun";
-    private String password ="qwe123456";
+    private String password ="qwe123456";*/
+
+    @Autowired
+    private ConfUpyunRespository confUpyunRespository;
+    private ConfUpyunEntity confUpyunEntity;
 
 
-   private UpYun getClientUpyun(){
+    private UpYun getClientUpyun(){
         // 可选属性1，是否开启 debug 模式，默认不开启
-          UpYun upyun = new UpYun(bucketName, userName, password);
-          upyun.setDebug(false);
+        if(confUpyunEntity == null)
+            confUpyunEntity = confUpyunRespository.findOne(1);
+        UpYun upyun = new UpYun(confUpyunEntity.getBucketName(), confUpyunEntity.getUserName(),confUpyunEntity.getPassword());
+        upyun.setDebug(false);
         // 可选属性2，超时时间，默认 30s
-          upyun.setTimeout(30);
-          return upyun;
+        upyun.setTimeout(30);
+        return upyun;
     }
 
     public  void createYunFilePath(){
@@ -30,7 +42,7 @@ public class Upyun {
         boolean result = getClientUpyun().mkDir("/up/tt");
     }
 
-      // 文件上传
+    // 文件上传
     public void uploadFile(String localFilePath){
         String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
         String yunfilePath = "/up/tt/"+ fileName.replace(File.separator,"");  //key 为上传的文件名
@@ -75,13 +87,13 @@ public class Upyun {
         }
     }
 
-   public void getSpaceCapacity(){
-       long usage = getClientUpyun().getBucketUsage();
-       System.out.println("BucketUsage:"+usage);
-   }
+    public void getSpaceCapacity(){
+        long usage = getClientUpyun().getBucketUsage();
+        System.out.println("BucketUsage:"+usage);
+    }
 
 
-    public static  void main(String[] args){
+ /*   public static  void main(String[] args){
         String localFilePath="D:\\Test\\split\\云Hadoop，The Definitive Guide.pdf-4.dat";
         Upyun upyun=new Upyun();
       //  upyun.Upyun();
@@ -97,5 +109,5 @@ public class Upyun {
         String fileName="云Hadoop，The Definitive Guide.pdf-4.dat";
      //   upyun.deleteYunFile(fileName);
 
-    }
+    }*/
 }

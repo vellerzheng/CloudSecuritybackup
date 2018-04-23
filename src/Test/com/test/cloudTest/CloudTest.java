@@ -1,6 +1,6 @@
 package com.test.cloudTest;
 
-import com.mcloud.service.upload.fileToMulClouds.MulCloudsDispose;
+import com.mcloud.service.upload.MulCloudsDisposeServiceImpl;
 import org.junit.Test;
 
 /**
@@ -18,7 +18,7 @@ public class CloudTest {
         long startTime=System.currentTimeMillis();
         String uploadDirectory="D:\\Test\\split\\cloudStorageService.pdf";
         String downloadDirectory="D:\\Test\\merge";
-        MulCloudsDispose mulCloudsDispose = new MulCloudsDispose();
+        MulCloudsDisposeServiceImpl mulCloudsDispose = new MulCloudsDisposeServiceImpl();
         mulCloudsDispose.getPartFilePath(uploadDirectory);
         mulCloudsDispose.uploadPartFileToClouds();
         long endTime=System.currentTimeMillis(); //获取结束时间

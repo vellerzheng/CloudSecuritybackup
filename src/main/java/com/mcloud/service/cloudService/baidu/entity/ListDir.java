@@ -1,4 +1,4 @@
-package com.mcloud.yunData.baidu.entity;
+package com.mcloud.service.cloudService.baidu.entity;
 
 /**
  * Created by vellerzheng on 2017/8/18.

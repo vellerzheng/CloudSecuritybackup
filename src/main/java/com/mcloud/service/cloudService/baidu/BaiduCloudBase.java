@@ -1,10 +1,10 @@
-package com.mcloud.yunData.baidu;
+package com.mcloud.service.cloudService.baidu;
 
 
 import com.google.gson.Gson;
-import com.mcloud.yunData.baidu.entity.CloudInfo;
-import com.mcloud.yunData.baidu.entity.FileBase;
-import com.mcloud.yunData.baidu.entity.ListDir;
+import com.mcloud.service.cloudService.baidu.entity.CloudInfo;
+import com.mcloud.service.cloudService.baidu.entity.FileBase;
+import com.mcloud.service.cloudService.baidu.entity.ListDir;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.FilePart;

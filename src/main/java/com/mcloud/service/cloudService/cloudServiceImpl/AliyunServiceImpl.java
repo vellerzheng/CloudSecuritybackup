@@ -1,4 +1,4 @@
-package com.mcloud.yunData.aliyun;
+package com.mcloud.service.cloudService.cloudServiceImpl;
 
 /**
  * Created by vellerzheng on 2017/9/19.
@@ -9,11 +9,13 @@ import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.mcloud.model.ConfAliyunEntity;
 import com.mcloud.repository.ConfAliyunRespository;
+import com.mcloud.service.cloudService.AliyunService;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -29,40 +31,46 @@ import java.util.Date;
  * @date 2017-5-3 上午10:47:00
  *
  */
-@Component
-public class AliyunOSS {
+@Service
+public class AliyunServiceImpl implements AliyunService {
 
 
-   private String  endpoint="http://oss-cn-shanghai.aliyuncs.com";
-    private String accessKey= "LTAINzwv3zQD1cln";
-    private String accessKeySecret="8mVBgRYFJeKE5UWFS3Chy4F2CaKVm3";
-    private String bucketName="alicloudfile";
-    private String accessUrl="alicloudfile.oss-cn-shanghai.aliyuncs.com";
 
+    @Autowired
+    ConfAliyunRespository confAliyunRespository;
 
-/*     @Autowired
-     ConfAliyunRespository confAliyunRespository;
      private ConfAliyunEntity ossConfigure;
      private OSSClient ossClient;
 
-     public AliyunOSS(){
+     public AliyunServiceImpl(){
 
-         this.ossConfigure= confAliyunRespository.findOne(1);
-         this.ossClient = new OSSClient(ossConfigure.getEndPoint(), ossConfigure.getAccessKey(),
-                 ossConfigure.getAccessKeySecret());
-     }*/
+     }
+
+    public AliyunServiceImpl(ConfAliyunEntity confAliyunEntity) {
+        this.ossConfigure = confAliyunEntity;
+        ossClient = new OSSClient(ossConfigure.getEndPoint(), ossConfigure.getAccessKey(),
+                ossConfigure.getAccessKeySecret());
+    }
+
+
+    public void initAliyun(){
+        this.ossConfigure =confAliyunRespository.findOne(1);
+        ossClient = new OSSClient(ossConfigure.getEndPoint(), ossConfigure.getAccessKey(),
+                ossConfigure.getAccessKeySecret());
+    }
     /**
      * 上传本地文件      @Title: uploadFile
      */
     public boolean uploadFile(String localFilePath)  {
-        OSSConfigure ossConfigure = null;
+  /*      OSSConfigure ossConfigure = null;
         ossConfigure = new OSSConfigure(endpoint,accessKey,accessKeySecret,bucketName,accessUrl);
         OSSClient ossClient = new OSSClient(ossConfigure.getEndpoint(), ossConfigure.getAccessKeyId(),
-                ossConfigure.getAccessKeySecret());
+                ossConfigure.getAccessKeySecret());*/
+        initAliyun();
         String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
         String yunfileName ="backupFile/"+ fileName.replace(File.separator,"");  //key 为上传的文件名
         ossClient.putObject(ossConfigure.getBucketName(),yunfileName,new File(localFilePath));
-        ossClient.shutdown();
+        /*ossClient.shutdown();*/
         return true;
     }
 
@@ -75,7 +83,7 @@ public class AliyunOSS {
      *  @throws Exception 设定文件 @return String
      * 返回类型 返回oss存放路径 @throws
      */
-    public  String uploadMultipartFile(MultipartFile multipartFile, String remotePath) throws Exception {
+    public  String uploadMultipartFile(MultipartFile multipartFile, String remotePath) throws IOException {
         // 流转换 将MultipartFile转换为oss所需的InputStream
         CommonsMultipartFile cf = (CommonsMultipartFile) multipartFile;
         DiskFileItem fi = (DiskFileItem) cf.getFileItem();
@@ -84,9 +92,9 @@ public class AliyunOSS {
         String fileName = fi.getName();
         fileName = "lxkc_" + new Date().getTime() + fileName.substring(fileName.lastIndexOf("."));
         // 加载配置文件，初始化OSSClient
-        OSSConfigure ossConfigure = new OSSConfigure("conf/accessCloud.properties");
+ /*       OSSConfigure ossConfigure = new OSSConfigure("conf/accessCloud.properties");
         OSSClient ossClient = new OSSClient(ossConfigure.getEndpoint(), ossConfigure.getAccessKeyId(),
-                ossConfigure.getAccessKeySecret());
+                ossConfigure.getAccessKeySecret());*/
         // 定义二级目录
         String remoteFilePath = remotePath.substring(0, remotePath.length()).replaceAll("\\\\", "/") + "/";
         // 创建上传Object的Metadata
@@ -108,15 +116,15 @@ public class AliyunOSS {
 
     // 下载文件
     @SuppressWarnings("unused")
-    public  void downloadFile(String yunfileName, String saveLocalFilePath)
-            {
+    public  void downloadFile(String yunfileName, String saveLocalFilePath) {
+                initAliyun();
                 String yunFilePath="backupFile/"+yunfileName;
-                OSSConfigure ossConfigure = null;
+                /*OSSConfigure ossConfigure = null;*/
                 try {
-                    ossConfigure = new OSSConfigure("conf/accessCloud.properties");
+   /*                 ossConfigure = new OSSConfigure("conf/accessCloud.properties");
                     // 初始化OSSClient
                     OSSClient ossClient = new OSSClient(ossConfigure.getEndpoint(), ossConfigure.getAccessKeyId(),
-                            ossConfigure.getAccessKeySecret());
+                            ossConfigure.getAccessKeySecret());*/
                     OSSObject object = ossClient.getObject(ossConfigure.getBucketName(), yunFilePath);
                     // 获取ObjectMeta
                     ObjectMetadata meta = object.getObjectMetadata();
@@ -140,15 +148,16 @@ public class AliyunOSS {
      * ossConfigure @param 配置文件实体 @param filePath 设定文件 @return void 返回类型 @throws
      */
     public  void deleteFile( String fileName) {
+        initAliyun();
         String yunfilePath="backupFile/"+fileName;
-        OSSConfigure ossConfigure = null;
+/*        OSSConfigure ossConfigure = null;
         try {
             ossConfigure = new OSSConfigure("conf/accessCloud.properties");
         } catch (IOException e) {
             e.printStackTrace();
         }
         OSSClient ossClient = new OSSClient(ossConfigure.getEndpoint(), ossConfigure.getAccessKeyId(),
-                            ossConfigure.getAccessKeySecret());
+                            ossConfigure.getAccessKeySecret()); */
         ossClient.deleteObject(ossConfigure.getBucketName(), yunfilePath);
     }
 
@@ -199,13 +208,13 @@ public class AliyunOSS {
 
     public static void main(String[] args) {
 
-        AliyunOSS aliyun= new AliyunOSS();
+/*        AliyunOSS aliyun= new AliyunOSS();
         String locaFilePath="D:\\Test\\split\\README.txt";
         aliyun.uploadFile(locaFilePath);
 
         String yunFileName="README.txt";
         String saveLocalFilePath="D:\\Test\\merge";
         aliyun.downloadFile(yunFileName,saveLocalFilePath);
-        aliyun.deleteFile(yunFileName);
+        aliyun.deleteFile(yunFileName);*/
     }
 }

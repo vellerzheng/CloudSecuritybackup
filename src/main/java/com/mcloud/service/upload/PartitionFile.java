@@ -1,4 +1,4 @@
-package com.mcloud.service.upload.deliverFile;
+package com.mcloud.service.upload;
 
 import java.io.*;
 import java.util.List;

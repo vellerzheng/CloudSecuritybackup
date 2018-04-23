@@ -1,13 +1,10 @@
 package com.mcloud.service.impl;
 
 import com.mcloud.model.FilesHashEntity;
+import com.mcloud.repository.ConfAliyunRespository;
 import com.mcloud.repository.HashFileRepository;
 import com.mcloud.service.ManagementFileService;
-import com.mcloud.yunData.aliyun.AliyunOSS;
-import com.mcloud.yunData.netease.Netease;
-import com.mcloud.yunData.qcloud.Qcloud;
-import com.mcloud.yunData.qiniu.Qiniu;
-import com.mcloud.yunData.upyun.Upyun;
+import com.mcloud.service.cloudService.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,35 +18,46 @@ public class ManagementFileServiceImpl implements ManagementFileService {
     @Autowired
     private HashFileRepository hashFileRepository;
 
+    @Autowired
+    private ConfAliyunRespository confAliyunRespository;
+    @Autowired
+    AliyunService aliyunService;
+    @Autowired
+    NeteaseService neteaseService;
+    @Autowired
+    QcloudService qcloudService;
+    @Autowired
+    QiniuServie qiniuServie;
+    @Autowired
+    UpyunService upyunService;
 
     @Override
     public boolean deleteCloudFile(int hashFileId) {
         FilesHashEntity filesHashEntity =hashFileRepository.findOne(hashFileId);
 
-        AliyunOSS aliyun= new AliyunOSS();
+
         String yunFilePath=filesHashEntity.getAliyunHash();
         if(yunFilePath != null)
-            aliyun.deleteFile(yunFilePath);
+            aliyunService.deleteFile(yunFilePath);
 
-        Netease netease =new Netease();
+
         String netsFilePath=filesHashEntity.getNeteaseHash();
         if(netsFilePath != null)
-            netease.deleteFile(netsFilePath);
+            neteaseService.deleteFile(netsFilePath);
 
-        Qcloud qcloud = new Qcloud();
         String dstCosFilePath =filesHashEntity.getQcloudHash();
         if(dstCosFilePath != null)
-            qcloud.deleteFile(dstCosFilePath);
+            qcloudService.deleteFile(dstCosFilePath);
 
-        Qiniu qiniu = new Qiniu();
+
         String qiniuYunFilePath=filesHashEntity.getQiniuHash();
         if(qiniuYunFilePath != null)
-            qiniu.deleteCloudFile(qiniuYunFilePath);
+            qiniuServie.deleteCloudFile(qiniuYunFilePath);
 
-        Upyun upyun =new Upyun();
+
         String upyunFilePath=filesHashEntity.getUpyunHash();
         if(upyunFilePath != null)
-            upyun.deleteYunFile(upyunFilePath);
+            upyunService.deleteYunFile(upyunFilePath);
 
         return true;
     }

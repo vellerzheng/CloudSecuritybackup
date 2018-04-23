@@ -2,17 +2,14 @@ package com.mcloud.service.impl;
 
 import com.mcloud.model.FilesEntity;
 import com.mcloud.model.FilesHashEntity;
+import com.mcloud.repository.ConfAliyunRespository;
 import com.mcloud.repository.FileRepository;
 import com.mcloud.repository.HashFileRepository;
 import com.mcloud.service.DownloadFileService;
+import com.mcloud.service.cloudService.*;
 import com.mcloud.service.download.TransformDownloadFile;
 import com.mcloud.util.common.FileManage;
 import com.mcloud.service.supportToolClass.fileHandle.FileEncAndDecByDES;
-import com.mcloud.yunData.aliyun.AliyunOSS;
-import com.mcloud.yunData.netease.Netease;
-import com.mcloud.yunData.qcloud.Qcloud;
-import com.mcloud.yunData.qiniu.Qiniu;
-import com.mcloud.yunData.upyun.Upyun;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +27,19 @@ public class DownloadFileServiceImpl implements DownloadFileService{
     private FileRepository fileRepository;
     @Autowired
     private HashFileRepository hashFileRepository;
+    @Autowired
+    private ConfAliyunRespository confAliyunRespository;
+
+    @Autowired
+    private AliyunService aliyunService;
+    @Autowired
+    NeteaseService neteaseService;
+    @Autowired
+    QcloudService qcloudService;
+    @Autowired
+    QiniuServie qiniuServie;
+    @Autowired
+    UpyunService upyunService;
 
 
     @Override
@@ -37,36 +47,35 @@ public class DownloadFileServiceImpl implements DownloadFileService{
 
         FilesHashEntity filesHashEntity;
          filesHashEntity = hashFileRepository.findEntityByFileId(fileId);
-        AliyunOSS aliyun= new AliyunOSS();
+
         String yunFilePath=filesHashEntity.getAliyunHash();
         if(yunFilePath!=null)
-            aliyun.downloadFile(yunFilePath, partFilePath);
+            aliyunService.downloadFile(yunFilePath, partFilePath);
 
 
-        Netease netease =new Netease();
         String netsFilePath=filesHashEntity.getNeteaseHash();
         if(netsFilePath!=null)
-            netease.downFile(netsFilePath,partFilePath);
+            neteaseService.downFile(netsFilePath,partFilePath);
 
-        Qcloud qcloud = new Qcloud();
+
         String dstCosFilePath = filesHashEntity.getQcloudHash();
         if(dstCosFilePath!=null)
-            qcloud.downFile(dstCosFilePath,partFilePath);
+            qcloudService.downFile(dstCosFilePath,partFilePath);
 
-        Qiniu qiniu = new Qiniu();
+
         String yunFileName=filesHashEntity.getQiniuHash();
         try {
             if(yunFileName!=null)
-                qiniu.downLoadPrivateFile(yunFileName,partFilePath);
+                qiniuServie.downLoadPrivateFile(yunFileName,partFilePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        Upyun upyun =new Upyun();
+
         String upyunFilePath=filesHashEntity.getUpyunHash();
         if(upyunFilePath!=null) {
             String upyunPartFilePath = partFilePath + File.separator + upyunFilePath;
-            upyun.downloadFile(upyunFilePath, upyunPartFilePath);
+            upyunService.downloadFile(upyunFilePath, upyunPartFilePath);
         }
         return true;
     }

@@ -1,6 +1,6 @@
 package com.mcloud.service.download;
 
-import com.mcloud.service.upload.deliverFile.PartitionFile;
+import com.mcloud.service.upload.PartitionFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
