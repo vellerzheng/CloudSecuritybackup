@@ -46,17 +46,14 @@ public class AliyunServiceImpl implements AliyunService {
 
      }
 
-    public AliyunServiceImpl(ConfAliyunEntity confAliyunEntity) {
-        this.ossConfigure = confAliyunEntity;
-        ossClient = new OSSClient(ossConfigure.getEndPoint(), ossConfigure.getAccessKey(),
-                ossConfigure.getAccessKeySecret());
-    }
-
 
     public void initAliyun(){
-        this.ossConfigure =confAliyunRespository.findOne(1);
-        ossClient = new OSSClient(ossConfigure.getEndPoint(), ossConfigure.getAccessKey(),
-                ossConfigure.getAccessKeySecret());
+         if(ossConfigure == null)
+            ossConfigure =confAliyunRespository.findOne(1);
+         if(ossClient == null) {
+             ossClient = new OSSClient(ossConfigure.getEndPoint(), ossConfigure.getAccessKey(),
+                     ossConfigure.getAccessKeySecret());
+         }
     }
     /**
      * 上传本地文件      @Title: uploadFile

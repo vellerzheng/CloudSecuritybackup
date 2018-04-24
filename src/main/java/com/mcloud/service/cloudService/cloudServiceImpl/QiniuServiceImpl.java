@@ -39,20 +39,23 @@ public class QiniuServiceImpl implements QiniuServie {
     ConfQiniuRespository confQiniuRespository;
     ConfQiniuEntity confQiniuEntity;
 
-    Configuration cfg;
+    private Configuration cfg;
+    private Auth auth;
 
-    private Auth getAuthClient(){
+
+    private void  initQiniuClient(){
 
         if(confQiniuEntity == null)
-        confQiniuEntity = confQiniuRespository.findOne(1);
+            confQiniuEntity = confQiniuRespository.findOne(1);
         if(cfg == null)
             cfg = new Configuration(Zone.zone2());
         //构造一个带指定Zone对象的配置类
-        return Auth.create(confQiniuEntity.getAccessKey(), confQiniuEntity.getSecretKey());
+        if(auth == null)
+            auth = Auth.create(confQiniuEntity.getAccessKey(), confQiniuEntity.getSecretKey());
     }
 
     public void uploadFile(String localFilePath){
-
+           initQiniuClient();
 //...其他参数参考类注释
             UploadManager uploadManager = new UploadManager(cfg);
 //...生成上传凭证，然后准备上传
@@ -63,7 +66,7 @@ public class QiniuServiceImpl implements QiniuServie {
             String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
             String key =  fileName.replace(File.separator,"");  //key 为上传的文件名
 
-            String upToken = getAuthClient().uploadToken(confQiniuEntity.getBucket());
+            String upToken = auth.uploadToken(confQiniuEntity.getBucket());
             try {
                 Response response = uploadManager.put(localFilePath, key, upToken);
                 //解析上传成功的结果
@@ -84,13 +87,11 @@ public class QiniuServiceImpl implements QiniuServie {
         /*断点续传文件方式*/
     public void randomAcessUpLoadFile(String localFilePath){
 
-
-//如果是Windows情况下，格式是 D:\\qiniu\\test.png
-    //    String localFilePath = "D:\\Test\\split\\README.txt";
+        initQiniuClient();
 //默认不指定key的情况下，以文件内容的hash值作为文件名
         String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
         String key =  fileName.replace(File.separator,"");  //key 为上传的文件名
-        String upToken = getAuthClient().uploadToken(confQiniuEntity.getBucket());
+        String upToken = auth.uploadToken(confQiniuEntity.getBucket());
         String localTempDir = Paths.get(System.getenv("java.io.tmpdir"), confQiniuEntity.getBucket()).toString();
         try {
             //设置断点续传文件进度保存目录
@@ -174,10 +175,10 @@ public class QiniuServiceImpl implements QiniuServie {
             inputStream.close();
         }
 
-        System.out.println("info:"+url+" download success");
+        //System.out.println("info:"+url+" download success");
     }
     public void downLoadPublicFile(String fileName,String saveFilePath) throws IOException {
-     //   String domainOfBucket = "http://ov6imccl2.bkt.clouddn.com";
+        initQiniuClient();
         String encodedFileName = URLEncoder.encode(fileName, "utf-8");
         String finalUrl = String.format("%s/%s",confQiniuEntity.getDomainOfBucket(), encodedFileName);
         urlDownLoadSource(finalUrl,fileName,saveFilePath);
@@ -185,18 +186,18 @@ public class QiniuServiceImpl implements QiniuServie {
     }
     public void downLoadPrivateFile(String fileName, String saveFilePath) throws IOException {
       //  String domainOfBucket = "http://ov6imccl2.bkt.clouddn.com";
+        initQiniuClient();
         String encodedFileName = URLEncoder.encode(fileName, "utf-8");
-        Auth authlocal = getAuthClient();
         String privateUrl = String.format("%s/%s",confQiniuEntity.getDomainOfBucket(), encodedFileName);
 
         long expireInSeconds = 3600;//1小时，可以自定义链接过期时间
-        String finalUrl = authlocal.privateDownloadUrl(privateUrl, expireInSeconds);
+        String finalUrl = auth.privateDownloadUrl(privateUrl, expireInSeconds);
         urlDownLoadSource(finalUrl,fileName,saveFilePath);
     }
 
     public void getYunFileInfomation(String yunFileName){
-
-        BucketManager bucketManager = new BucketManager(getAuthClient(), cfg);
+        initQiniuClient();
+        BucketManager bucketManager = new BucketManager(auth, cfg);
         try {
             FileInfo fileInfo = bucketManager.stat(confQiniuEntity.getBucket(), yunFileName);
             System.out.println("YunFile hash:"+fileInfo.hash);
@@ -209,9 +210,9 @@ public class QiniuServiceImpl implements QiniuServie {
     }
 
     public void deleteCloudFile(String fileName){
-
+        initQiniuClient();
         String yunfilePath=fileName;
-        BucketManager bucketManager = new BucketManager(getAuthClient(), cfg);
+        BucketManager bucketManager = new BucketManager(auth, cfg);
         try {
             bucketManager.delete(confQiniuEntity.getBucket(), yunfilePath);
         } catch (QiniuException ex) {

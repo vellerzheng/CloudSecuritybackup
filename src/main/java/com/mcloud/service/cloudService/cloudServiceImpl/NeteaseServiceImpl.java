@@ -32,6 +32,7 @@ public class NeteaseServiceImpl implements NeteaseService {
     private ConfNeteaseRespository confNeteaseRespository;
     private ConfNeteaseEntity confNeteaseEntity;
 
+    private NosClient nosClient;
 
     /**
      *
@@ -39,7 +40,7 @@ public class NeteaseServiceImpl implements NeteaseService {
      * @Description: 生成客户端对象
      * @return
      */
-    public  NosClient getNosClient() {
+    public  void initNosClient() {
 
         // 初始化秘钥信息
 
@@ -49,24 +50,25 @@ public class NeteaseServiceImpl implements NeteaseService {
        if(confNeteaseEntity ==null)
             confNeteaseEntity = confNeteaseRespository.findOne(1);
 
-        // 初始化秘钥信息
-        Credentials cred = new BasicCredentials( confNeteaseEntity.getSecretId(), confNeteaseEntity.getSecretKey());
-        // 初始化客户端配置
-        ClientConfiguration conf = new ClientConfiguration();
-        // 设置 NosClient 使用的最大连接数
-        conf.setMaxConnections(200);
-        // 设置 socket 超时时间
-        conf.setSocketTimeout(10000);
-        // 设置失败请求重试次数
-        conf.setMaxErrorRetry(2);
-        // 如果要用 https 协议，请加上下面语句
-        conf.setProtocol(Protocol.HTTPS);
+       if(nosClient == null) {
+           // 初始化秘钥信息
+           Credentials cred = new BasicCredentials(confNeteaseEntity.getSecretId(), confNeteaseEntity.getSecretKey());
+           // 初始化客户端配置
+           ClientConfiguration conf = new ClientConfiguration();
+           // 设置 NosClient 使用的最大连接数
+           conf.setMaxConnections(200);
+           // 设置 socket 超时时间
+           conf.setSocketTimeout(10000);
+           // 设置失败请求重试次数
+           conf.setMaxErrorRetry(2);
+           // 如果要用 https 协议，请加上下面语句
+           conf.setProtocol(Protocol.HTTPS);
+           // 生成客户端
+           // 初始化cosClient
+           nosClient = new NosClient(cred, conf);
+           nosClient.setEndpoint(confNeteaseEntity.getEndPoint());
+       }
 
-        // 生成客户端
-        // 初始化cosClient
-        NosClient nosClient = new NosClient(cred, conf);
-        nosClient.setEndpoint(confNeteaseEntity.getEndPoint());
-        return nosClient;
     }
 
     /**
@@ -75,6 +77,7 @@ public class NeteaseServiceImpl implements NeteaseService {
      * @Description:上传文件
      */
     public  boolean uploadMultiPartFile(String localFilePath) {
+        initNosClient();
         String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
         String yunfileName = fileName.replace(File.separator,"");  //key 为上传的文件名
 
@@ -95,7 +98,7 @@ public class NeteaseServiceImpl implements NeteaseService {
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentType(contentType);
         initRequest.setObjectMetadata(objectMetadata);
-        InitiateMultipartUploadResult initResult = getNosClient().initiateMultipartUpload(initRequest);
+        InitiateMultipartUploadResult initResult = nosClient.initiateMultipartUpload(initRequest);
         String uploadId = initResult.getUploadId();
 
 
@@ -127,7 +130,7 @@ public class NeteaseServiceImpl implements NeteaseService {
             ListPartsRequest listPartsRequest = new ListPartsRequest(confNeteaseEntity.getBucketName(), yunfileName, uploadId);
             listPartsRequest.setPartNumberMarker(nextMarker);
 
-            PartListing partList = getNosClient().listParts(listPartsRequest);
+            PartListing partList = nosClient.listParts(listPartsRequest);
 
             for (PartSummary ps : partList.getParts()) {
                 nextMarker++;
@@ -139,7 +142,7 @@ public class NeteaseServiceImpl implements NeteaseService {
             }
         }
         CompleteMultipartUploadRequest completeRequest =  new CompleteMultipartUploadRequest(confNeteaseEntity.getBucketName(),yunfileName, uploadId, partETags);
-        CompleteMultipartUploadResult completeResult = getNosClient().completeMultipartUpload(completeRequest);
+        CompleteMultipartUploadResult completeResult = nosClient.completeMultipartUpload(completeRequest);
 
         return true;
     }
@@ -152,10 +155,11 @@ public class NeteaseServiceImpl implements NeteaseService {
      */
     public  boolean uploadFile(String localFilePath) {
 
+        initNosClient();
         String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
         String yunfileName = fileName.replace(File.separator,"");  //key 为上传的文件名
         try {
-            getNosClient().putObject(confNeteaseEntity.getBucketName(),yunfileName, new File(localFilePath));
+            nosClient.putObject(confNeteaseEntity.getBucketName(),yunfileName, new File(localFilePath));
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -170,11 +174,11 @@ public class NeteaseServiceImpl implements NeteaseService {
      */
     public  boolean downFile(String yunFilePath,String localPathDown) {
 
-      //  String fileName =yunFilePath.substring((yunFilePath.lastIndexOf("/")));
+        initNosClient();
         String fileName = yunFilePath;
         String localFilePath = localPathDown+File.separator+ fileName.replace("/","");  //key 为上传的文件名
         GetObjectRequest getObjectRequest = new GetObjectRequest(confNeteaseEntity.getBucketName(),yunFilePath);
-        ObjectMetadata objectMetadata = getNosClient().getObject(getObjectRequest,new File(localFilePath));
+        ObjectMetadata objectMetadata = nosClient.getObject(getObjectRequest,new File(localFilePath));
         return true;
     }
 
@@ -187,9 +191,10 @@ public class NeteaseServiceImpl implements NeteaseService {
      */
     public boolean deleteFile(String yunFilePath) {
 
-        boolean isExist = getNosClient().doesObjectExist(confNeteaseEntity.getBucketName(),yunFilePath);
+        initNosClient();
+        boolean isExist = nosClient.doesObjectExist(confNeteaseEntity.getBucketName(),yunFilePath);
         if(isExist)
-            getNosClient().deleteObject(confNeteaseEntity.getBucketName(),yunFilePath);
+            nosClient.deleteObject(confNeteaseEntity.getBucketName(),yunFilePath);
         else
             System.out.println("yunFile is not exist!");
         return true;

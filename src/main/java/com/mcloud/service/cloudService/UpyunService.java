@@ -1,9 +1,9 @@
 package com.mcloud.service.cloudService;
 
 public interface UpyunService {
-    void uploadFile(String localFilePath);
-    void deleteYunFile(String fileName);
-    void downloadFile(String fileName,String saveFilePath);
+    boolean uploadFile(String localFilePath);
+    boolean deleteYunFile(String fileName);
+    boolean downloadFile(String fileName,String saveFilePath);
     void getFileInformation(String fileName);
     void getSpaceCapacity();
 

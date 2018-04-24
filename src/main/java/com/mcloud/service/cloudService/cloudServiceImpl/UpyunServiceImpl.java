@@ -25,70 +25,74 @@ public class UpyunServiceImpl implements UpyunService {
     private ConfUpyunRespository confUpyunRespository;
     private ConfUpyunEntity confUpyunEntity;
 
+    private UpYun upYun;
 
-    private UpYun getClientUpyun(){
+
+    private void initUpyunClient(){
         // 可选属性1，是否开启 debug 模式，默认不开启
         if(confUpyunEntity == null)
             confUpyunEntity = confUpyunRespository.findOne(1);
-        UpYun upyun = new UpYun(confUpyunEntity.getBucketName(), confUpyunEntity.getUserName(),confUpyunEntity.getPassword());
-        upyun.setDebug(false);
-        // 可选属性2，超时时间，默认 30s
-        upyun.setTimeout(30);
-        return upyun;
+        if(upYun == null ) {
+            upYun = new UpYun(confUpyunEntity.getBucketName(), confUpyunEntity.getUserName(), confUpyunEntity.getPassword());
+            upYun.setDebug(false);
+            // 可选属性2，超时时间，默认 30s
+            upYun.setTimeout(30);
+        }
+
     }
 
     public  void createYunFilePath(){
+        initUpyunClient();
         // 创建目录
-        boolean result = getClientUpyun().mkDir("/up/tt");
+        boolean result = upYun.mkDir("/up/tt");
     }
 
     // 文件上传
-    public void uploadFile(String localFilePath){
+    public boolean uploadFile(String localFilePath){
+        initUpyunClient();
         String fileName = localFilePath.substring((localFilePath.lastIndexOf(File.separator)));
-        String yunfilePath = "/up/tt/"+ fileName.replace(File.separator,"");  //key 为上传的文件名
+        //key 为上传的文件名
+        String yunfilePath = "/up/tt/"+ fileName.replace(File.separator,"");
         File file = new File(localFilePath);
-        boolean result4 = false;
+        boolean result = false;
         try {
-            UpYun upyunload =getClientUpyun();
-            upyunload.setContentMD5(UpYun.md5(file));     // 计算文件 MD5，如果文件太大或计算不便，可以不计算
-            result4 = upyunload.writeFile(yunfilePath, file,true);
+            // 计算文件 MD5，如果文件太大或计算不便，可以不计算
+            upYun.setContentMD5(UpYun.md5(file));
+            result = upYun.writeFile(yunfilePath, file,true);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(result4)
-            System.out.println("upload file successed!");
-        else
-            System.out.println("upload file failed!");
+        return result;
     }
 
-    public void deleteYunFile(String fileName){
-
+    public boolean deleteYunFile(String fileName){
+        initUpyunClient();
         String yunFileName = "/up/tt/"+fileName;
         // 删除目录
-        boolean result = getClientUpyun().rmDir(yunFileName);
-        System.out.println("Delete cloud file succeed!");
+        boolean result = upYun.rmDir(yunFileName);
+        return result;
     }
 
-    public void downloadFile(String fileName,String saveFilePath){
+    public boolean downloadFile(String fileName,String saveFilePath){
+        initUpyunClient();
         String yunFileName = "/up/tt/"+fileName;
         File file= new File(saveFilePath);
-        boolean result=getClientUpyun().readFile(yunFileName,file);
-        if(result)
-            System.out.println("Download file succeed!");
-        else
-            System.out.println("Download file failed!");
+        boolean result=upYun.readFile(yunFileName,file);
+        return result;
     }
 
     public void getFileInformation(String fileName){
+        initUpyunClient();
         String yunFilePath = "/up/tt/"+fileName;
-        Map<String,String> result = getClientUpyun().getFileInfo(yunFilePath);
+        Map<String,String> result = upYun.getFileInfo(yunFilePath);
         for (Map.Entry<String, String> entry : result.entrySet()) {
             System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
         }
     }
 
     public void getSpaceCapacity(){
-        long usage = getClientUpyun().getBucketUsage();
+        initUpyunClient();
+        long usage = upYun.getBucketUsage();
         System.out.println("BucketUsage:"+usage);
     }
 
