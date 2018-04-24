@@ -25,9 +25,8 @@ import java.util.Date;
 /**
  * 对OSS服务器进行上传删除等的处理
  *
- * @ClassName: OSSManageUtil
+ * @ClassName: AliyunServiceImpl
  * @Description:
- * @author liux
  * @date 2017-5-3 上午10:47:00
  *
  */
