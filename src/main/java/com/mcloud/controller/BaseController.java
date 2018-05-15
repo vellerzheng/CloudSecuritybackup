@@ -38,7 +38,7 @@ public class BaseController {
         //将用户信息导入redis
         List<UsersEntity> usersInfo = userRepository.findAll();
         for(UsersEntity user : usersInfo){
-            redisUtil.setEx(user.getUsername(),12000,user);
+            redisUtil.setEx(user.getUsername(),3600000,user);
         }
     }
 
