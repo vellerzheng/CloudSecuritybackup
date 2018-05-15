@@ -3,6 +3,7 @@ package com.mcloud.controller;
 import com.mcloud.model.UserAdviceEntity;
 import com.mcloud.model.UsersEntity;
 import com.mcloud.repository.UserAdviceRepository;
+import com.mcloud.repository.UserRepository;
 import com.mcloud.util.common.CustomDateConverter;
 import com.mcloud.util.common.InfoJson;
 import com.mcloud.util.redis.RedisUtil;
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by vellerzheng on 2017/9/20.
@@ -25,9 +28,19 @@ public class BaseController {
 
     @Autowired
     UserAdviceRepository userAdviceRepository;
-
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     RedisUtil redisUtil;
+
+    @PostConstruct
+    public void initUserInfoToRedis(){
+        //将用户信息导入redis
+        List<UsersEntity> usersInfo = userRepository.findAll();
+        for(UsersEntity user : usersInfo){
+            redisUtil.setEx(user.getUsername(),12000,user);
+        }
+    }
 
     @RequestMapping(value = "/",method = RequestMethod.GET)
     public  String index() {

@@ -105,7 +105,11 @@ public class UserController {
         //如果获取不到用户名就是登录失败，但登录失败的话，会直接抛出异常
         subject.login(token);
 
-        UsersEntity usersEntity =userUtils.getUsersEntity(userLogin.getUsername());
+        UsersEntity usersEntity = (UsersEntity) redisUtil.get(userLogin.getUsername());
+        if(usersEntity.getPassword() ==null){
+            usersEntity =userUtils.getUsersEntity(userLogin.getUsername());
+        }
+
         usersEntity.setUpdatetime(CustomDateConverter.currentTime());
 
         if (subject.hasRole("user")) {
