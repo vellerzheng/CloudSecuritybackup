@@ -47,7 +47,7 @@
         <div class="form-group">
             <label for="pubDate">Publish Date:</label>
             <input type="date" class="form-control" id="pubDate" name="pubDate"
-                   value="<fmt:formatDate value="${fileEty.pubDate}" pattern="yyyy-MM-dd"/>"/>
+                   value="<fmt:formatDate value="${fileEty.createtime}" pattern="yyyy-MM-dd"/>"/>
         </div>
         <div class="form-group">
             <input type="hidden" class="form-control" id="userByUserId.id" name="userByUserId.id"

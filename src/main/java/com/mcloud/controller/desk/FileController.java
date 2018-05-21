@@ -227,7 +227,9 @@ public class FileController {
     /* 修改文件信息，post请求 */
     @RequestMapping(value = "/clouds/filemanager/files/updateP", method = RequestMethod.POST)
     public String updateFilePt(@ModelAttribute("filePt") FilesEntity filesEntity,@RequestParam("curAuthUserEntity") String userName){
-        fileRepository.updateFiles(filesEntity.getDescription(), filesEntity.getPubDate(), filesEntity.getUserByUserId().getId(), filesEntity.getId());
+        fileRepository.updateFiles(filesEntity.getDescription(),filesEntity.getStatus(),filesEntity.getVersion(),
+                                   filesEntity.getCreatetime(),filesEntity.getUpdatetime(), filesEntity.getUserByUserId().getId(),
+                                   filesEntity.getId());
         fileRepository.flush();
         return "redirect:/clouds/filemanager/files/" + userName;
     }

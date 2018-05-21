@@ -42,9 +42,10 @@
             <tr>
                 <th>ID</th>
                 <th>文件名</th>
-                <th>描述</th>
+              <%--  <th>描述</th>--%>
                 <th>文件大小</th>
                 <th>上传日期</th>
+                <th>状态</th>
                 <th>操作</th>
             </tr>
 
@@ -52,9 +53,10 @@
                 <tr>
                     <td>${file.id}</td>
                     <td>${file.fileName}</td>
-                    <td>${file.description}</td>
+                 <%--   <td>${file.description}</td>--%>
                     <td>${file.size}</td>
-                    <td><fmt:formatDate value="${file.pubDate }" pattern="yyyy-MM-dd"/></td>
+                    <td><fmt:formatDate value="${file.createtime }" pattern="yyyy-MM-dd"/></td>
+                    <td>${file.status}</td>
                     <td>
                         <a href="/clouds/filemanager/files/show/${file.id}" type="button" class="btn btn-sm btn-success">详情</a>
                         <a href="/clouds/filemanager/files/update/${loginUser.username}/${file.id}" type="button" class="btn btn-sm btn-warning">修改</a>

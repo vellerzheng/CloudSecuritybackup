@@ -65,8 +65,23 @@
                     </tr>
 
                     <tr>
-                        <th>Publish Date</th>
-                        <td><fmt:formatDate value="${filesDetial.pubDate }" pattern="yyyy-MM-dd"/></td>
+                        <th>Create Time</th>
+                        <td><fmt:formatDate value="${filesDetial.createtime }" pattern="yyyy-MM-dd"/></td>
+                    </tr>
+
+                    <tr>
+                        <th>Update Time</th>
+                        <td><fmt:formatDate value="${filesDetial.updatetime }" pattern="yyyy-MM-dd"/></td>
+                    </tr>
+
+                    <tr>
+                        <th>Status</th>
+                        <td>${filesDetial.status}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Version</th>
+                        <td>${filesDetial.version}</td>
                     </tr>
 
 

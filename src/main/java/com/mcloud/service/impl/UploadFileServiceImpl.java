@@ -7,13 +7,16 @@ import com.mcloud.repository.FileRepository;
 import com.mcloud.repository.HashFileRepository;
 import com.mcloud.repository.UserRepository;
 import com.mcloud.service.UploadFileService;
+import com.mcloud.service.cloudService.QcloudService;
 import com.mcloud.service.upload.MulCloudSDisposeService;
+import com.mcloud.util.common.CustomDateConverter;
 import com.mcloud.util.common.FileManage;
 import com.mcloud.service.supportToolClass.fileHandle.FileEncAndDecByDES;
 import com.mcloud.service.upload.PartitionFile;
 import com.mcloud.service.cloudService.cloudServiceImpl.QcloudServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -26,6 +29,7 @@ import java.util.List;
  * Created by vellerzheng on 2017/10/13.
  */
 @Service
+@Transactional
 public class UploadFileServiceImpl implements UploadFileService{
 
     @Autowired
@@ -36,6 +40,8 @@ public class UploadFileServiceImpl implements UploadFileService{
     private HashFileRepository hashFileRepository;
     @Autowired
     private MulCloudSDisposeService mulCloudSDisService;
+    @Autowired
+    private QcloudService qcloudService;
 
     /**
      *
@@ -72,8 +78,7 @@ public class UploadFileServiceImpl implements UploadFileService{
                 e.printStackTrace();
             }
             // 腾讯云，数据库编号2
-            QcloudServiceImpl qcloud = new QcloudServiceImpl();
-            qcloud.uploadFile(encryptFilePath);
+            qcloudService.uploadFile(encryptFilePath);
 
             /*判断加密的文件路径是否存在，如果存在就删除*/
             if (encryptFilePart.exists()) {
@@ -136,16 +141,12 @@ public class UploadFileServiceImpl implements UploadFileService{
             else
                 strSize = decimalFormat.format((float)fileSize/1024/1024/1024) +"G";
         fsty.setSize(strSize);
-        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
-        Date time=null;
-        try{
-            time =sdf.parse(sdf.format(new Date()));
-        }catch (ParseException e){
-            e.printStackTrace();
-        }
-        fsty.setPubDate(time);
+        fsty.setCreatetime(CustomDateConverter.currentTime());
+        fsty.setUpdatetime(CustomDateConverter.currentTime());
         UsersEntity usEnty= userRepository.findUsersEntityById(usrId);
         fsty.setUserByUserId(usEnty);
+        fsty.setStatus(1);
+        fsty.setVersion(1);
         fileRepository.saveAndFlush(fsty);
         int lastId = fileRepository.findLastIdFormFilesEntity();
         FileHashInteractionSql fHashInter = new FileHashInteractionSql(fileRepository.findOne(lastId),pathPart,hashFileName);

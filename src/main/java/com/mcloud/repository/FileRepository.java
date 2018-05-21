@@ -18,8 +18,10 @@ import java.util.List;
 public interface FileRepository extends JpaRepository<FilesEntity,Integer> {
     @Modifying
     @Transactional
-    @Query("update FilesEntity files set files.description=:qDescription, files.pubDate=:qPubDate, files.userByUserId.id=:qUsersId where files.id=:qId")
-    void updateFiles(@Param("qDescription")String description, @Param("qPubDate")Date pubDate, @Param("qUsersId") int usersId, @Param("qId") int id);
+    @Query("update FilesEntity files set files.description=:qDescription, files.status = :qStatus, files.version = :qVersion," +
+            "files.createtime=:qCreatetime, files.updatetime=:qUpdatetime, files.userByUserId.id=:qUsersId where files.id=:qId")
+    void updateFiles(@Param("qDescription")String description,@Param("qStatus")int status, @Param("qVersion")int version,
+                     @Param("qCreatetime")Date createtime, @Param("qUpdatetime")Date updateime, @Param("qUsersId") int usersId, @Param("qId") int id);
 
 
     @Query(value = "select  fs from FilesEntity fs where fs.userByUserId.id =:uid")
