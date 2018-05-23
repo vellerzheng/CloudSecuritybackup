@@ -6,6 +6,7 @@ import com.mcloud.repository.UserRegisterRepository;
 import com.mcloud.repository.UserRepository;
 import com.mcloud.service.supportToolClass.shiro.verificationCode.ValidateCode;
 import com.mcloud.model.common.UserLogin;
+import com.mcloud.util.common.BloomFilterUtils;
 import com.mcloud.util.common.CustomDateConverter;
 import com.mcloud.util.common.InfoJson;
 import com.mcloud.util.common.UserUtils;
@@ -85,9 +86,6 @@ public class UserController {
     @RequestMapping(value = "/clouds/users/login", method = RequestMethod.POST)
     public String  authLoagin(HttpServletRequest request, HttpSession session,
                               ModelMap modelMap, @ModelAttribute("login") UserLogin userLogin){
-
-
-
         // 验证码处理
 /*        String code = (String) session.getAttribute("validateCode");
         String submitCode = WebUtils.getCleanParam(request, "validateCode");
@@ -97,6 +95,8 @@ public class UserController {
 /*        redisClusterClient.set(userLogin.getUsername(),userLogin.getPassword(),86400);
         logger.info(redisClusterClient.get(userLogin.getUsername()).toString());*/
 
+        if(!BloomFilterUtils.contains(userLogin.getUsername())) //防止缓存击穿
+            return  "/clouds/users/login";
         Subject subject = SecurityUtils.getSubject();
         String checkpwd = new SimpleHash("MD5",userLogin.getPassword(),userLogin.getUsername(),2).toHex();
         UsernamePasswordToken token = new UsernamePasswordToken(userLogin.getUsername(),checkpwd);
@@ -122,7 +122,7 @@ public class UserController {
             return null;
         }
         redisUtil.setEx(usersEntity.getUsername(),10000,usersEntity);
-        return  null;
+        return  "/clouds/users/login";
 
     }
 

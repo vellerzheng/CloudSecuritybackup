@@ -4,6 +4,7 @@ import com.mcloud.model.UserAdviceEntity;
 import com.mcloud.model.UsersEntity;
 import com.mcloud.repository.UserAdviceRepository;
 import com.mcloud.repository.UserRepository;
+import com.mcloud.util.common.BloomFilterUtils;
 import com.mcloud.util.common.CustomDateConverter;
 import com.mcloud.util.common.InfoJson;
 import com.mcloud.util.redis.RedisUtil;
@@ -38,6 +39,8 @@ public class BaseController {
         //将用户信息导入redis
         List<UsersEntity> usersInfo = userRepository.findAll();
         for(UsersEntity user : usersInfo){
+            //初始化布隆过滤器
+            BloomFilterUtils.create(user.getUsername());
             redisUtil.setEx(user.getUsername(),3600000,user);
         }
     }
