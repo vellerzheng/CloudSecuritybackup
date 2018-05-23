@@ -40,8 +40,7 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    UserUtils userUtils;
+
     @Autowired
     UserRegisterRepository userRegisterRepository;
     @Autowired
@@ -62,21 +61,18 @@ public class UserController {
     @ResponseBody
     public InfoJson addUserPost(@RequestBody  UsersEntity usersEntity){
         List<UsersEntity> userList=userRepository.findAll();
-        for (UsersEntity uty: userList) {
-            if(!(usersEntity==null) &&!uty.getUsername().equals(usersEntity.getUsername())&&!uty.getEmail().equals(usersEntity.getEmail())
-                    &&!uty.getPhone().equals(usersEntity.getPhone())){
 
-            }else{
-                return InfoJson.getInfo(InfoJson.INFO_SYSTEMFAIL, "用户已存在，请重新注册！", null);
-            }
+        UsersEntity usrSql = userRepository.findByUsernameOrPhoneOrEmail(usersEntity.getUsername(),usersEntity.getPhone(),usersEntity.getEmail());
+        if(usrSql != null){
+            return InfoJson.getInfo(InfoJson.INFO_SYSTEMFAIL, "用户已存在，请重新注册！", null);
         }
         String pwd = new SimpleHash("MD5",usersEntity.getPassword(),usersEntity.getUsername(),2).toHex();
         usersEntity.setPassword(pwd);
         usersEntity.setCreatetime(CustomDateConverter.currentTime());
         usersEntity.setUpdatetime(CustomDateConverter.currentTime());
-        System.out.println(usersEntity.getUsername());
         usersEntity.setUserRoleIdByRoleId(roleRepository.findOne(3));
         userRepository.saveAndFlush(usersEntity);
+        BloomFilterUtils.create(usersEntity.getUsername());
         return InfoJson.getInfo(InfoJson.INFO_SUCCESS, "用户注册成功！", null);
     }
 
@@ -106,12 +102,12 @@ public class UserController {
         subject.login(token);
 
         UsersEntity usersEntity = (UsersEntity) redisUtil.get(userLogin.getUsername());
-        if(usersEntity.getPassword() ==null){
-            usersEntity =userUtils.getUsersEntity(userLogin.getUsername());
+        if(usersEntity == null){
+            usersEntity =userRepository.findByUsernameEndsWith(userLogin.getUsername());
         }
 
         usersEntity.setUpdatetime(CustomDateConverter.currentTime());
-
+        redisUtil.setEx(usersEntity.getUsername(),10000,usersEntity);
         if (subject.hasRole("user")) {
             userRepository.saveAndFlush(usersEntity);
             return "redirect:/clouds/users/default/welcome/"+usersEntity.getUsername();
@@ -121,7 +117,7 @@ public class UserController {
         } else if(subject.hasRole("manager")){
             return null;
         }
-        redisUtil.setEx(usersEntity.getUsername(),10000,usersEntity);
+
         return  "/clouds/users/login";
 
     }
@@ -134,12 +130,15 @@ public class UserController {
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
 
-        UsersEntity userlogin = userUtils.getUsersEntity(username);
+        UsersEntity usersEntity = (UsersEntity) redisUtil.get(username);
+        if(usersEntity == null){
+            usersEntity =userRepository.findByUsernameEndsWith(username);
+        }
 
-        String oldPwdMd5= new SimpleHash("MD5",oldPassword,userlogin.getUsername(),2).toHex();
-        String newpwd = new SimpleHash("MD5",password1,userlogin.getUsername(),2).toHex();
+        String oldPwdMd5= new SimpleHash("MD5",oldPassword,usersEntity.getUsername(),2).toHex();
+        String newpwd = new SimpleHash("MD5",password1,usersEntity.getUsername(),2).toHex();
 
-        UsernamePasswordToken token = new UsernamePasswordToken(userlogin.getUsername(),oldPwdMd5);
+        UsernamePasswordToken token = new UsernamePasswordToken(usersEntity.getUsername(),oldPwdMd5);
         token.setRememberMe(true);
         //如果获取不到用户名就是登录失败，但登录失败的话，会直接抛出异常
         subject.login(token);
@@ -147,11 +146,11 @@ public class UserController {
    /*     if (!oldPwdMd5.equals(userlogin.getPassword())) {
             throw new Exception("旧密码不正确");
         } else {*/
-            userlogin.setPassword(newpwd);
-            userlogin.setUpdatetime(CustomDateConverter.currentTime());
-            userRepository.updateByName(username, userlogin.getPassword(),userlogin.getUpdatetime(),userlogin.getId());
+            usersEntity.setPassword(newpwd);
+            usersEntity.setUpdatetime(CustomDateConverter.currentTime());
+            userRepository.updateByName(username, usersEntity.getPassword(),usersEntity.getUpdatetime(),usersEntity.getId());
        // }
-        redisUtil.setEx(userlogin.getUsername(),10000,userlogin);
+        redisUtil.del(username);
         return "redirect:/clouds/users/logout";
     }
 

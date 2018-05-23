@@ -6,7 +6,9 @@ import com.mcloud.model.UsersEntity;
 import com.mcloud.model.common.Pager;
 import com.mcloud.model.common.UsersPage;
 import com.mcloud.repository.UserAdviceRepository;
+import com.mcloud.repository.UserRepository;
 import com.mcloud.util.common.UserUtils;
+import com.mcloud.util.redis.RedisUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +35,9 @@ public class AdviceController
     UserAdviceRepository userAdviceRepository;
 
     @Autowired
-    UserUtils userUtils;
+    RedisUtil redisUtil;
+    @Autowired
+    UserRepository userRepository;
 
     //无条件查询
     @RequestMapping(value = "/list")
@@ -43,7 +47,11 @@ public class AdviceController
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
 
-        UsersEntity loginUser = userUtils.getUsersEntity(username);
+        UsersEntity loginUser = (UsersEntity) redisUtil.get(username);
+        if(loginUser == null) {
+            loginUser = userRepository.findByUsernameEndsWith(username);
+            redisUtil.setEx(username,100000,loginUser);
+        }
 
       //  int FirstResult = (pager.getNowPageNo() - 1) * pager.getSizePerPage();
         int count = (int)userAdviceRepository.count();
