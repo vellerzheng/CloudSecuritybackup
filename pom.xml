@@ -5,7 +5,7 @@
   <artifactId>cloudSecureStorage</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>lab420-YunSafe Maven Webapp</name>
+  <name>cloudSecureStorage Maven Webapp</name>
   <url>http://maven.apache.org</url>
 
   <properties>

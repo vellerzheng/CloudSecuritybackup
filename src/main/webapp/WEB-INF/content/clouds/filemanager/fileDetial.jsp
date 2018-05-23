@@ -76,9 +76,13 @@
 
                     <tr>
                         <th>Status</th>
-                        <td>${filesDetial.status}</td>
+                        <td>
+                          <%--  ${filesDetial.status}--%>
+                            <c:if test="${filesDetial.status eq -1}">上传失败</c:if>
+                            <c:if test="${filesDetial.status eq 1}">上传成功</c:if>
+                            <c:if test="${filesDetial.status eq 2}">正在上传</c:if>
+                        </td>
                     </tr>
-
                     <tr>
                         <th>Version</th>
                         <td>${filesDetial.version}</td>

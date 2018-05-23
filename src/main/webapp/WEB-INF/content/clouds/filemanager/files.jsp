@@ -56,7 +56,12 @@
                  <%--   <td>${file.description}</td>--%>
                     <td>${file.size}</td>
                     <td><fmt:formatDate value="${file.createtime }" pattern="yyyy-MM-dd"/></td>
-                    <td>${file.status}</td>
+                   <%-- <td>${file.status}</td>--%>
+                    <td>
+                        <c:if test="${file.status eq -1}"><p>上传失败</p></c:if>
+                        <c:if test="${file.status eq 1}"><p>上传成功</p></c:if>
+                        <c:if test="${file.status eq 2}"><p>正在上传</p></c:if>
+                    </td>
                     <td>
                         <a href="/clouds/filemanager/files/show/${file.id}" type="button" class="btn btn-sm btn-success">详情</a>
                         <a href="/clouds/filemanager/files/update/${loginUser.username}/${file.id}" type="button" class="btn btn-sm btn-warning">修改</a>
