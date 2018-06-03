@@ -14,6 +14,8 @@ public class ConfUpyunEntity {
     private String bucketName;
     private String userName;
     private String password;
+    private Integer status;
+    private Integer version;
     private Integer userId;
     private String creator;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -60,6 +62,18 @@ public class ConfUpyunEntity {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Basic
+    @Column(name = "status", nullable =  true)
+    public Integer getStatus() { return  status; }
+
+    public void setStatus(Integer status) { this.status = status; }
+
+    @Basic
+    @Column(name = "version", nullable = true)
+    public Integer getVersion() { return  version; }
+
+    public void setVersion(Integer version) { this.version = version; }
 
     @Basic
     @Column(name = "user_Id", nullable = true)
@@ -110,6 +124,8 @@ public class ConfUpyunEntity {
                 Objects.equals(bucketName, that.bucketName) &&
                 Objects.equals(userName, that.userName) &&
                 Objects.equals(password, that.password) &&
+                Objects.equals(status, that.status) &&
+                Objects.equals(version, that.version) &&
                 Objects.equals(userId, that.userId) &&
                 Objects.equals(creator, that.creator) &&
                 Objects.equals(createtime, that.createtime) &&
@@ -119,6 +135,6 @@ public class ConfUpyunEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, bucketName, userName, password, userId, creator, createtime, updatetime);
+        return Objects.hash(id, bucketName, userName, password, status, version, userId, creator, createtime, updatetime);
     }
 }

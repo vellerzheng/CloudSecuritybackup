@@ -14,6 +14,8 @@ public class ConfQiniuEntity {
     private String accessKey;
     private String secretKey;
     private String bucket;
+    private Integer status;
+    private Integer version;
     private Integer userId;
     private String creator;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -72,6 +74,18 @@ public class ConfQiniuEntity {
     }
 
     @Basic
+    @Column(name = "status", nullable =  true)
+    public Integer getStatus() { return  status; }
+
+    public void setStatus(Integer status) { this.status = status; }
+
+    @Basic
+    @Column(name = "version", nullable = true)
+    public Integer getVersion() { return  version; }
+
+    public void setVersion(Integer version) { this.version = version; }
+
+    @Basic
     @Column(name = "user_Id", nullable = true)
     public Integer getUserId() {
         return userId;
@@ -121,6 +135,8 @@ public class ConfQiniuEntity {
                 Objects.equals(accessKey, that.accessKey) &&
                 Objects.equals(secretKey, that.secretKey) &&
                 Objects.equals(bucket, that.bucket) &&
+                Objects.equals(status, that.status) &&
+                Objects.equals(version, that.version) &&
                 Objects.equals(userId, that.userId) &&
                 Objects.equals(creator, that.creator) &&
                 Objects.equals(createtime, that.createtime) &&
@@ -130,6 +146,6 @@ public class ConfQiniuEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, domainOfBucket, accessKey, secretKey, bucket, userId, creator, createtime, updatetime);
+        return Objects.hash(id, domainOfBucket, accessKey, secretKey, bucket, status, version, userId, creator, createtime, updatetime);
     }
 }

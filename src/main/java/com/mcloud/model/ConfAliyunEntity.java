@@ -15,6 +15,8 @@ public class ConfAliyunEntity {
     private String accessKeySecret;
     private String bucketName;
     private String accessUrl;
+    private Integer status;
+    private Integer version;
     private Integer userId;
     private String creator;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -83,6 +85,18 @@ public class ConfAliyunEntity {
     }
 
     @Basic
+    @Column(name = "status", nullable =  true)
+    public Integer getStatus() { return  status; }
+
+    public void setStatus(Integer status) { this.status = status; }
+
+    @Basic
+    @Column(name = "version", nullable = true)
+    public Integer getVersion() { return  version; }
+
+    public void setVersion(Integer version) { this.version = version; }
+
+    @Basic
     @Column(name = "user_Id", nullable = true)
     public Integer getUserId() {
         return userId;
@@ -131,6 +145,8 @@ public class ConfAliyunEntity {
                 Objects.equals(accessKeySecret, that.accessKeySecret) &&
                 Objects.equals(bucketName, that.bucketName) &&
                 Objects.equals(accessUrl, that.accessUrl) &&
+                Objects.equals(status, that.status) &&
+                Objects.equals(version, that.version) &&
                 Objects.equals(userId, that.userId) &&
                 Objects.equals(creator, that.creator) &&
                 Objects.equals(createtime, that.createtime) &&
@@ -140,6 +156,6 @@ public class ConfAliyunEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, endPoint, accessKey, accessKeySecret, bucketName, accessUrl, userId, creator, createtime, updatetime);
+        return Objects.hash(id, endPoint, accessKey, accessKeySecret, bucketName, accessUrl, status, version, userId, creator, createtime, updatetime);
     }
 }
