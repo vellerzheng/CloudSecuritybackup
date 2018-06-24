@@ -69,6 +69,11 @@
                 </tr>
 
                 <tr>
+                    <th>上传视频 </th>
+                    <td><a href="/clouds/filemanager/uploadMedia/${loginUser.username}" type="button" class="btn btn-sm btn-success">Upload Media</a></td>
+                </tr>
+
+                <tr>
                     <th>上传文件 </th>
                     <td><a href="/clouds/filemanager/uploadfile/${loginUser.username}" type="button" class="btn btn-sm btn-success">Upload File</a></td>
                 </tr>

@@ -42,7 +42,7 @@
             <tr>
                 <th>ID</th>
                 <th>文件名</th>
-              <%--  <th>描述</th>--%>
+                <th>描述</th>
                 <th>文件大小</th>
                 <th>上传日期</th>
                 <th>状态</th>
@@ -53,7 +53,7 @@
                 <tr>
                     <td>${file.id}</td>
                     <td>${file.fileName}</td>
-                 <%--   <td>${file.description}</td>--%>
+                    <td>${file.description}</td>
                     <td>${file.size}</td>
                     <td><fmt:formatDate value="${file.createtime }" pattern="yyyy-MM-dd"/></td>
                    <%-- <td>${file.status}</td>--%>
