@@ -109,5 +109,14 @@ public class BaseController {
     @RequestMapping(value = "/clouds/users/default/cloudConfig")
     public String cloudConfig() { return "/clouds/users/default/cloudConfig"; }
 
+    /*用户上传视频配置页面 */
+    @RequestMapping(value ="/clouds/filemanager/uploadMedia/{userName}", method = RequestMethod.GET)
+    public String getUploadForm(@PathVariable("userName") String username, ModelMap modelMap){
+        UsersEntity usersEntity = (UsersEntity) redisUtil.get(username);
+        modelMap.addAttribute("authUsersEntity",usersEntity.getUsername());
+        modelMap.addAttribute("loginUser",usersEntity);
+        return "clouds/filemanager/uploadMedia";
+    }
+
 }
 

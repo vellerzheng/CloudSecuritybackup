@@ -130,6 +130,58 @@ public class FileController {
     }
 
 
+    /*上传视频路径配置*/
+    @RequestMapping(value="/clouds/filemanager/uploadMedia/video",method = RequestMethod.POST)
+    public String uploadMedia(HttpServletRequest request, @RequestParam("mediaPath") String mediaPath,
+                           @RequestParam("curAuthUserEntity") String userName, ModelMap modelMap) throws Exception {
+
+        String description = "media";
+        UsersEntity loginUser= userUtils.getUsersEntity(userName);
+        List<String> mediaNames = FileManage.getPartFileName(mediaPath);
+
+        for(String media : mediaNames){
+            String path = mediaPath + File.separator + media;
+            File file = new File(path);
+        //如果文件不为空，写入上传路径
+            if(file.exists()) {
+
+                int fileSize = (int) file.length();
+
+                //上传文件分块路径
+                String pathPart = file.getParent() + File.separator + "filepart";
+                //上传文件名
+                String filename = file.getName();
+
+                File filepathPart = new File(pathPart);
+                //判断路径是否存在，如果不存在就创建一个
+                if (!filepathPart.exists()) {
+                    filepathPart.mkdirs();
+                }
+
+                String hashFileName = uploadFileService.dealFileUpload(file.getParent(), pathPart, filename, fileSize, loginUser.getId());
+                uploadFileService.saveFileInfoToDateBase(pathPart, filename, hashFileName, description, fileSize, loginUser.getId());
+                /*判断路径是否存在，如果存在就删除*/
+                if (filepathPart.exists()) {
+                    FileManage.deleteDirectory(pathPart);
+                }
+                if (file.getParentFile().exists()) {
+                    FileManage.delete(path);
+                }
+            }
+
+
+            modelMap.addAttribute("message","视频文件上传成功");
+            modelMap.addAttribute("loginUser",loginUser);
+
+/*        } else {
+            return "clouds/error";  */
+        }
+
+        return "redirect:/clouds/filemanager/files/"+loginUser.getUsername();
+
+    }
+
+
        /* 查看所有文件*/
     @RequestMapping(value ="/clouds/filemanager/files/", method = RequestMethod.GET)
     public String getFilesError(){
