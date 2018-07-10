@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <<title>Cloud Secure Storage</title>
+    <title>Cloud Secure Storage</title>
     <!-- 引入bootstrap -->
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -27,12 +27,15 @@
     <h1> 我的文件</h1>
     <hr/>
 
-    <h3>所有文件 <a href="/clouds/filemanager/uploadfile/${loginUser.username}" type="button" class="btn btn-primary btn-sm">添加文件</a></h3>
+    <h3>所有文件 <a href="/clouds/filemanager/uploadfile/${loginUser.username}" type="button" class="btn btn-primary btn-sm">添加文件</a>
+        <a href="/clouds/filemanager/uploadMedia/${loginUser.username}" type="button" class="btn btn-sm btn-success">配置视频路径</a>
+    </h3>
 
     <!-- 如果用户列表为空 -->
     <c:if test="${empty fileList}">
         <div class="alert alert-warning" role="alert">
-            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>files表为空，请<a href="/clouds/filemanager/uploadfile/${loginId}" type="button" class="btn btn-primary btn-sm">添加</a>
+            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>files表为空，请
+            <a href="/clouds/filemanager/uploadfile/${loginId}" type="button" class="btn btn-primary btn-sm">添加</a>
         </div>
     </c:if>
 
